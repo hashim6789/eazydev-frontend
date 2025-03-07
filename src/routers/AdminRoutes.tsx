@@ -13,7 +13,7 @@ export const AdminRoutes = (
     element: isAuthenticated ? (
       <Navigate to={`/${user}/dashboard`} />
     ) : (
-      <LoginPage role="mentor" theme="blue" loginImage="" />
+      <LoginPage role="admin" theme="green" loginImage="" allowSignup={false} />
     ),
   },
   //   {

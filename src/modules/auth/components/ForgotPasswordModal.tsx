@@ -1,27 +1,29 @@
+import React from "react";
+import { useSelector } from "react-redux";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { UserThemeType } from "../../../types";
 import { getUserThemeStyles } from "../../../utils";
+import { RootState } from "../../../store";
+import { ForgotPasswordFormData, forgotPasswordSchema } from "../../../schemas";
 
 // Forgot Password Modal Component
-const ForgotPasswordModal: React.FC<{
-  email: string;
-  setEmail: (email: string) => void;
+export const ForgotPasswordModal: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (email: string) => Promise<void>;
-  loading?: boolean;
-  error?: string;
+  onSubmit: (data: ForgotPasswordFormData) => Promise<void>;
   theme: UserThemeType;
-}> = ({
-  email,
-  setEmail,
-  isOpen,
-  onClose,
-  onSubmit,
-  loading,
-  error,
-  theme,
-}) => {
+}> = ({ isOpen, onClose, onSubmit, theme }) => {
+  const { error, loading } = useSelector((state: RootState) => state.auth);
   const styles = getUserThemeStyles(theme);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
 
   if (!isOpen) return null;
 
@@ -39,33 +41,23 @@ const ForgotPasswordModal: React.FC<{
 
           {error && <p className="text-red-500 mb-4">{error}</p>}
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:border-transparent"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div className="flex justify-end space-x-3">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
+              </label>
+              <input
+                {...register("email")}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-opacity-50 focus:border-transparent"
+                placeholder="Enter your email"
+              />
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
+            </div>
             <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-100"
-              disabled={loading}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              onClick={() => onSubmit(email)}
-              className={`px-4 py-2 rounded-lg ${styles.primary} ${styles.hover} ${styles.buttonText} flex items-center justify-center`}
-              disabled={loading}
+              type="submit"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg"
             >
               {loading ? (
                 <span className="flex items-center">
@@ -95,9 +87,22 @@ const ForgotPasswordModal: React.FC<{
                 <span>Send Reset Link</span>
               )}
             </button>
+          </form>
+
+          <div className="flex justify-end space-x-3 mt-4">
+            <button
+              type="button"
+              onClick={onClose}
+              className={`px-4 py-2 rounded-lg ${styles.primary} ${styles.hover} ${styles.buttonText} flex items-center justify-center`}
+              disabled={loading}
+            >
+              Cancel
+            </button>
           </div>
         </div>
       </div>
     </div>
   );
 };
+
+export default ForgotPasswordModal;

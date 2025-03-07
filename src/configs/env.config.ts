@@ -6,4 +6,7 @@ export const config = {
   CLOUDINARY_CLOUD_NAME: import.meta.env.VITE_CLOUDINARY_CLOUD_NAME,
   CLOUDINARY_PRESET: import.meta.env.VITE_CLOUDINARY_PRESET,
   VITE_STRIPE_PK: import.meta.env.VITE_STRIPE_PK,
+  GOOGLE_AUTH_CLIENT_ID:
+    import.meta.env.GOOGLE_AUTH_CLIENT_ID ||
+    "928386759524-9tflikf8cdtpuiavjnq3a65lm0sgjf55.apps.googleusercontent.com",
 };

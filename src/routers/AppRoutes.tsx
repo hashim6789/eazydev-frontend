@@ -2,10 +2,7 @@ import React from "react";
 import { useRoutes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import {
-  NotFoundPage,
-  ServerErrorPage,
-} from "../modules/shared/components/ErrorComponents";
+import { NotFoundPage, ServerErrorPage } from "../modules/shared/Error";
 import LoginPage from "../modules/auth/pages/Login";
 import { AdminRoutes } from "./AdminRoutes";
 import { LearnerRoutes } from "./LearnerRoutes";
@@ -21,15 +18,15 @@ const AppRoutes: React.FC = () => {
     ...AdminRoutes(isAuthenticated, user, basicTheme),
     ...MentorRoutes(isAuthenticated, user, basicTheme),
     ...LearnerRoutes(isAuthenticated, user, basicTheme),
-    { path: "*", element: <NotFoundPage role={user} theme={basicTheme} /> },
+    {
+      path: "/login",
+      element: <LoginPage role="learner" theme="blue" loginImage="" />,
+    },
     {
       path: "/500",
       element: <ServerErrorPage role="admin" theme={basicTheme} />,
     },
-    {
-      path: "/login",
-      element: <LoginPage role="mentor" theme="blue" loginImage="" />,
-    },
+    { path: "*", element: <NotFoundPage role={user} theme={basicTheme} /> },
   ];
 
   return useRoutes(routes);

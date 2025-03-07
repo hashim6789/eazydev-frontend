@@ -13,7 +13,7 @@ export const MentorRoutes = (
     element: isAuthenticated ? (
       <Navigate to={`/${user}/dashboard`} />
     ) : (
-      <LoginPage role="mentor" theme="blue" loginImage="" />
+      <LoginPage role="mentor" theme="purple" loginImage="" />
     ),
   },
   //   {

@@ -13,7 +13,7 @@ export const LearnerRoutes = (
     element: isAuthenticated ? (
       <Navigate to={`/${user}/dashboard`} />
     ) : (
-      <LoginPage role="mentor" theme="blue" loginImage="" />
+      <LoginPage role="learner" theme="blue" loginImage="" />
     ),
   },
   //   {

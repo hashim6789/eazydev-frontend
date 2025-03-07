@@ -1,7 +1,7 @@
 import { ThemeType, UserRole, UserThemeType } from "../types/User";
 
 // Theme configuration
-export const getThemeStyle = (theme: ThemeType) => {
+export const getThemeStyleForErrorPages = (theme: ThemeType) => {
   switch (theme) {
     case "light":
       return {
@@ -88,7 +88,7 @@ export const getUserThemeStyles = (theme: UserThemeType) => {
 };
 
 // Theme configuration
-export const getThemeStyles = (theme: UserThemeType) => {
+export const getThemeStyleForErrors = (theme: UserThemeType) => {
   switch (theme) {
     case "blue":
       return {

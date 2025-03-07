@@ -1,57 +1,48 @@
-import React, { use, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import { Eye, EyeOff, LogIn, UserPlus, ArrowLeft, Mail } from "lucide-react";
+import { Eye, EyeOff, LogIn, UserPlus, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { ThemeType, UserRole, UserThemeType } from "../../../types/User";
+import { UserRole, UserThemeType } from "../../../types/User";
 import {
   getUserThemeStyles,
   userThemeSelector,
 } from "../../../utils/theme.utils";
 import { getRoleContentForLogin } from "../../../utils";
 import {
+  ForgotPasswordFormData,
   LoginFormData,
   loginSchema,
   SignupFormData,
   signupSchema,
 } from "../../../schemas/auth.schema";
+import useAuth from "../../../hooks/useAuth";
+import { ForgotPasswordModal } from "../components/ForgotPasswordModal";
+import GoogleLoginButton from "../../shared/components/GoogleLoginButton";
 
 // Props interface
 interface LoginPageProps {
   role: UserRole;
   theme: UserThemeType;
   loginImage: string;
-  //   onLogin: (data: LoginFormData) => Promise<void>;
-  //   onSignup?: (data: SignupFormData) => Promise<void>;
-  //   onGoogleAuth?: () => Promise<void>;
-  //   onForgotPassword?: (email: string) => Promise<void>;
   allowSignup?: boolean;
-  loading?: boolean;
-  error?: string;
 }
 
 // Main Login Page Component
 const LoginPage: React.FC<LoginPageProps> = ({
   role,
-  // theme,
   loginImage,
-  //   onLogin,
-  //   onSignup,
-  //   onGoogleAuth,
-  //   onForgotPassword,
   allowSignup = true,
-  loading = false,
-  error,
 }) => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
-  const [forgotPasswordEmail, setForgotPasswordEmail] = useState("");
   const [forgotPasswordModal, setForgotPasswordModal] = useState(false);
 
   const theme = userThemeSelector(role);
 
+  const { loading, error, handleLogin, handleSignup, handleForgotPassword } =
+    useAuth();
   const styles = getUserThemeStyles(theme);
   const roleContent = getRoleContentForLogin(role);
 
@@ -77,20 +68,18 @@ const LoginPage: React.FC<LoginPageProps> = ({
 
   // Form submissions
   const submitLogin = (data: LoginFormData) => {
-    // onLogin(data);
+    handleLogin(data, role);
   };
 
   const submitSignup = (data: SignupFormData) => {
-    // if (onSignup) {
-    //   onSignup(data);
-    // }
+    if (role === "admin") return;
+    handleSignup(data, role);
   };
 
-  const handleForgotPassword = async () => {
-    // if (onForgotPassword) {
-    //   await onForgotPassword(forgotPasswordEmail);
+  const handleForgotPass = async (data: ForgotPasswordFormData) => {
+    if (role === "admin") return;
     setForgotPasswordModal(false);
-    // }
+    handleForgotPassword(data, role);
   };
 
   return (
@@ -434,7 +423,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
           )}
 
           {/* Google Authentication button */}
-          {/* {onGoogleAuth && (
+          {role !== "admin" && (
             <div className="mt-6">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
@@ -447,17 +436,13 @@ const LoginPage: React.FC<LoginPageProps> = ({
                 </div>
               </div>
               <div className="mt-6">
-                <GoogleAuthButton
-                  text={isLogin ? "Login with Google" : "Sign up with Google"}
-                  onClick={onGoogleAuth}
-                  theme={theme}
-                />
+                <GoogleLoginButton user={role} />
               </div>
             </div>
-          )} */}
+          )}
 
           {/* Forgot password link */}
-          {/* {isLogin && onForgotPassword && (
+          {isLogin && !forgotPasswordModal && (
             <div className="text-center mt-6">
               <button
                 type="button"
@@ -467,23 +452,19 @@ const LoginPage: React.FC<LoginPageProps> = ({
                 Forgot Password?
               </button>
             </div>
-          )} */}
+          )}
         </div>
       </div>
 
       {/* Forgot Password Modal */}
-      {/* {onForgotPassword && (
+      {forgotPasswordModal && (
         <ForgotPasswordModal
-          email={forgotPasswordEmail}
-          setEmail={setForgotPasswordEmail}
           isOpen={forgotPasswordModal}
           onClose={() => setForgotPasswordModal(false)}
-          onSubmit={handleForgotPassword}
-          loading={loading}
-          error={error}
+          onSubmit={handleForgotPass}
           theme={theme}
         />
-      )} */}
+      )}
     </div>
   );
 };

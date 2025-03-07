@@ -1,7 +1,7 @@
 import { UserRole } from "../types/User";
 
 // Helper function to get role-specific content
-export const getRoleContentForErrorPage = (role: UserRole) => {
+export const getRoleContentForErrorPages = (role: UserRole) => {
   switch (role) {
     case "admin":
       return {

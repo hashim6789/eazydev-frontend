@@ -14,9 +14,10 @@ import {
   setError,
 } from "../store/slice";
 import { showSuccessToast, showErrorToast } from "../utils";
-import { AuthState } from "../store/interfaces";
-import { LoginSchema, SignupSchema } from "../schemas";
+import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
 import { SubRole, UserRole } from "../types";
+import { config } from "../configs";
+import { AuthMessages } from "../constants";
 
 const useAuth = () => {
   const navigate = useNavigate();
@@ -30,17 +31,19 @@ const useAuth = () => {
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
     dispatch(loginStart());
     try {
-      await axios.post("/api/auth/login", credentials);
+      await axios.post(`${config.API_BASE_URL}/api/auth/login`, credentials);
       //   const { role } = response.data;
       dispatch(loginSuccess(role));
+      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
       if (role === "learner") {
         navigate("/");
       } else {
         navigate(`/${role}/dashboard`);
       }
     } catch (err) {
-      dispatch(loginFailure("Login failed. Please try again."));
-      console.error("Login failed:", err);
+      dispatch(loginFailure(AuthMessages.LOGIN_FAILED));
+      showErrorToast(AuthMessages.LOGIN_FAILED);
+      console.error(AuthMessages.LOGIN_FAILED, err);
     }
   };
 
@@ -48,44 +51,57 @@ const useAuth = () => {
   const handleSignup = async (credentials: SignupSchema, role: SubRole) => {
     dispatch(loginStart());
     try {
-      await axios.post("/api/auth/signup", credentials);
+      await axios.post(`${config.API_BASE_URL}/api/auth/signup`, credentials);
+      showSuccessToast(AuthMessages.SIGNUP_SUCCESS);
       navigate(`/${role}/otp`);
     } catch (err: any) {
-      dispatch(loginFailure("Signup failed. Please try again."));
-      console.error("Signup failed:", err);
+      dispatch(loginFailure(AuthMessages.SIGNUP_FAILED));
+      showErrorToast(AuthMessages.SIGNUP_FAILED);
+      console.error(AuthMessages.SIGNUP_FAILED, err);
     }
   };
 
   // for google signup
-  const handleGoogleSignup = async (token: string, role: UserRole) => {
+  const handleGoogleSignup = async (token: string, role: SubRole) => {
     dispatch(loginStart());
     try {
-      await axios.post("/api/auth/google-signup", { token, role });
+      await axios.post(`${config.API_BASE_URL}/api/auth/google`, {
+        token,
+        role,
+      });
       dispatch(loginSuccess(role));
+      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
       if (role === "learner") {
         navigate("/");
       } else {
         navigate(`/${role}/dashboard`);
       }
     } catch (err: any) {
-      dispatch(loginFailure("Google Signup failed. Please try again."));
-      console.error("Google Signup failed:", err);
+      dispatch(loginFailure(AuthMessages.GOOGLE_SIGNUP_FAILED));
+      showErrorToast(AuthMessages.GOOGLE_SIGNUP_FAILED);
+      console.error(AuthMessages.GOOGLE_SIGNUP_FAILED, err);
     }
   };
 
-  //   // for forgot password
-  //   const handleForgotPassword = async (data: ForgotCredentials) => {
-  //     dispatch(setLoading(true));
-  //     try {
-  //       await axios.post("/api/auth/forgot-password", data);
-  //       dispatch(setLoading(false));
-  //       showSuccessToast("Reset link sent successfully.");
-  //     } catch (err) {
-  //       dispatch(setLoading(false));
-  //       showErrorToast("Forgot password failed.");
-  //       console.error("Forgot password failed:", err);
-  //     }
-  //   };
+  // for forgot password
+  const handleForgotPassword = async (
+    data: ForgotPasswordSchema,
+    role: SubRole
+  ) => {
+    dispatch(setLoading(true));
+    try {
+      await axios.post(`${config.API_BASE_URL}/api/auth/forgot-password`, {
+        email: data.email,
+        role,
+      });
+      dispatch(setLoading(false));
+      showSuccessToast(AuthMessages.RESET_LINK_SEND_SUCCESS);
+    } catch (err) {
+      dispatch(setLoading(false));
+      showErrorToast(AuthMessages.FORGOT_PASSWORD_FAILED);
+      console.error(AuthMessages.FORGOT_PASSWORD_FAILED, err);
+    }
+  };
 
   // for logout
   const handleLogout = () => {
@@ -100,7 +116,7 @@ const useAuth = () => {
     handleLogin,
     handleSignup,
     handleGoogleSignup,
-    // handleForgotPassword,
+    handleForgotPassword,
     handleLogout,
   };
 };
