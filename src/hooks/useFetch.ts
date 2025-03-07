@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../shared/utils/api";
-import { config } from "../shared/configs/config";
+import { api } from "../configs";
 
 const useFetch = <T>(url: string | null, options?: RequestInit) => {
   if (!url) {
