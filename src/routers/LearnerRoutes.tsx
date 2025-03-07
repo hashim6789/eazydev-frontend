@@ -1,8 +1,13 @@
 import { Navigate } from "react-router-dom";
 // import ProtectedRoute from "./ProtectedRoutes";
 import LoginPage from "../modules/auth/pages/Login";
+import { ThemeType, UserRole } from "../types";
 
-export const LearnerRoutes = (isAuthenticated: boolean, user: string) => [
+export const LearnerRoutes = (
+  isAuthenticated: boolean,
+  user: UserRole,
+  theme: ThemeType
+) => [
   {
     path: "/learner/login",
     element: isAuthenticated ? (

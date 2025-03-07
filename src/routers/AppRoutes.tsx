@@ -18,9 +18,9 @@ const AppRoutes: React.FC = () => {
   const { basicTheme } = useSelector((state: RootState) => state.theme);
 
   const routes = [
-    ...AdminRoutes(isAuthenticated, user),
-    ...MentorRoutes(isAuthenticated, user),
-    ...LearnerRoutes(isAuthenticated, user),
+    ...AdminRoutes(isAuthenticated, user, basicTheme),
+    ...MentorRoutes(isAuthenticated, user, basicTheme),
+    ...LearnerRoutes(isAuthenticated, user, basicTheme),
     { path: "*", element: <NotFoundPage role={user} theme={basicTheme} /> },
     {
       path: "/500",

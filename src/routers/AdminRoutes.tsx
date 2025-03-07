@@ -1,8 +1,13 @@
 import { Navigate } from "react-router-dom";
 // import ProtectedRoute from "./ProtectedRoutes";
 import LoginPage from "../modules/auth/pages/Login";
+import { ThemeType, UserRole } from "../types";
 
-export const AdminRoutes = (isAuthenticated: boolean, user: string) => [
+export const AdminRoutes = (
+  isAuthenticated: boolean,
+  user: UserRole,
+  theme: ThemeType
+) => [
   {
     path: "/admin/login",
     element: isAuthenticated ? (

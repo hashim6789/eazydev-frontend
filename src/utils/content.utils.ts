@@ -1,7 +1,7 @@
 import { UserRole } from "../types/User";
 
 // Helper function to get role-specific content
-export const getRoleContent = (role: UserRole) => {
+export const getRoleContentForErrorPage = (role: UserRole) => {
   switch (role) {
     case "admin":
       return {
@@ -36,6 +36,40 @@ export const getRoleContent = (role: UserRole) => {
           "The mentoring platform is being upgraded with new tools.",
         actionText: "Return to Mentees",
         supportText: "Contact Technical Support",
+      };
+  }
+};
+
+// Role based titles and descriptions
+export const getRoleContentForLogin = (role: UserRole) => {
+  switch (role) {
+    case "admin":
+      return {
+        loginTitle: "Admin Login",
+        loginDescription: "Access your administrative dashboard",
+        signupTitle: "Admin Registration",
+        signupDescription: "Create a new administrator account",
+        welcomeTitle: "Admin Dashboard",
+        welcomeDescription: "Manage your platform with ease",
+      };
+    case "mentor":
+      return {
+        loginTitle: "Mentor Login",
+        loginDescription: "Access your mentor dashboard",
+        signupTitle: "Mentor Registration",
+        signupDescription: "Join as a mentor on our platform",
+        welcomeTitle: "Mentor Portal",
+        welcomeDescription: "Guide learners to success",
+      };
+    case "learner":
+    default:
+      return {
+        loginTitle: "Learner Login",
+        loginDescription: "Access your learning materials",
+        signupTitle: "Learner Registration",
+        signupDescription: "Start your learning journey today",
+        welcomeTitle: "Learning Portal",
+        welcomeDescription: "Your gateway to knowledge",
       };
   }
 };

@@ -1,7 +1,7 @@
-import { ThemeType } from "../types/User";
+import { ThemeType, UserRole, UserThemeType } from "../types/User";
 
 // Theme configuration
-export const getThemeStyles = (theme: ThemeType) => {
+export const getThemeStyle = (theme: ThemeType) => {
   switch (theme) {
     case "light":
       return {
@@ -33,6 +33,96 @@ export const getThemeStyles = (theme: ThemeType) => {
           "bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white",
         secondary: "bg-white bg-opacity-70 hover:bg-opacity-90 text-purple-900",
         icon: "text-purple-600",
+      };
+  }
+};
+
+export const userThemeSelector = (user: UserRole): UserThemeType => {
+  if (user === "admin") {
+    return "green";
+  } else if (user === "mentor") {
+    return "purple";
+  } else {
+    return "blue";
+  }
+};
+
+// Theme configuration
+export const getUserThemeStyles = (theme: UserThemeType) => {
+  switch (theme) {
+    case "blue":
+      return {
+        primary: "bg-blue-600",
+        hover: "hover:bg-blue-700",
+        focusRing: "focus:ring-blue-500",
+        text: "text-blue-600",
+        lightBg: "bg-blue-50",
+        mediumBg: "bg-blue-100",
+        buttonText: "text-white",
+        gradient: "from-blue-600 to-indigo-700",
+      };
+    case "green":
+      return {
+        primary: "bg-emerald-600",
+        hover: "hover:bg-emerald-700",
+        focusRing: "focus:ring-emerald-500",
+        text: "text-emerald-600",
+        lightBg: "bg-emerald-50",
+        mediumBg: "bg-emerald-100",
+        buttonText: "text-white",
+        gradient: "from-emerald-600 to-teal-700",
+      };
+    case "purple":
+    default:
+      return {
+        primary: "bg-purple-600",
+        hover: "hover:bg-purple-700",
+        focusRing: "focus:ring-purple-500",
+        text: "text-purple-600",
+        lightBg: "bg-purple-50",
+        mediumBg: "bg-purple-100",
+        buttonText: "text-white",
+        gradient: "from-purple-600 to-violet-700",
+      };
+  }
+};
+
+// Theme configuration
+export const getThemeStyles = (theme: UserThemeType) => {
+  switch (theme) {
+    case "blue":
+      return {
+        primary: "bg-blue-600",
+        hover: "hover:bg-blue-700",
+        focusRing: "focus:ring-blue-500",
+        text: "text-blue-600",
+        lightBg: "bg-blue-50",
+        mediumBg: "bg-blue-100",
+        buttonText: "text-white",
+        gradient: "from-blue-600 to-indigo-700",
+      };
+    case "green":
+      return {
+        primary: "bg-emerald-600",
+        hover: "hover:bg-emerald-700",
+        focusRing: "focus:ring-emerald-500",
+        text: "text-emerald-600",
+        lightBg: "bg-emerald-50",
+        mediumBg: "bg-emerald-100",
+        buttonText: "text-white",
+        gradient: "from-emerald-600 to-teal-700",
+      };
+    case "purple":
+    default:
+      return {
+        primary: "bg-purple-600",
+        hover: "hover:bg-purple-700",
+        focusRing: "focus:ring-purple-500",
+        text: "text-purple-600",
+        lightBg: "bg-purple-50",
+        mediumBg: "bg-purple-100",
+        buttonText: "text-white",
+        gradient: "from-purple-600 to-violet-700",
       };
   }
 };

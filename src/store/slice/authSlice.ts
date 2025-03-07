@@ -1,3 +1,4 @@
+// authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../interfaces";
 import { UserRole } from "../../types";
@@ -15,11 +16,19 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login(state, action: PayloadAction<UserRole>) {
+    loginStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    loginSuccess(state, action: PayloadAction<UserRole>) {
       state.isAuthenticated = true;
       state.user = action.payload;
       state.loading = false;
       state.error = null;
+    },
+    loginFailure(state, action: PayloadAction<string | null>) {
+      state.loading = false;
+      state.error = action.payload;
     },
     logout(state) {
       state.isAuthenticated = false;
@@ -42,7 +51,15 @@ const authSlice = createSlice({
   },
 });
 
-export const { login, logout, verifyUser, blockUser, setLoading, setError } =
-  authSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  verifyUser,
+  blockUser,
+  setLoading,
+  setError,
+} = authSlice.actions;
 
 export const authReducers = authSlice.reducer;
