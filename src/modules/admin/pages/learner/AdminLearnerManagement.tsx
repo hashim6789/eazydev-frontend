@@ -9,71 +9,16 @@ import LearnersTable from "../../tables/LearnerTable";
 import { ChevronRight, Users } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import UserTable from "../../tables/LearnerTable";
+import { SubRole } from "../../../../types";
 
-interface Props {}
+interface AdminUserProps {
+  role: SubRole;
+}
 
-const AdminLearnerManagement: React.FC<Props> = ({}) => {
+const AdminUserManagement: React.FC<AdminUserProps> = ({ role }) => {
   const navigate = useNavigate();
-  // const {
-  //   data,
-  //   loading: learnersLoading,
-  //   error: learnersError,
-  // } = useFetch<any[] | null>("/admin/learners");
 
-  // const learners: Learner[] = Array.isArray(data)
-  //   ? data.map((item) => ({
-  //       id: item.id,
-  //       name: `${item.firstName} ${item.lastName || ""}`.trim(),
-  //       email: item.email,
-  //       status: item.isBlocked ? "blocked" : "unblocked",
-  //       profilePicture: item.profilePicture || "",
-  //     }))
-  //   : [];
-
-  //loading handling
-  // if (learnersLoading) {
-  //   return (
-  //     <div className="container mx-auto p-6 max-w-7xl h-[80vh] flex items-center justify-center">
-  //       <div className="text-center">
-  //         <div className="animate-spin h-12 w-12 mb-4 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div>
-  //         <h2 className="text-xl font-semibold text-gray-700">
-  //           Loading learner details...
-  //         </h2>
-  //         <p className="text-gray-500 mt-2">
-  //           Please wait while we fetch the information
-  //         </p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // //error handling
-  // if (learnersError) {
-  //   return (
-  //     <div className="container mx-auto p-6 max-w-7xl h-[80vh] flex items-center justify-center">
-  //       <div className="text-center">
-  //         <h2 className="text-xl font-bold text-red-800">
-  //           error fetch learner details...
-  //         </h2>
-  //         <p className="text-red-500 mt-2">Please try again (:</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
-  // //error handling (no learners found)
-  // if (data && data.length === 0) {
-  //   return (
-  //     <div className="container mx-auto p-6 max-w-7xl h-[80vh] flex items-center justify-center">
-  //       <div className="text-center">
-  //         <h2 className="text-xl font-bold text-red-800">
-  //           No Learners Available...
-  //         </h2>
-  //         <p className="text-red-500 mt-2">Unavailable data (:</p>
-  //       </div>
-  //     </div>
-  //   );
-  // }
+  const userTitle = role === "learner" ? "Learners" : "Mentors";
 
   return (
     <div className="space-y-6">
@@ -86,7 +31,7 @@ const AdminLearnerManagement: React.FC<Props> = ({}) => {
           Dashboard
         </a>
         <ChevronRight className="h-4 w-4" />
-        <span className="text-red-600 font-medium">Learners</span>
+        <span className="text-red-600 font-medium">{userTitle}</span>
       </nav>
 
       {/* Title Section */}
@@ -94,15 +39,17 @@ const AdminLearnerManagement: React.FC<Props> = ({}) => {
         <div className="p-2 bg-red-100 rounded-lg">
           <Users className="h-6 w-6 text-red-600" />
         </div>
-        <h1 className="text-2xl font-bold text-gray-900">Learners Overview</h1>
+        <h1 className="text-2xl font-bold text-gray-900">
+          {userTitle} Overview
+        </h1>
       </div>
 
       {/* Content */}
       <div>
-        <UserTable role="learner" />
+        <UserTable role={role} />
       </div>
     </div>
   );
 };
 
-export default AdminLearnerManagement;
+export default AdminUserManagement;

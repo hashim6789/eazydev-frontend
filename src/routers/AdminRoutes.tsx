@@ -5,8 +5,8 @@ import { ThemeType, UserRole } from "../types";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminLayout from "../modules/layouts/AdminLayout";
 import AdminDashboard from "../modules/admin/pages/AdminDashboard";
-import AdminLearnerManagement from "../modules/admin/pages/learner/AdminLearnerManagement";
-import AdminLearnerDetails from "../modules/admin/pages/learner/AdminLernerDetails";
+import AdminUserManagement from "../modules/admin/pages/learner/AdminLearnerManagement";
+import AdminUserDetails from "../modules/admin/pages/learner/AdminLernerDetails";
 // import AdminLearnerDetails from "../modules/admin/pages/learner/AdminLernerDetails";
 // import AdminMentorManagement from "../modules/admin/pages/mentor/AdminMentorManagement";
 // import AdminMentorDetails from "../modules/admin/pages/mentor/AdminMentorDetails";
@@ -39,13 +39,22 @@ export const AdminRoutes = (
             children: [
               { path: "dashboard", element: <AdminDashboard /> },
               ,
-              { path: "learners", element: <AdminLearnerManagement /> },
+              {
+                path: "learners",
+                element: <AdminUserManagement role="learner" />,
+              },
               {
                 path: "learners/:learnerId",
-                element: <AdminLearnerDetails role="learner" />,
+                element: <AdminUserDetails role="learner" />,
               },
-              // { path: "mentors", element: <AdminMentorManagement /> },
-              // { path: "mentors/:mentorId", element: <AdminMentorDetails /> },
+              {
+                path: "mentors",
+                element: <AdminUserManagement role="mentor" />,
+              },
+              {
+                path: "mentors/:mentorId",
+                element: <AdminUserDetails role="mentor" />,
+              },
               // { path: "courses", element: <AdminCourseManagement /> },
               // { path: "courses/:courseId", element: <CourseDetails /> },
               // {

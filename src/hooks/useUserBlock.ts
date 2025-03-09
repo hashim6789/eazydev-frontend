@@ -41,9 +41,15 @@ const useUserBlock = (): UseBlockUnblockResponse => {
 
         // API call to block/unblock
         const response = await api.patch(endpoint, { change });
+        console.log(response.data, response.data);
 
         if (response.status === 200) {
-          showSuccessToast(UserMessages.USER_BLOCK_SUCCESS);
+          if (response.data) {
+            showSuccessToast(UserMessages.USER_BLOCK_SUCCESS);
+          } else {
+            showSuccessToast(UserMessages.USER_UNBLOCK_SUCCESS);
+          }
+
           return true;
         }
       } else {
