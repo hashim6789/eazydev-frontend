@@ -8,6 +8,10 @@ import { AdminRoutes } from "./AdminRoutes";
 import { LearnerRoutes } from "./LearnerRoutes";
 import { MentorRoutes } from "./MentorRoutes";
 
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { fetchAndSetAuthState } from "../store/thunks/refresh.thunk";
+
 const AppRoutes: React.FC = () => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth

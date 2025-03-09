@@ -1,9 +1,23 @@
-// authSlice.ts
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../interfaces";
-import { UserRole } from "../../types";
+import { User, UserRole } from "../../types";
+import { showErrorToast, showSuccessToast } from "../../utils";
+import { AuthMessages } from "../../constants";
+import { refreshAuth } from "../refreshAuth";
 
-const initialState: AuthState = {
+// const user = await refreshAuth();
+
+// const initialState: AuthState = {
+//   isAuthenticated: !!user,
+//   isVerified: user && user.isVerified ? true : false,
+//   isBlocked: user && user.isBlocked ? false : true,
+//   user: user && user.role ? user.role : "learner",
+//   loading: false,
+//   error: null,
+// };
+
+// Initial state for auth
+export const initialState: AuthState = {
   isAuthenticated: false,
   isVerified: false,
   isBlocked: false,
@@ -16,48 +30,179 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
+    setAuthState(state, action: PayloadAction<AuthState>) {
+      return { ...state, ...action.payload };
+    },
     loginStart(state) {
       state.loading = true;
       state.error = null;
     },
-    loginSuccess(state, action: PayloadAction<UserRole>) {
+    loginSuccess(state, action: PayloadAction<{ user: User }>) {
+      const { user } = action.payload;
       state.isAuthenticated = true;
-      state.user = action.payload;
+      state.user = user.role;
+      state.isVerified = user.isVerified;
+      state.isBlocked = user.isBlocked;
       state.loading = false;
       state.error = null;
+
+      try {
+        // localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (error) {
+        console.error("Failed to store tokens in localStorage:", error);
+      }
+      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
     },
-    loginFailure(state, action: PayloadAction<string | null>) {
+    loginFailure(state, action: PayloadAction<string>) {
       state.loading = false;
       state.error = action.payload;
+      showErrorToast(action.payload);
     },
     logout(state) {
       state.isAuthenticated = false;
       state.user = "learner";
+      state.isBlocked = true;
+      state.isVerified = false;
       state.loading = false;
       state.error = null;
+      try {
+        localStorage.removeItem("data");
+        localStorage.removeItem("user");
+      } catch (error) {
+        console.error("Failed to delete tokens in localStorage:", error);
+      }
+      showSuccessToast(AuthMessages.LOGOUT_SUCCESS);
     },
-    verifyUser(state) {
+    signupStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    signupSuccess(state, action: PayloadAction<{ user: User; data: any }>) {
+      const { user, data } = action.payload;
+      state.isAuthenticated = true;
+      state.user = user.role;
+      state.isVerified = false;
+      state.isBlocked = false;
+      state.loading = false;
+      state.error = null;
+
+      try {
+        localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (error) {
+        console.error("Failed to store tokens in localStorage:", error);
+      }
+      showSuccessToast(AuthMessages.SIGNUP_SUCCESS);
+    },
+    signupFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+      showErrorToast(action.payload);
+    },
+    verifyOtpStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    verifyOtpSuccess(state, action: PayloadAction<{ user: User; data: any }>) {
+      const { user, data } = action.payload;
+      state.isAuthenticated = true;
+      state.user = user.role;
       state.isVerified = true;
+      state.isBlocked = false;
+      state.loading = false;
+      state.error = null;
+
+      try {
+        localStorage.removeItem("otpTimer");
+        localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (error) {
+        console.error("Failed to store tokens in localStorage:", error);
+      }
+      showSuccessToast(AuthMessages.VERIFY_OTP_SUCCESS);
     },
-    blockUser(state) {
+    verifyOtpFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.isAuthenticated = false;
+      state.isVerified = false;
+      state.error = action.payload;
+      showErrorToast(action.payload);
+    },
+    googleSignupStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    googleSignupSuccess(
+      state,
+      action: PayloadAction<{ user: User; data: any }>
+    ) {
+      const { user, data } = action.payload;
+      state.isAuthenticated = true;
+      state.user = user.role;
+      state.isVerified = true;
+      state.isBlocked = false;
+      state.loading = false;
+      state.error = null;
+
+      try {
+        localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem("user", JSON.stringify(user));
+      } catch (error) {
+        console.error("Failed to store tokens in localStorage:", error);
+      }
+      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+    },
+    googleSignupFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+      state.isAuthenticated = false;
+      state.isVerified = false;
       state.isBlocked = true;
+      showErrorToast(action.payload);
+    },
+    forgotPasswordStart(state) {
+      state.loading = true;
+      state.error = null;
+    },
+    forgotPasswordSuccess(state) {
+      state.loading = false;
+      state.error = null;
+      showSuccessToast(AuthMessages.RESET_LINK_SEND_SUCCESS);
+    },
+    forgotPasswordFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
+      showErrorToast(action.payload);
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    setError(state, action: PayloadAction<string | null>) {
+    setError(state, action: PayloadAction<string>) {
       state.error = action.payload;
+      showErrorToast(action.payload);
     },
   },
 });
 
 export const {
+  setAuthState,
   loginStart,
   loginSuccess,
   loginFailure,
   logout,
-  verifyUser,
-  blockUser,
+  signupStart,
+  signupSuccess,
+  signupFailure,
+  verifyOtpStart,
+  verifyOtpSuccess,
+  verifyOtpFailure,
+  googleSignupStart,
+  googleSignupSuccess,
+  googleSignupFailure,
+  forgotPasswordStart,
+  forgotPasswordSuccess,
+  forgotPasswordFailure,
   setLoading,
   setError,
 } = authSlice.actions;

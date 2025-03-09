@@ -6,4 +6,6 @@ export enum AuthMessages {
   SIGNUP_SUCCESS = "Successfully signup",
   GOOGLE_SIGNUP_FAILED = "Signup failed. Please try again.",
   LOGIN_SUCCESS = "Successfully login",
+  LOGOUT_SUCCESS = "Successfully logout",
+  VERIFY_OTP_SUCCESS = "Otp verification success.",
 }

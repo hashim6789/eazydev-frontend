@@ -23,7 +23,7 @@ const useFetch = <T>(url: string | null, options?: RequestInit) => {
 
         const jsonData = response.data;
         console.log("data:", jsonData);
-        setData(jsonData.data);
+        setData(jsonData);
       } catch (err: any) {
         setError(err.message || "Something went wrong!");
       } finally {
@@ -34,7 +34,7 @@ const useFetch = <T>(url: string | null, options?: RequestInit) => {
     fetchData();
   }, [url, options]); // Dependencies for re-fetching when `url` or `options` change
 
-  return { data, loading, error };
+  return { data, setData, loading, error };
 };
 
 export default useFetch;

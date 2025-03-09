@@ -60,6 +60,9 @@ export const getUserThemeStyles = (theme: UserThemeType) => {
         mediumBg: "bg-blue-100",
         buttonText: "text-white",
         gradient: "from-blue-600 to-indigo-700",
+        border: "border-blue-300",
+        activeBorder: "border-blue-500",
+        inputFocus: "focus:border-blue-500 focus:ring-blue-200",
       };
     case "green":
       return {
@@ -71,6 +74,9 @@ export const getUserThemeStyles = (theme: UserThemeType) => {
         mediumBg: "bg-emerald-100",
         buttonText: "text-white",
         gradient: "from-emerald-600 to-teal-700",
+        border: "border-emerald-300",
+        activeBorder: "border-emerald-500",
+        inputFocus: "focus:border-emerald-500 focus:ring-emerald-200",
       };
     case "purple":
     default:
@@ -83,6 +89,9 @@ export const getUserThemeStyles = (theme: UserThemeType) => {
         mediumBg: "bg-purple-100",
         buttonText: "text-white",
         gradient: "from-purple-600 to-violet-700",
+        border: "border-purple-300",
+        activeBorder: "border-purple-500",
+        inputFocus: "focus:border-purple-500 focus:ring-purple-200",
       };
   }
 };
@@ -125,4 +134,18 @@ export const getThemeStyleForErrors = (theme: UserThemeType) => {
         gradient: "from-purple-600 to-violet-700",
       };
   }
+};
+
+// Enum for button themes
+export enum ButtonTheme {
+  BLOCK = "bg-red-100 text-red-600 hover:bg-red-200",
+  UNBLOCK = "bg-green-100 text-green-600 hover:bg-green-200",
+  COMPLETE = "bg-blue-100 text-blue-600 hover:bg-blue-200",
+  DRAFT = "bg-gray-100 text-gray-600 hover:bg-gray-200",
+  APPROVE = "bg-purple-100 text-purple-600 hover:bg-purple-200",
+  REJECT = "bg-yellow-100 text-yellow-600 hover:bg-yellow-200",
+}
+
+export const getButtonTheme = (isBlocked: boolean): string => {
+  return isBlocked ? ButtonTheme.UNBLOCK : ButtonTheme.BLOCK;
 };
