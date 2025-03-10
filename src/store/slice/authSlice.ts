@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../interfaces";
-import { User, UserRole } from "../../types";
+import { SubRole, User, UserRole } from "../../types";
 import { showErrorToast, showSuccessToast } from "../../utils";
 import { AuthMessages } from "../../constants";
 import { refreshAuth } from "../refreshAuth";
@@ -104,10 +104,10 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    verifyOtpSuccess(state, action: PayloadAction<{ user: User; data: any }>) {
-      const { user, data } = action.payload;
+    verifyOtpSuccess(state, action: PayloadAction<{ role: SubRole }>) {
+      const { role } = action.payload;
       state.isAuthenticated = true;
-      state.user = user.role;
+      state.user = role;
       state.isVerified = true;
       state.isBlocked = false;
       state.loading = false;
@@ -115,8 +115,8 @@ const authSlice = createSlice({
 
       try {
         localStorage.removeItem("otpTimer");
-        localStorage.setItem("data", JSON.stringify(data));
-        localStorage.setItem("user", JSON.stringify(user));
+        // localStorage.setItem("data", JSON.stringify(data));
+        // localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
@@ -146,7 +146,7 @@ const authSlice = createSlice({
       state.error = null;
 
       try {
-        localStorage.setItem("data", JSON.stringify(data));
+        // localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);

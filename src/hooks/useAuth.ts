@@ -20,7 +20,7 @@ import {
 import { showSuccessToast, showErrorToast } from "../utils";
 import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
 import { SubRole, User, UserRole } from "../types";
-import { config } from "../configs";
+import { api, config } from "../configs";
 import { AuthMessages } from "../constants";
 
 const useAuth = () => {
@@ -46,7 +46,7 @@ const useAuth = () => {
       if (response.status === 200) {
         const user = response.data.user as User;
         dispatch(loginSuccess({ user }));
-        showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+        // showSuccessToast(AuthMessages.LOGIN_SUCCESS);
         if (role === "learner") {
           navigate("/");
         } else {
@@ -74,7 +74,7 @@ const useAuth = () => {
       );
       const { data, user } = response.data;
       dispatch(signupSuccess({ user, data }));
-      showSuccessToast(AuthMessages.SIGNUP_SUCCESS);
+      // showSuccessToast(AuthMessages.SIGNUP_SUCCESS);
       navigate(`/${role}/otp`);
     } catch (err: any) {
       if (err.response.data.error) {
@@ -83,7 +83,7 @@ const useAuth = () => {
         dispatch(signupFailure(AuthMessages.SIGNUP_FAILED));
       }
 
-      showErrorToast(AuthMessages.SIGNUP_FAILED);
+      // showErrorToast(AuthMessages.SIGNUP_FAILED);
       console.error(AuthMessages.SIGNUP_FAILED, err);
     }
   };
@@ -102,7 +102,7 @@ const useAuth = () => {
       );
       const { data, user } = response.data;
       dispatch(googleSignupSuccess({ user, data }));
-      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+      // showSuccessToast(AuthMessages.LOGIN_SUCCESS);
       if (role === "learner") {
         navigate("/");
       } else {
@@ -131,7 +131,7 @@ const useAuth = () => {
         role,
       });
       dispatch(forgotPasswordSuccess());
-      showSuccessToast(AuthMessages.RESET_LINK_SEND_SUCCESS);
+      // showSuccessToast(AuthMessages.RESET_LINK_SEND_SUCCESS);
     } catch (err: any) {
       if (err.response.data.error) {
         dispatch(forgotPasswordFailure(err.response.data.error));
@@ -144,9 +144,16 @@ const useAuth = () => {
   };
 
   // for logout
-  const handleLogout = () => {
-    dispatch(logout());
-    showSuccessToast(AuthMessages.LOGOUT_SUCCESS);
+  const handleLogout = async (role: UserRole, userId: string) => {
+    try {
+      const response = await api.post("/api/auth/logout", { role, userId });
+      if (response.status === 200) {
+        dispatch(logout());
+        // showSuccessToast(AuthMessages.LOGOUT_SUCCESS);
+      }
+    } catch (error) {
+      showErrorToast(AuthMessages.LOGOUT_FAILED);
+    }
   };
 
   return {

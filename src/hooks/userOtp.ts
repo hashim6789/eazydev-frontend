@@ -119,27 +119,30 @@ const useOtp = (onComplete?: (otp: string) => void) => {
     };
   }, [isActive, timer]);
 
-  const handleVerify = async (role: UserRole): Promise<void> => {
+  const handleVerify = async (userId: string): Promise<void> => {
     const otpString = otp.join("");
     if (otpString.length === 6) {
       console.log(otpString);
       dispatch(verifyOtpStart());
       try {
-        const response = await api.post(`/api/auth/verify`, {
+        const response = await api.post(`/api/auth/otp-verify`, {
           otp: otpString,
-          role,
+          userId,
         });
-        const { data, user } = response.data;
-        dispatch(verifyOtpSuccess({ user, data }));
-        showSuccessToast("The OTP verified successfully!");
+        if (response.status === 200) {
+          const { role } = response.data;
+          console.log("role", role);
+          dispatch(verifyOtpSuccess({ role }));
+          showSuccessToast("The OTP verified successfully!");
 
-        if (user === "learner") {
-          navigate("/");
-        } else {
-          navigate(`/${user}/dashboard`);
+          if (role === "learner") {
+            navigate("/");
+          } else {
+            navigate(`/${role}/dashboard`);
+          }
         }
       } catch (error: any) {
-        dispatch(verifyOtpFailure("The OTP verification failed!"));
+        // dispatch(verifyOtpFailure("The OTP verification failed!"));
         showErrorToast("The OTP verification failed!");
         console.error("The OTP verification failed!", error);
       }

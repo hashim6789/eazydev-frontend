@@ -64,19 +64,33 @@ export const getUserThemeStyles = (theme: UserThemeType) => {
         activeBorder: "border-blue-500",
         inputFocus: "focus:border-blue-500 focus:ring-blue-200",
       };
+    // case "green":
+    //   return {
+    //     primary: "bg-emerald-600",
+    //     hover: "hover:bg-emerald-700",
+    //     focusRing: "focus:ring-emerald-500",
+    //     text: "text-emerald-600",
+    //     lightBg: "bg-emerald-50",
+    //     mediumBg: "bg-emerald-100",
+    //     buttonText: "text-white",
+    //     gradient: "from-emerald-600 to-teal-700",
+    //     border: "border-emerald-300",
+    //     activeBorder: "border-emerald-500",
+    //     inputFocus: "focus:border-emerald-500 focus:ring-emerald-200",
+    //   };
     case "green":
       return {
-        primary: "bg-emerald-600",
-        hover: "hover:bg-emerald-700",
-        focusRing: "focus:ring-emerald-500",
-        text: "text-emerald-600",
-        lightBg: "bg-emerald-50",
-        mediumBg: "bg-emerald-100",
+        primary: "bg-indigo-600",
+        hover: "hover:bg-indigo-700",
+        focusRing: "focus:ring-indigo-500",
+        text: "text-indigo-600",
+        lightBg: "bg-indigo-50",
+        mediumBg: "bg-indigo-100",
         buttonText: "text-white",
-        gradient: "from-emerald-600 to-teal-700",
-        border: "border-emerald-300",
-        activeBorder: "border-emerald-500",
-        inputFocus: "focus:border-emerald-500 focus:ring-emerald-200",
+        gradient: "from-indigo-600 to-teal-700",
+        border: "border-indigo-300",
+        activeBorder: "border-indigo-500",
+        inputFocus: "focus:border-indigo-500 focus:ring-indigo-200",
       };
     case "purple":
     default:
@@ -108,19 +122,30 @@ export const getThemeStyleForErrors = (theme: UserThemeType) => {
         lightBg: "bg-blue-50",
         mediumBg: "bg-blue-100",
         buttonText: "text-white",
-        gradient: "from-blue-600 to-indigo-700",
+        gradient: "from-purple-600 to-indigo-700",
       };
-    case "green":
+    case "indigo":
       return {
-        primary: "bg-emerald-600",
-        hover: "hover:bg-emerald-700",
-        focusRing: "focus:ring-emerald-500",
-        text: "text-emerald-600",
-        lightBg: "bg-emerald-50",
-        mediumBg: "bg-emerald-100",
+        primary: "bg-indigo-600",
+        hover: "hover:bg-indigo-700",
+        focusRing: "focus:ring-indigo-500",
+        text: "text-indigo-600",
+        lightBg: "bg-indigo-50",
+        mediumBg: "bg-indigo-100",
         buttonText: "text-white",
-        gradient: "from-emerald-600 to-teal-700",
+        gradient: "from-indigo-600 to-teal-700",
       };
+    // case "green":
+    //   return {
+    //     primary: "bg-emerald-600",
+    //     hover: "hover:bg-emerald-700",
+    //     focusRing: "focus:ring-emerald-500",
+    //     text: "text-emerald-600",
+    //     lightBg: "bg-emerald-50",
+    //     mediumBg: "bg-emerald-100",
+    //     buttonText: "text-white",
+    //     gradient: "from-emerald-600 to-teal-700",
+    //   };
     case "purple":
     default:
       return {

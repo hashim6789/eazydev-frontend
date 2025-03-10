@@ -5,6 +5,7 @@ import { RootState } from "../../../store";
 import useOtp from "../../../hooks/userOtp";
 import { UserRole, UserThemeType } from "../../../types";
 import { getUserThemeStyles } from "../../../utils";
+import { getUserProperty } from "../../../utils/local-user.util";
 
 // Theme utilities
 export const userThemeSelector = (user: UserRole): UserThemeType => {
@@ -116,7 +117,7 @@ const OtpVerificationComponent: React.FC<OTPInputProps> = ({
           </button>
 
           <button
-            onClick={() => handleVerify(userRole)}
+            onClick={() => handleVerify(getUserProperty("id") as string)}
             disabled={isVerifyDisabled}
             className={`w-full py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all
               ${

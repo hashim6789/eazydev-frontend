@@ -30,7 +30,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Top Navigation */}
-      {/* <nav className="bg-white shadow-sm px-6 py-3 flex items-center justify-between">
+      <nav className="bg-white shadow-sm px-6 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-8 w-8 rounded-md bg-indigo-600 flex items-center justify-center">
             <span className="text-white font-bold">A</span>
@@ -46,12 +46,12 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
             <span className="text-gray-700 font-medium">JD</span>
           </div>
         </div>
-      </nav> */}
+      </nav>
 
       {/* dashboard Content */}
       <div className="flex">
         {/* Sidebar */}
-        {/* <div className="w-64 bg-white shadow-sm h-screen p-4">
+        <div className="w-64 bg-white shadow-sm h-screen p-4">
           <ul className="space-y-2">
             <li className="bg-indigo-50 text-indigo-700 rounded-md">
               <a href="#" className="flex items-center space-x-3 p-3">
@@ -114,7 +114,7 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({
               </a>
             </li>
           </ul>
-        </div> */}
+        </div>
 
         {/* Main Dashboard */}
         <div className="flex-1 p-6">
