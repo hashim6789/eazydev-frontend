@@ -1,30 +1,38 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../interfaces";
-import { SubRole, User, UserRole } from "../../types";
+import { User } from "../../types";
 import { showErrorToast, showSuccessToast } from "../../utils";
 import { AuthMessages } from "../../constants";
-import { refreshAuth } from "../refreshAuth";
 
-// const user = await refreshAuth();
+import { decodeToken } from "../../utils/decode-token.util";
+import { getUserProperty } from "../../utils/local-user.util";
 
-// const initialState: AuthState = {
-//   isAuthenticated: !!user,
-//   isVerified: user && user.isVerified ? true : false,
-//   isBlocked: user && user.isBlocked ? false : true,
-//   user: user && user.role ? user.role : "learner",
-//   loading: false,
-//   error: null,
+const decode = decodeToken("accessToken");
+// const storedData = JSON.parse(localStorage.getItem("data") ?? "{}") as {
+//   isBlocked?: boolean;
+//   isVerified?: boolean;
 // };
 
-// Initial state for auth
-export const initialState: AuthState = {
-  isAuthenticated: false,
-  isVerified: false,
-  isBlocked: false,
-  user: "learner",
+const isBlocked = (getUserProperty("isBlocked") ?? false) as boolean;
+const isVerified = (getUserProperty("isVerified") ?? false) as boolean;
+const initialState: AuthState = {
+  isAuthenticated: !!decode,
+  isVerified,
+  isBlocked,
+  user: decode ? decode.role : "learner",
   loading: false,
   error: null,
 };
+
+// Initial state for auth
+// export const initialState: AuthState = {
+//   isAuthenticated: false,
+//   isVerified: false,
+//   isBlocked: false,
+//   user: "learner",
+//   loading: false,
+//   error: null,
+// };
 
 const authSlice = createSlice({
   name: "auth",
@@ -104,10 +112,10 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    verifyOtpSuccess(state, action: PayloadAction<{ role: SubRole }>) {
-      const { role } = action.payload;
+    verifyOtpSuccess(state, action: PayloadAction<{ user: User; data: any }>) {
+      const { user, data } = action.payload;
       state.isAuthenticated = true;
-      state.user = role;
+      state.user = user.role;
       state.isVerified = true;
       state.isBlocked = false;
       state.loading = false;
@@ -115,8 +123,8 @@ const authSlice = createSlice({
 
       try {
         localStorage.removeItem("otpTimer");
-        // localStorage.setItem("data", JSON.stringify(data));
-        // localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
@@ -146,7 +154,7 @@ const authSlice = createSlice({
       state.error = null;
 
       try {
-        // localStorage.setItem("data", JSON.stringify(data));
+        localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);

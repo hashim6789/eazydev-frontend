@@ -19,4 +19,6 @@ interface UserData {
   lastName: string;
   id: string;
   profilePicture: string;
+  isBlocked: boolean;
+  isVerified: boolean;
 }

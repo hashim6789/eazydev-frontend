@@ -10,6 +10,7 @@ import {
   verifyOtpFailure,
 } from "../store/slice";
 import { showSuccessToast, showErrorToast } from "../utils";
+import { AuthMessages } from "../constants";
 
 const useOtp = (onComplete?: (otp: string) => void) => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
@@ -84,10 +85,12 @@ const useOtp = (onComplete?: (otp: string) => void) => {
     inputRefs.current[0].focus();
 
     try {
-      await api.post(`/api/auth/resend`);
-      showSuccessToast("OTP resend successfully.");
+      const response = await api.post(`/api/auth/otp-resend`);
+      if (response.status === 201) {
+        showSuccessToast(AuthMessages.RESEND_OTP_SUCCESS);
+      }
     } catch (error) {
-      showErrorToast("Failed to resend OTP.");
+      showErrorToast(AuthMessages.RESEND_OTP_FAILED);
       console.error(error);
     }
   };
@@ -133,7 +136,7 @@ const useOtp = (onComplete?: (otp: string) => void) => {
           const { role } = response.data;
           console.log("role", role);
           dispatch(verifyOtpSuccess({ role }));
-          showSuccessToast("The OTP verified successfully!");
+          // showSuccessToast("The OTP verified successfully!");
 
           if (role === "learner") {
             navigate("/");
@@ -142,8 +145,8 @@ const useOtp = (onComplete?: (otp: string) => void) => {
           }
         }
       } catch (error: any) {
-        // dispatch(verifyOtpFailure("The OTP verification failed!"));
-        showErrorToast("The OTP verification failed!");
+        dispatch(verifyOtpFailure(AuthMessages.VERIFY_OTP_FAILED));
+        // showErrorToast("The OTP verification failed!");
         console.error("The OTP verification failed!", error);
       }
     } else {

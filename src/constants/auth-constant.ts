@@ -9,4 +9,7 @@ export enum AuthMessages {
   LOGOUT_SUCCESS = "Successfully logout",
   LOGOUT_FAILED = "Logout failed. Please try again.",
   VERIFY_OTP_SUCCESS = "Otp verification success.",
+  VERIFY_OTP_FAILED = "The OTP verification failed!",
+  RESEND_OTP_SUCCESS = "OTP resend successfully.",
+  RESEND_OTP_FAILED = "Failed to resend OTP.",
 }

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { refreshAuth } from "../refreshAuth";
+import { refreshAuth } from "../persistor";
 import { RootState } from "..";
 import { initialState, setAuthState, setError, setLoading } from "../slice";
 

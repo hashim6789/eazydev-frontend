@@ -1,7 +1,5 @@
 // App.tsx
 import { BrowserRouter as Router } from "react-router-dom";
-// import MainRoutes from "./router/MainRoutes";
-// import { GoogleOAuthProvider } from "@react-oauth/google";
 import AppRoutes from "./routers/AppRoutes";
 import { Provider } from "react-redux";
 import store from "./store";
@@ -23,13 +21,3 @@ function App() {
 }
 
 export default App;
-
-// <GoogleOAuthProvider clientId="928386759524-9tflikf8cdtpuiavjnq3a65lm0sgjf55.apps.googleusercontent.com">
-{
-  /* <SocketProvider> */
-}
-// <ToastContainer />
-{
-  /* </SocketProvider> */
-}
-// </GoogleOAuthProvider>
