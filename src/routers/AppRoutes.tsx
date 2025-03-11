@@ -8,29 +8,25 @@ import { AdminRoutes } from "./AdminRoutes";
 import { LearnerRoutes } from "./LearnerRoutes";
 import { MentorRoutes } from "./MentorRoutes";
 
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { fetchAndSetAuthState } from "../store/thunks/refresh.thunk";
-
 const AppRoutes: React.FC = () => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
-  const { basicTheme } = useSelector((state: RootState) => state.theme);
+  const {} = useSelector((state: RootState) => state.theme);
 
   const routes = [
-    ...AdminRoutes(isAuthenticated, user, basicTheme),
-    ...MentorRoutes(isAuthenticated, user, basicTheme),
-    ...LearnerRoutes(isAuthenticated, user, basicTheme),
+    ...AdminRoutes(isAuthenticated, user, "light"),
+    ...MentorRoutes(isAuthenticated, user, "light"),
+    ...LearnerRoutes(isAuthenticated, user, "light"),
     {
       path: "/login",
       element: <LoginPage role="learner" theme="blue" loginImage="" />,
     },
     {
       path: "/500",
-      element: <ServerErrorPage role="admin" theme={basicTheme} />,
+      element: <ServerErrorPage role="admin" theme={"light"} />,
     },
-    { path: "*", element: <NotFoundPage role={user} theme={basicTheme} /> },
+    { path: "*", element: <NotFoundPage role={user} theme={"light"} /> },
   ];
 
   return useRoutes(routes);

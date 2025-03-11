@@ -1,3 +1,4 @@
+import { CourseStatus } from "../types";
 import { ThemeType, UserRole, UserThemeType } from "../types/User";
 
 // Theme configuration
@@ -64,20 +65,7 @@ export const getUserThemeStyles = (theme: UserThemeType) => {
         activeBorder: "border-blue-500",
         inputFocus: "focus:border-blue-500 focus:ring-blue-200",
       };
-    // case "green":
-    //   return {
-    //     primary: "bg-emerald-600",
-    //     hover: "hover:bg-emerald-700",
-    //     focusRing: "focus:ring-emerald-500",
-    //     text: "text-emerald-600",
-    //     lightBg: "bg-emerald-50",
-    //     mediumBg: "bg-emerald-100",
-    //     buttonText: "text-white",
-    //     gradient: "from-emerald-600 to-teal-700",
-    //     border: "border-emerald-300",
-    //     activeBorder: "border-emerald-500",
-    //     inputFocus: "focus:border-emerald-500 focus:ring-emerald-200",
-    //   };
+
     case "green":
       return {
         primary: "bg-indigo-600",
@@ -173,4 +161,21 @@ export enum ButtonTheme {
 
 export const getButtonTheme = (isBlocked: boolean): string => {
   return isBlocked ? ButtonTheme.UNBLOCK : ButtonTheme.BLOCK;
+};
+
+export const getCourseStatusColor = (status: CourseStatus) => {
+  switch (status) {
+    case "draft":
+      return "bg-yellow-100 text-yellow-800";
+    case "completed":
+      return "bg-blue-100 text-blue-800";
+    case "approved":
+      return "bg-green-100 text-green-800";
+    case "rejected":
+      return "bg-red-100 text-red-800";
+    case "requested":
+      return "bg-purple-100 text-purple-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
 };

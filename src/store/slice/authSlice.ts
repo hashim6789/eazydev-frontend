@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../interfaces";
-import { User } from "../../types";
+import { User, UserRole } from "../../types";
 import { showErrorToast, showSuccessToast } from "../../utils";
 import { AuthMessages } from "../../constants";
 
@@ -86,8 +86,8 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    signupSuccess(state, action: PayloadAction<{ user: User; data: any }>) {
-      const { user, data } = action.payload;
+    signupSuccess(state, action: PayloadAction<{ user: User }>) {
+      const { user } = action.payload;
       state.isAuthenticated = true;
       state.user = user.role;
       state.isVerified = false;
@@ -96,7 +96,6 @@ const authSlice = createSlice({
       state.error = null;
 
       try {
-        localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
@@ -112,8 +111,8 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    verifyOtpSuccess(state, action: PayloadAction<{ user: User; data: any }>) {
-      const { user, data } = action.payload;
+    verifyOtpSuccess(state, action: PayloadAction<{ user: User }>) {
+      const { user } = action.payload;
       state.isAuthenticated = true;
       state.user = user.role;
       state.isVerified = true;
@@ -123,7 +122,6 @@ const authSlice = createSlice({
 
       try {
         localStorage.removeItem("otpTimer");
-        localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
@@ -132,7 +130,7 @@ const authSlice = createSlice({
     },
     verifyOtpFailure(state, action: PayloadAction<string>) {
       state.loading = false;
-      state.isAuthenticated = false;
+      state.isAuthenticated = true;
       state.isVerified = false;
       state.error = action.payload;
       showErrorToast(action.payload);
@@ -141,11 +139,8 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    googleSignupSuccess(
-      state,
-      action: PayloadAction<{ user: User; data: any }>
-    ) {
-      const { user, data } = action.payload;
+    googleSignupSuccess(state, action: PayloadAction<{ user: User }>) {
+      const { user } = action.payload;
       state.isAuthenticated = true;
       state.user = user.role;
       state.isVerified = true;
@@ -154,7 +149,6 @@ const authSlice = createSlice({
       state.error = null;
 
       try {
-        localStorage.setItem("data", JSON.stringify(data));
         localStorage.setItem("user", JSON.stringify(user));
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);

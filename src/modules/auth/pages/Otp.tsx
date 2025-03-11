@@ -29,6 +29,7 @@ const OtpVerificationComponent: React.FC<OTPInputProps> = ({
   title = "Verify OTP",
   subtitle = "Enter the 6-digit code sent to your device",
 }) => {
+  console.log("otp page");
   // Get theme based on user role
   const theme = userThemeSelector(userRole);
   const styles = getUserThemeStyles(theme);

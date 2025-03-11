@@ -46,7 +46,6 @@ const useAuth = () => {
       if (response.status === 200) {
         const user = response.data.user as User;
         dispatch(loginSuccess({ user }));
-        // showSuccessToast(AuthMessages.LOGIN_SUCCESS);
         if (role === "learner") {
           navigate("/");
         } else {
@@ -55,7 +54,6 @@ const useAuth = () => {
       }
     } catch (err) {
       dispatch(loginFailure(AuthMessages.LOGIN_FAILED));
-      showErrorToast(AuthMessages.LOGIN_FAILED);
       console.error(AuthMessages.LOGIN_FAILED, err);
     }
   };
@@ -72,10 +70,13 @@ const useAuth = () => {
         },
         { withCredentials: true }
       );
-      const { data, user } = response.data;
-      dispatch(signupSuccess({ user, data }));
-      // showSuccessToast(AuthMessages.SIGNUP_SUCCESS);
-      navigate(`/${role}/otp`);
+
+      if (response.status === 201) {
+        const user = response.data.user as User;
+        dispatch(signupSuccess({ user }));
+        console.log(`navigate to /${role}/otp`);
+        navigate(`/${role}/otp`);
+      }
     } catch (err: any) {
       if (err.response.data.error) {
         dispatch(signupFailure(err.response.data.error));
@@ -83,26 +84,24 @@ const useAuth = () => {
         dispatch(signupFailure(AuthMessages.SIGNUP_FAILED));
       }
 
-      // showErrorToast(AuthMessages.SIGNUP_FAILED);
       console.error(AuthMessages.SIGNUP_FAILED, err);
     }
   };
 
   // for google signup
-  const handleGoogleSignup = async (token: string, role: SubRole) => {
+  const handleGoogleSignup = async (googleToken: string, role: SubRole) => {
     dispatch(googleSignupStart());
     try {
       const response = await axios.post(
         `${config.API_BASE_URL}/api/auth/google`,
         {
-          token,
+          googleToken,
           role,
         },
         { withCredentials: true }
       );
-      const { data, user } = response.data;
-      dispatch(googleSignupSuccess({ user, data }));
-      // showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+      const user = response.data.user as User;
+      dispatch(googleSignupSuccess({ user }));
       if (role === "learner") {
         navigate("/");
       } else {
@@ -114,7 +113,6 @@ const useAuth = () => {
       } else {
         dispatch(googleSignupFailure(AuthMessages.GOOGLE_SIGNUP_FAILED));
       }
-      showErrorToast(AuthMessages.GOOGLE_SIGNUP_FAILED);
       console.error(AuthMessages.GOOGLE_SIGNUP_FAILED, err);
     }
   };
@@ -131,14 +129,12 @@ const useAuth = () => {
         role,
       });
       dispatch(forgotPasswordSuccess());
-      // showSuccessToast(AuthMessages.RESET_LINK_SEND_SUCCESS);
     } catch (err: any) {
       if (err.response.data.error) {
         dispatch(forgotPasswordFailure(err.response.data.error));
       } else {
         dispatch(forgotPasswordFailure(AuthMessages.FORGOT_PASSWORD_FAILED));
       }
-      showErrorToast(AuthMessages.FORGOT_PASSWORD_FAILED);
       console.error(AuthMessages.FORGOT_PASSWORD_FAILED, err);
     }
   };
@@ -149,7 +145,6 @@ const useAuth = () => {
       const response = await api.post("/api/auth/logout", { role, userId });
       if (response.status === 200) {
         dispatch(logout());
-        // showSuccessToast(AuthMessages.LOGOUT_SUCCESS);
       }
     } catch (error) {
       showErrorToast(AuthMessages.LOGOUT_FAILED);

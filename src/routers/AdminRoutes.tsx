@@ -55,13 +55,6 @@ export const AdminRoutes = (
                 path: "mentors/:mentorId",
                 element: <AdminUserDetails role="mentor" />,
               },
-              // { path: "courses", element: <AdminCourseManagement /> },
-              // { path: "courses/:courseId", element: <CourseDetails /> },
-              // {
-              //   path: "materials/:materialId",
-              //   element: <MaterialDetailPage />,
-              // },
-              // { path: "categories", element: <AdminCategoryManagement /> },
             ],
           },
         ],
@@ -69,3 +62,11 @@ export const AdminRoutes = (
     ],
   },
 ];
+
+// { path: "courses", element: <AdminCourseManagement /> },
+// { path: "courses/:courseId", element: <CourseDetails /> },
+// {
+//   path: "materials/:materialId",
+//   element: <MaterialDetailPage />,
+// },
+// { path: "categories", element: <AdminCategoryManagement /> },

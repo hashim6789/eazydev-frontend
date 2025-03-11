@@ -1,5 +1,6 @@
-import { ThemeType } from "../../types/User";
+import { ModeType, UserThemeType } from "../../types/User";
 
 export interface ThemeState {
-  basicTheme: ThemeType;
+  mode: ModeType;
+  color: UserThemeType;
 }

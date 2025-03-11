@@ -12,4 +12,5 @@ export enum AuthMessages {
   VERIFY_OTP_FAILED = "The OTP verification failed!",
   RESEND_OTP_SUCCESS = "OTP resend successfully.",
   RESEND_OTP_FAILED = "Failed to resend OTP.",
+  ENTER_VALID_OTP = "Please enter a valid 6-digit OTP",
 }

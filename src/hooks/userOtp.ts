@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { api } from "../configs";
-import { SubRole, UserRole } from "../types";
+import { SubRole, User, UserRole } from "../types";
 import {
   verifyOtpStart,
   verifyOtpSuccess,
   verifyOtpFailure,
 } from "../store/slice";
-import { showSuccessToast, showErrorToast } from "../utils";
+import { showSuccessToast, showErrorToast, showInfoToast } from "../utils";
 import { AuthMessages } from "../constants";
 
 const useOtp = (onComplete?: (otp: string) => void) => {
@@ -133,24 +133,22 @@ const useOtp = (onComplete?: (otp: string) => void) => {
           userId,
         });
         if (response.status === 200) {
-          const { role } = response.data;
-          console.log("role", role);
-          dispatch(verifyOtpSuccess({ role }));
-          // showSuccessToast("The OTP verified successfully!");
+          const user = response.data.user as User;
+          console.log("user", user);
+          dispatch(verifyOtpSuccess({ user }));
 
-          if (role === "learner") {
+          if (user.role === "learner") {
             navigate("/");
           } else {
-            navigate(`/${role}/dashboard`);
+            navigate(`/${user.role}/dashboard`);
           }
         }
       } catch (error: any) {
         dispatch(verifyOtpFailure(AuthMessages.VERIFY_OTP_FAILED));
-        // showErrorToast("The OTP verification failed!");
-        console.error("The OTP verification failed!", error);
+        console.error(AuthMessages.VERIFY_OTP_FAILED, error);
       }
     } else {
-      alert("Please enter a valid 6-digit OTP");
+      showInfoToast(AuthMessages.ENTER_VALID_OTP);
     }
   };
 
