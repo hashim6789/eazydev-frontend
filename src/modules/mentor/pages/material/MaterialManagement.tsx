@@ -36,7 +36,7 @@ const MaterialManagement: React.FC = () => {
         <ManagementHeader
           entity="Material"
           description="Manage your educational content and assessments"
-          buttonAction={() => navigate("/mentor/my-materials/create")}
+          buttonAction={() => navigate("/mentor/materials/create")}
         />
 
         {/* Search and Filter Bar */}
