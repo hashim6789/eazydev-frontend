@@ -4,3 +4,5 @@ export const courseSortOptions = [
   { value: "titleAsc", label: "A - Z" },
   { value: "titleDesc", label: "Z - A" },
 ];
+
+export const defaultThumbnail = "https://via.placeholder.com/150";

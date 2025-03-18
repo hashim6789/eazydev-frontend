@@ -8,12 +8,8 @@ import {
 } from "../../shared/components";
 import { LoadingState, NoContentState } from "../../shared/Error";
 import { useCourseTable } from "../../../hooks/useCourseTable";
-import { courseSortOptions } from "../../shared/values";
+import { courseSortOptions, defaultThumbnail } from "../../shared/values";
 import { getCourseStatusColor } from "../../../utils";
-import useFetch from "../../../hooks/useFetch";
-import { Category } from "../../../types";
-
-const defaultThumbnail = "https://via.placeholder.com/150";
 
 interface CoursesTableProps {}
 

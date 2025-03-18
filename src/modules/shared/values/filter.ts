@@ -10,3 +10,14 @@ export const userFilterOptions: FilterOption[] = [
     value: "unblocked",
   },
 ];
+
+export const categoryFilterOptions = [
+  {
+    label: "Listed",
+    value: "listed",
+  },
+  {
+    label: "Unlisted",
+    value: "unlisted",
+  },
+];

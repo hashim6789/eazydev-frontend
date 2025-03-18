@@ -5,7 +5,7 @@
 
 // //imported custom hooks
 // import useFetch from "../../../../hooks/useFetch";
-// import { ChevronRight, Users } from "lucide-react";
+// import { ChevronRight, Categorys } from "lucide-react";
 // import { useNavigate } from "react-router-dom";
 
 // //subclasses
@@ -89,7 +89,7 @@
 //       {/* Title Section */}
 //       <div className="flex items-center space-x-3">
 //         <div className="p-2 bg-red-100 rounded-lg">
-//           <Users className="h-6 w-6 text-red-600" />
+//           <Categorys className="h-6 w-6 text-red-600" />
 //         </div>
 //         <h1 className="text-2xl font-bold text-gray-900">
 //           Categories Overview
@@ -105,3 +105,41 @@
 // };
 
 // export default AdminCategoryManagement;
+
+//imported sub classes
+
+//imported child components
+import CategoryTable from "../../tables/CategoryTable";
+
+//imported built-in ui components
+import { Breadcrumb, TitleSection } from "../../../shared/components";
+import { Group } from "lucide-react";
+
+interface AdminCategoryProps {}
+
+const AdminCategoryManagement: React.FC<AdminCategoryProps> = ({}) => {
+  return (
+    <div className="space-y-6">
+      {/* Breadcrumbs */}
+      <Breadcrumb
+        paths={[
+          { title: "Dashboard", link: "/admin/dashboard" },
+          { title: "Categories", link: "" },
+        ]}
+      />
+
+      {/* Title Section */}
+      <TitleSection
+        icon={<Group className="h-6 w-6" />}
+        title={`Categories Overview`}
+      />
+
+      {/* Content */}
+      <div>
+        <CategoryTable />
+      </div>
+    </div>
+  );
+};
+
+export default AdminCategoryManagement;

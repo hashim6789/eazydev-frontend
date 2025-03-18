@@ -9,7 +9,7 @@ import {
   SearchInput,
   TableRow,
 } from "../../shared/components";
-import { userFilterOptions } from "../../shared/values/user";
+import { userFilterOptions } from "../../shared/values/filter";
 
 interface UserTableProps {
   role: SubRole;
