@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../interfaces";
-import { User, UserRole } from "../../types";
+import { User } from "../../types";
 import { showErrorToast, showSuccessToast } from "../../utils";
 import { AuthMessages } from "../../constants";
 

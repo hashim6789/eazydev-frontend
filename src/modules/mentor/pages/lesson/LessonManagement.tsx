@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useThemeStyles } from "../../../../utils/color-theme.util";
-import Pagination from "../../../shared/components/Pagination";
+import { Pagination } from "../../../shared/components";
 import Breadcrumbs from "../../../shared/components/BreadCrumbs";
 import FilterSearchBar from "../../../shared/components/FilterSearchBar";
 import ManagementHeader from "../../../shared/components/ManagementHeader";

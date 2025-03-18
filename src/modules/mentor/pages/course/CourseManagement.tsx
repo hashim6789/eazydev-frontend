@@ -1,7 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useThemeStyles } from "../../../../utils/color-theme.util";
-import Pagination from "../../../shared/components/Pagination";
 import Breadcrumbs from "../../../shared/components/BreadCrumbs";
 import FilterSearchBar from "../../../shared/components/FilterSearchBar";
 import ManagementHeader from "../../../shared/components/ManagementHeader";
@@ -12,6 +11,7 @@ import { useCourseTable } from "../../../../hooks/useCourseTable";
 import { CourseStatus } from "../Dashboard";
 import { getCourseStatusColor } from "../../../../utils";
 import CourseCard from "../../components/CourseCard";
+import { Pagination } from "../../../shared/components";
 
 const paths = [{ title: "My Courses", link: "/mentor/my-courses" }];
 

@@ -49,8 +49,8 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
     setSearchQuery(query);
     setCurrentPage(1);
   };
-  const handleFilterChange = (status: "all" | UserStatus) => {
-    setFilterStatus(status);
+  const handleFilterChange = (value: "all" | UserStatus) => {
+    setFilterStatus(value);
     setCurrentPage(1);
   };
 

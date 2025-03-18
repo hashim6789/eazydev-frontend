@@ -57,7 +57,7 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
                 className={`absolute right-0 mt-2 w-48 ${styles.cardBg} rounded-md shadow-lg z-10 py-1 border ${styles.border}`}
               >
                 <button
-                  onClick={() => navigate(`/mentor/my-materials/${materialId}`)}
+                  onClick={() => navigate(`/mentor/materials/${materialId}`)}
                   className={`flex items-center w-full px-4 py-2 text-sm ${styles.textPrimary} ${styles.hover}`}
                 >
                   <Edit className="w-4 h-4 mr-2" />
@@ -87,7 +87,7 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
         className={`px-6 py-4 ${styles.lightBg} rounded-b-lg border-t ${styles.border}`}
       >
         <button
-          onClick={() => navigate(`/mentor/my-materials/${material.id}`)}
+          onClick={() => navigate(`/mentor/materials/${material.id}`)}
           className={`flex items-center ${styles.textPrimary} ${styles.hover} text-sm font-medium`}
         >
           View Details

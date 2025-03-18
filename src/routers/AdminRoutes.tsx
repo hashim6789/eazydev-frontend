@@ -5,8 +5,9 @@ import { ThemeType, UserRole } from "../types";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminLayout from "../modules/layouts/AdminLayout";
 import AdminDashboard from "../modules/admin/pages/AdminDashboard";
-import AdminUserManagement from "../modules/admin/pages/learner/AdminLearnerManagement";
 import AdminUserDetails from "../modules/admin/pages/learner/AdminLernerDetails";
+import AdminUserManagement from "../modules/admin/pages/users/AdminUserManagement";
+import AdminCourseManagement from "../modules/admin/pages/course/AdminCourseManagement";
 // import AdminLearnerDetails from "../modules/admin/pages/learner/AdminLernerDetails";
 // import AdminMentorManagement from "../modules/admin/pages/mentor/AdminMentorManagement";
 // import AdminMentorDetails from "../modules/admin/pages/mentor/AdminMentorDetails";
@@ -54,6 +55,10 @@ export const AdminRoutes = (
               {
                 path: "mentors/:mentorId",
                 element: <AdminUserDetails role="mentor" />,
+              },
+              {
+                path: "courses",
+                element: <AdminCourseManagement />,
               },
             ],
           },
