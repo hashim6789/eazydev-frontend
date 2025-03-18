@@ -11,6 +11,7 @@ import {
   SearchInput,
 } from "../../shared/components";
 import { categoryFilterOptions } from "../../shared/values/filter";
+import { LoadingState, NoContentState } from "../../shared/Error";
 
 // Define the schema for validation
 const categorySchema = z.object({
@@ -107,65 +108,75 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
         />
       </div>
 
+      {/* Loading and Error States */}
+      {isLoading && <LoadingState />}
+      {paginatedData && paginatedData.length === 0 && <NoContentState />}
+
       {/* Table */}
+
       <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-gray-50">
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Title
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Status
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200">
-            {paginatedData.map((category) => (
-              <tr key={category.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm text-gray-900">
-                  {category.title}
-                </td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`px-3 py-1 inline-flex text-xs font-medium rounded-full ${
-                      category.status === "listed"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {category.status}
-                  </span>
-                </td>
-                <td className="px-6 py-4 space-x-2">
-                  <button
-                    onClick={() =>
-                      handleToggleStatus(category.id, category.status)
-                    }
-                    disabled={isLoading}
-                    className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
-                      category.status === "listed"
-                        ? "bg-red-50 text-red-600 hover:bg-red-100"
-                        : "bg-green-50 text-green-600 hover:bg-green-100"
-                    }`}
-                  >
-                    {category.status === "listed" ? "Unlist" : "List"}
-                  </button>
-                  <button
-                    onClick={() => handleOpenEditModal(category)}
-                    disabled={isLoading}
-                    className="px-3 py-1 rounded-md text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
-                  >
-                    <Edit2 className="w-4 h-4" />
-                  </button>
-                </td>
+        {paginatedData.length > 0 && (
+          <table className="w-full">
+            <thead>
+              <tr className="bg-gray-50">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Title
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Status
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Actions
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {paginatedData.map((category) => (
+                <tr key={category.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {category.title}
+                  </td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-3 py-1 inline-flex text-xs font-medium rounded-full ${
+                        category.isListed
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
+                    >
+                      {category.isListed ? "Listed" : "Unlisted"}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 space-x-2">
+                    <button
+                      onClick={() =>
+                        handleToggleStatus(
+                          category.id,
+                          category.isListed ? "listed" : "unlisted"
+                        )
+                      }
+                      disabled={isLoading}
+                      className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
+                        category.isListed
+                          ? "bg-red-50 text-red-600 hover:bg-red-100"
+                          : "bg-green-50 text-green-600 hover:bg-green-100"
+                      }`}
+                    >
+                      {category.isListed ? "Unlist" : "List"}
+                    </button>
+                    <button
+                      onClick={() => handleOpenEditModal(category)}
+                      disabled={isLoading}
+                      className="px-3 py-1 rounded-md text-sm font-medium bg-gray-100 text-gray-600 hover:bg-gray-200 transition-colors"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
 
       {/* Pagination */}

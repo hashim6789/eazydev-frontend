@@ -3,6 +3,8 @@ import { Category } from "../types";
 import { api } from "../configs";
 import { showErrorToast, showSuccessToast } from "../utils";
 import { CategoryMessages } from "../constants/category.constant";
+import { getUserProperty } from "../utils/local-user.util";
+import { showConfirmationBox } from "../utils/confirm-box.utils";
 
 interface TableFunctionalityOptions {
   itemsPerPage: number;
@@ -29,6 +31,7 @@ export function useCategoryTable({ itemsPerPage }: TableFunctionalityOptions) {
           `/api/categories?&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
+        console.log(result);
 
         setCategoryData(result.body);
         setTotalPages(result.last_page);
@@ -47,8 +50,10 @@ export function useCategoryTable({ itemsPerPage }: TableFunctionalityOptions) {
   const filteredData = useMemo(() => {
     return categoryData.filter((item) => {
       const matchesStatus =
-        filterStatus === "all" || item.status === filterStatus;
-      const matchesSearch = String(item.status)
+        filterStatus === "all" ||
+        (item.isListed === true && filterStatus === "listed") ||
+        (item.isListed === false && filterStatus === "unlisted");
+      const matchesSearch = String(item.title)
         .toLowerCase()
         .includes(searchQuery.toLowerCase());
       return matchesStatus && matchesSearch;
@@ -85,32 +90,27 @@ export function useCategoryTable({ itemsPerPage }: TableFunctionalityOptions) {
     itemId: string,
     status: "listed" | "unlisted"
   ) => {
-    const confirmed = window.confirm(
-      `Are you sure you want to ${
-        status === "listed" ? "unlist" : "list"
-      } this category?`
-    );
-
-    if (!confirmed) return;
+    const isConfirmed = await showConfirmationBox(status, "category", true);
+    if (!isConfirmed) return;
 
     setIsLoading(true);
     const change = status === "unlisted";
 
     try {
-      const response = await api.patch(
-        `/api/categories/${itemId}/list-unlist`,
-        { change }
+      const response = await api.patch<{ success: boolean }>(
+        `/api/categories/${itemId}`,
+        {
+          change,
+          adminId: getUserProperty("id"),
+        }
       );
 
-      if (response && response.data) {
-        const updatedItem: Category = response.data.data as Category;
-
-        const updatedData = categoryData.map<Category>((item) =>
+      if (response && response.status === 200) {
+        const updatedData = categoryData.map((item) =>
           item.id === itemId
             ? {
                 ...item,
-                status: updatedItem.isListed ? "listed" : "unlisted",
-                isListed: updatedItem.isListed,
+                isListed: !item.isListed,
               }
             : item
         );
@@ -137,12 +137,16 @@ export function useCategoryTable({ itemsPerPage }: TableFunctionalityOptions) {
     console.log("Updating category title: ", newTitle, categoryId);
 
     try {
-      const response = await api.put(`/api/categories/${categoryId}`, {
-        title: newTitle,
-      });
+      const response = await api.put<{ category: Category }>(
+        `/api/categories/${categoryId}`,
+        {
+          title: newTitle,
+          adminId: getUserProperty("id"),
+        }
+      );
 
-      if (response && response.data) {
-        const updatedItem: Category = response.data.data as Category;
+      if (response && response.status === 200) {
+        const updatedItem: Category = response.data.category;
 
         const updatedData = categoryData.map<Category>((item) =>
           item.id === categoryId ? { ...item, title: updatedItem.title } : item
@@ -160,22 +164,18 @@ export function useCategoryTable({ itemsPerPage }: TableFunctionalityOptions) {
 
   const saveNewCategory = async (newTitle: string) => {
     try {
-      const response = await api.post(`/api/categories`, {
-        title: newTitle,
-        isListed: true,
-      });
+      const response = await api.post<{ category: Category }>(
+        `/api/categories`,
+        {
+          title: newTitle,
+          adminId: getUserProperty("id"),
+        }
+      );
 
       if (response && response.data) {
-        const data = response.data.data;
+        const data = response.data.category;
 
-        const updatedItem: Category = {
-          id: data.id,
-          title: data.title,
-          isListed: data.isListed,
-          status: data.isListed ? "listed" : "unlisted",
-        };
-
-        const updatedData = [updatedItem, ...categoryData];
+        const updatedData = [data, ...categoryData];
 
         setCategoryData(updatedData);
         setIsCreating(false);
