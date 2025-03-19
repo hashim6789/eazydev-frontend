@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ICourse, ILesson } from "../../types";
+import { CourseStatus, ICourse, ILesson } from "../../types";
 import { getUserProperty } from "../../utils/local-user.util";
 
 interface CourseState {
@@ -28,6 +28,13 @@ const courseSlice = createSlice({
   reducers: {
     setCourseDetails(state, action: PayloadAction<Partial<ICourse>>) {
       state.course = { ...state.course, ...action.payload };
+    },
+    updateCourseStatus(
+      state,
+      action: PayloadAction<{ newStatus: CourseStatus }>
+    ) {
+      const { newStatus } = action.payload;
+      state.course.status = newStatus;
     },
     addLesson(state, action: PayloadAction<ILesson>) {
       state.course.lessons.push(action.payload);
@@ -66,6 +73,7 @@ export const {
   setCurrentStep,
   resetCourse,
   setThumbnail,
+  updateCourseStatus,
 } = courseSlice.actions;
 
 export const courseReducers = courseSlice.reducer;

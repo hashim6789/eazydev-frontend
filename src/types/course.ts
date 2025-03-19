@@ -1,9 +1,10 @@
 import { Category } from "./category";
+import { MaterialType } from "./material";
 
 export type CourseStatus =
   | "approved"
   | "rejected"
-  | "completed"
+  // | "completed"
   | "requested"
   | "published"
   | "draft";
@@ -75,7 +76,7 @@ export interface ICourse {
   thumbnail: string;
   lessons: ILesson[];
   price: number;
-  status: "draft" | "pending" | "published" | "rejected";
+  status: CourseStatus;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -100,4 +101,18 @@ export interface IMaterial {
   fileKey: string;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface ILessonPopulated {
+  id: string;
+  title: string;
+  description: string;
+  mentorId: string;
+  materials: {
+    id: string;
+    title: string;
+    description: string;
+    duration: number;
+    type: MaterialType;
+  }[];
 }

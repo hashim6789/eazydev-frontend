@@ -9,6 +9,8 @@ import AdminUserDetails from "../modules/admin/pages/learner/AdminLernerDetails"
 import AdminUserManagement from "../modules/admin/pages/users/AdminUserManagement";
 import AdminCourseManagement from "../modules/admin/pages/course/AdminCourseManagement";
 import AdminCategoryManagement from "../modules/admin/pages/category/AdminCategoryManagement";
+import AdminCourseDetails from "../modules/shared/pages/CourseDetails";
+import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 // import AdminLearnerDetails from "../modules/admin/pages/learner/AdminLernerDetails";
 // import AdminMentorManagement from "../modules/admin/pages/mentor/AdminMentorManagement";
 // import AdminMentorDetails from "../modules/admin/pages/mentor/AdminMentorDetails";
@@ -60,6 +62,10 @@ export const AdminRoutes = (
               {
                 path: "courses",
                 element: <AdminCourseManagement />,
+              },
+              {
+                path: "courses/:courseId",
+                element: <CourseDetailsPage role="admin" />,
               },
               {
                 path: "categories",

@@ -17,7 +17,7 @@ const CoursesTable: React.FC<CoursesTableProps> = () => {
   const {
     currentPage,
     searchQuery,
-    category,
+    courseFilterStatus,
     range,
     sort,
     data,
@@ -43,7 +43,7 @@ const CoursesTable: React.FC<CoursesTableProps> = () => {
         />
         <FilterDropdown
           options={filterOptions}
-          selectedValue={category}
+          selectedValue={courseFilterStatus}
           handleFilterChange={handleFilterChange}
         />
         <SortDropdown
