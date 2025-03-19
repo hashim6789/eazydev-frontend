@@ -13,6 +13,7 @@ import LessonManagement from "../modules/mentor/pages/lesson/LessonManagement";
 import MaterialCreation from "../modules/mentor/pages/material/MaterialCreation";
 import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
+import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 
 export const MentorRoutes = (
   isAuthenticated: boolean,
@@ -47,6 +48,10 @@ export const MentorRoutes = (
                 children: [
                   { path: "", element: <CourseManagement /> },
                   { path: "create", element: <CourseCreation /> },
+                  {
+                    path: ":courseId",
+                    element: <CourseDetailsPage role="mentor" />,
+                  },
                 ],
               },
               { path: "lessons", element: <LessonManagement /> },

@@ -6,28 +6,19 @@ import { User, Mail, LogOut } from "lucide-react";
 //imported build-in hooks
 import { useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import NotificationPanel from "../shared/components/NotificationPanel";
 
 const AdminNavbar: React.FC = () => {
   const { handleLogout } = useAuth();
-  let userEmail = "";
-  let userId = "";
-  const userData = JSON.parse(localStorage.getItem("user") || "{}");
-  if (userData) {
-    try {
-      userEmail = userData?.email;
-      userId = userData?.id;
-    } catch (error) {
-      console.error("Error parsing localStorage data:", error);
-    }
-  }
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
+  const userId = getUserProperty("id") as string;
+  const userEmail = getUserProperty("email") as string;
+
   return (
-    <nav className="bg-indigo-600 shadow-sm sticky top-0 z-50 w-full px-6 py-3">
+    <nav className="bg-indigo-300 shadow-sm sticky top-0 z-50 w-full px-6 py-3">
       <div className="container mx-auto flex items-center justify-between">
         <div className="flex items-center space-x-2">
           <div className="h-8 w-8 rounded-md bg-white flex items-center justify-center">
@@ -37,6 +28,7 @@ const AdminNavbar: React.FC = () => {
         </div>
 
         <div className="flex items-center space-x-4">
+          <NotificationPanel userId={userId} />
           <div className="hidden sm:flex items-center text-white space-x-2">
             <Mail className="h-5 w-5" />
             <span className="text-sm">{userEmail}</span>
@@ -75,6 +67,8 @@ const AdminNavbar: React.FC = () => {
 export default AdminNavbar;
 
 import React from "react";
+import NotificationPanel from "../shared/components/NotifictionPanel";
+import { getUserProperty } from "../../utils/local-user.util";
 
 interface NavbarProps {}
 

@@ -9,6 +9,7 @@ import { useThemeStyles } from "../../utils/color-theme.util";
 import { setColorTheme, toggleThemeMode } from "../../store/slice";
 import { UserThemeType } from "../../types";
 import { getUserProperty } from "../../utils/local-user.util";
+import NotificationPanel from "../shared/components/NotifictionPanel";
 
 interface NavbarProps {
   toggleSidebar: () => void;
@@ -79,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
       </div>
 
       <div className="flex items-center space-x-3 relative">
-        {/* <NotificationPanel userId={userData.id} /> */}
+        <NotificationPanel userId={userData.id} />
 
         {/* Theme Color Selector */}
         <div className="relative">
