@@ -32,7 +32,6 @@ const CourseManagement: React.FC = () => {
     loading,
   } = useCourseTable({
     itemsPerPage: 6,
-    filterField: "title",
   });
 
   return (

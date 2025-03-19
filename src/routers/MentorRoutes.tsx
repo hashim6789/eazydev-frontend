@@ -12,6 +12,7 @@ import MaterialManagement from "../modules/mentor/pages/material/MaterialManagem
 import LessonManagement from "../modules/mentor/pages/lesson/LessonManagement";
 import MaterialCreation from "../modules/mentor/pages/material/MaterialCreation";
 import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
+import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 
 export const MentorRoutes = (
   isAuthenticated: boolean,
@@ -41,7 +42,13 @@ export const MentorRoutes = (
             children: [
               { path: "dashboard", element: <MentorDashboard /> },
               { path: "profile", element: <ProfilePage /> },
-              { path: "courses", element: <CourseManagement /> },
+              {
+                path: "courses",
+                children: [
+                  { path: "", element: <CourseManagement /> },
+                  { path: "create", element: <CourseCreation /> },
+                ],
+              },
               { path: "lessons", element: <LessonManagement /> },
               {
                 path: "materials",

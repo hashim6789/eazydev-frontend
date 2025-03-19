@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { Category } from "../types";
+import { Category, UserRole } from "../types";
 import { api } from "../configs";
 import { showErrorToast, showSuccessToast } from "../utils";
 import { CategoryMessages } from "../constants/category.constant";
@@ -8,9 +8,13 @@ import { showConfirmationBox } from "../utils/confirm-box.utils";
 
 interface TableFunctionalityOptions {
   itemsPerPage: number;
+  role: UserRole;
 }
 
-export function useCategoryTable({ itemsPerPage }: TableFunctionalityOptions) {
+export function useCategoryTable({
+  itemsPerPage,
+  role,
+}: TableFunctionalityOptions) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterStatus, setFilterStatus] = useState<
@@ -28,7 +32,7 @@ export function useCategoryTable({ itemsPerPage }: TableFunctionalityOptions) {
       try {
         setCategoryData([]);
         const response = await api.get(
-          `/api/categories?&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
+          `/api/categories?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
         console.log(result);

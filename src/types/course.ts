@@ -64,3 +64,40 @@ export interface PopulatedCourseDetails {
 }
 
 export type Sort = "priceAsc" | "priceDesc" | "titleAsc" | "titleDesc";
+
+// src/types/index.ts - Type definitions
+export interface ICourse {
+  id: string;
+  title: string;
+  mentorId: string;
+  categoryId: string;
+  description: string;
+  thumbnail: string;
+  lessons: ILesson[];
+  price: number;
+  status: "draft" | "pending" | "published" | "rejected";
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ILesson {
+  id?: string;
+  title: string;
+  description: string;
+  mentorId: string;
+  materials: IMaterial[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IMaterial {
+  id?: string;
+  title: string;
+  description: string;
+  mentorId: string;
+  type: "reading" | "video";
+  duration: number;
+  fileKey: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}

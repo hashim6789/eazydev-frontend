@@ -57,7 +57,7 @@ export function useCourseTable({
           `/api${auth}/courses?category=${category}&range=${range}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}&sort=${sort}`
         );
         const result = response.data;
-        setData(result.data);
+        setData(result.body);
         console.log(result);
         setTotalPages(Math.ceil(result.docCount / itemsPerPage));
       } catch (error) {
@@ -98,7 +98,7 @@ export function useCourseTable({
   return {
     currentPage,
     searchQuery,
-    category,
+    courseFilterStatus: category,
     range,
     sort,
     data,

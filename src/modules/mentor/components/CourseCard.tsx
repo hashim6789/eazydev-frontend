@@ -75,11 +75,10 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, handleDelete }) => {
           </div>
         </div>
         <div className="flex items-center justify-between">
-          <div className={`flex items-center ${styles.textSecondary}`}>
+          {/* <div className={`flex items-center ${styles.textSecondary}`}>
             <Clock className="w-4 h-4 mr-2" />
             <span>Duration Placeholder</span>{" "}
-            {/* Replace with actual duration */}
-          </div>
+          </div> */}
           <span
             className={`px-3 py-1 rounded-full text-sm ${getCourseStatusColor(
               course.status
