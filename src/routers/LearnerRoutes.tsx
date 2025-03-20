@@ -14,6 +14,7 @@ import ProfilePage from "../modules/mentor/pages/Profile";
 import LearningProgressPage from "../modules/learner/pages/learnings/LearnigProgressPage";
 import CourseLearningLayout from "../modules/learner/pages/learnings/LearningCoursePage";
 import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingManagement";
+import MeetingRoom from "../modules/ call/VideoCallManagement";
 
 export const LearnerRoutes = (
   isAuthenticated: boolean,
@@ -113,6 +114,11 @@ export const LearnerRoutes = (
                     path: "meetings/:progressId",
                     element: <LearnerMeetingManagement />,
                   },
+
+                  // {
+                  //   path: "call/:roomId",
+                  //   element: <MeetingRoom role="learner" />,
+                  // },
                 ],
               },
             ],

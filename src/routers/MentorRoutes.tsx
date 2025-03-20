@@ -15,6 +15,7 @@ import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 import MentorMeetingManagement from "../modules/mentor/pages/meetings/MentorMeetingManagement";
+import MeetingRoom from "../modules/ call/VideoCallManagement";
 
 export const MentorRoutes = (
   isAuthenticated: boolean,
@@ -56,6 +57,11 @@ export const MentorRoutes = (
                 ],
               },
               { path: "meetings", element: <MentorMeetingManagement /> },
+              // {
+              //   path: "call/:roomId",
+              //   element: <MeetingRoom role="mentor" />,
+              // },
+
               { path: "lessons", element: <LessonManagement /> },
               {
                 path: "materials",

@@ -38,10 +38,8 @@ const ScheduledMeetingsTable: React.FC<Props> = ({ role }) => {
         .includes(searchTerm.toLowerCase())
   );
 
-  const handleJointCall = (roomId: string) => {
-    // const action = role === "mentor" ? "offer" : "answer";
-    // navigate(`/${role}/${action}/${roomId}`);
-    navigate(`/${role}/lobby/${roomId}`);
+  const handleJointCall = (meetId: string) => {
+    navigate(`/${role}/call/${meetId}`);
   };
 
   return (
