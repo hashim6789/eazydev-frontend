@@ -11,7 +11,11 @@ interface Props {
 
 const ScheduledMeetingsTable: React.FC<Props> = ({ role }) => {
   const navigate = useNavigate();
-  const { data: meetings, loading, error } = useFetch<IMeeting[]>("/api/meets");
+  const {
+    data: meetings,
+    loading,
+    error,
+  } = useFetch<IMeeting[]>("/api/meetings");
   const [searchTerm, setSearchTerm] = useState("");
 
   if (error) {
@@ -86,7 +90,7 @@ const ScheduledMeetingsTable: React.FC<Props> = ({ role }) => {
                   Course
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
-                  Learner
+                  {role === "mentor" ? "Learner" : "Mentor"}
                 </th>
                 {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">
                   Date
@@ -114,7 +118,19 @@ const ScheduledMeetingsTable: React.FC<Props> = ({ role }) => {
                     </div> */}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{`${meeting.learner.firstName} ${meeting.learner.lastName}`}</div>
+                    <div className="text-sm text-gray-900">
+                      {role === "mentor"
+                        ? `${meeting.learner.firstName} ${
+                            meeting.learner.lastName || ""
+                          }`
+                        : `${meeting.mentor.firstName} ${
+                            meeting.mentor.lastName || ""
+                          }`}
+
+                      {`${meeting.learner.firstName} ${
+                        meeting.learner.lastName || ""
+                      }`}
+                    </div>
                   </td>
                   {/* <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">

@@ -3,6 +3,12 @@ import { ProgressLesson, ProgressMaterial } from "../../types";
 
 interface LearningProgressState {
   lessons: ProgressLesson[];
+  mentor: {
+    id: string;
+    firstName: string;
+    lastName: string;
+    profilePicture: string;
+  } | null;
   currentMaterial: ProgressMaterial | null;
   loading: boolean;
   error: { message: string; code: number } | null;
@@ -16,6 +22,7 @@ const initialState: LearningProgressState = {
   currentMaterial: null,
   loading: false,
   error: null,
+  mentor: null,
   overallProgress: 0,
   currentPage: 1,
   totalPages: 1,
@@ -27,6 +34,17 @@ const learningSlice = createSlice({
   reducers: {
     setLessons(state, action: PayloadAction<ProgressLesson[]>) {
       state.lessons = action.payload;
+    },
+    setMentor(
+      state,
+      action: PayloadAction<{
+        id: string;
+        firstName: string;
+        lastName: string;
+        profilePicture: string;
+      }>
+    ) {
+      state.mentor = action.payload;
     },
     setCurrentMaterial(state, action: PayloadAction<ProgressMaterial | null>) {
       state.currentMaterial = action.payload;
@@ -104,6 +122,7 @@ export const {
   resetProgress,
   setLearningsError,
   setLearningsLoading,
+  setMentor,
 } = learningSlice.actions;
 
 export const learningsReducers = learningSlice.reducer;

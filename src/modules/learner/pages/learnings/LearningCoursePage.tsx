@@ -16,6 +16,7 @@ import {
   setCurrentMaterial,
   setLearningsError,
   setLessons,
+  setMentor,
 } from "../../../../store/slice";
 import {
   ErrorState,
@@ -47,6 +48,7 @@ const CourseLearningLayout = () => {
 
   useEffect(() => {
     if (data) {
+      dispatch(setMentor(data.mentor));
       dispatch(setLessons(data.lessons));
     } else if (error) {
       //   dispatch(setLearningsError("Failed to fetch lessons"));
@@ -146,9 +148,7 @@ const CourseLearningLayout = () => {
         {/* Sidebar Footer */}
         <div className="border-t border-gray-200 p-4 space-y-3">
           <button
-            // onClick={() =>
-            //   navigate(`/learner/meets/${lessons[0].mentorId}/${progressId}`)
-            // }
+            onClick={() => navigate(`/learner/meetings/${progressId}`)}
             className="w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-50 rounded-lg"
           >
             Connect Mentor

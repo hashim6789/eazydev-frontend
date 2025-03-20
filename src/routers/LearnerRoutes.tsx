@@ -13,6 +13,7 @@ import PaymentSuccess from "../modules/learner/pages/payment/PaymentSuccess";
 import ProfilePage from "../modules/mentor/pages/Profile";
 import LearningProgressPage from "../modules/learner/pages/learnings/LearnigProgressPage";
 import CourseLearningLayout from "../modules/learner/pages/learnings/LearningCoursePage";
+import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingManagement";
 
 export const LearnerRoutes = (
   isAuthenticated: boolean,
@@ -107,6 +108,10 @@ export const LearnerRoutes = (
                   {
                     path: "learnings/:progressId",
                     element: <CourseLearningLayout />,
+                  },
+                  {
+                    path: "meetings/:progressId",
+                    element: <LearnerMeetingManagement />,
                   },
                 ],
               },
