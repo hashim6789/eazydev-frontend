@@ -145,13 +145,13 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onBack, onNext }) => {
 
       {/* Navigation Buttons */}
       <div className="flex justify-between pt-4 border-t">
-        <button
+        {/* <button
           type="button"
           onClick={onBack}
           className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
         >
           Back to Course Details
-        </button>
+        </button> */}
         <button
           type="button"
           onClick={onNext}

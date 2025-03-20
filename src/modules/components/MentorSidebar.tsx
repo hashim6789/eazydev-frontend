@@ -23,14 +23,14 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen }) => {
   const menuItems = [
     { path: "/mentor/dashboard", name: "Dashboard", icon: Home },
     { path: "/mentor/courses", name: "Courses", icon: Users },
-    { path: "/mentor/lessons", name: "Lessons", icon: Users },
-    { path: "/mentor/materials", name: "Materials", icon: Users },
-    { path: "/mentor/students", name: "Students", icon: Users },
-    { path: "/mentor/schedule", name: "Schedule", icon: Calendar },
-    { path: "/mentor/resources", name: "Resources", icon: BookOpen },
+    // { path: "/mentor/lessons", name: "Lessons", icon: Users },
+    // { path: "/mentor/materials", name: "Materials", icon: Users },
+    // { path: "/mentor/students", name: "Students", icon: Users },
+    { path: "/mentor/meetings", name: "Meetings", icon: Calendar },
+    // { path: "/mentor/resources", name: "Resources", icon: BookOpen },
     { path: "/mentor/messages", name: "Messages", icon: MessageSquare },
     { path: "/mentor/analytics", name: "Analytics", icon: BarChart },
-    { path: "/mentor/support", name: "Support", icon: HelpCircle },
+    // { path: "/mentor/support", name: "Support", icon: HelpCircle },
   ];
 
   return (

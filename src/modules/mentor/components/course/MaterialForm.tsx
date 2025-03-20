@@ -7,7 +7,7 @@ import { RadioGroup } from "./RadioGroup";
 import { FileUpload } from "./FileUpload";
 import { Textarea } from "./TextArea";
 import { api } from "../../../../configs";
-import { showErrorToast } from "../../../../utils";
+import { showErrorToast, showSuccessToast } from "../../../../utils";
 import { getUserProperty } from "../../../../utils/local-user.util";
 
 interface MaterialFormProps {
@@ -75,7 +75,7 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
 
       // Upload file to S3
       await axios.put(signedUrl, file);
-      showErrorToast(`The ${materialType} was uploaded successfully.`);
+      showSuccessToast(`The ${materialType} was uploaded successfully.`);
 
       // Store file key in form and update preview
       setValue("fileKey", fileKey); // Update fileKey in form state

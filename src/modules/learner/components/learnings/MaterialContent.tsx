@@ -63,7 +63,7 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
     if (!material) return;
 
     try {
-      const response = await api.put(`/api/progress/${progressId}`, {
+      const response = await api.put(`/api/progresses/${progressId}`, {
         materialId: material.id,
       });
       if (response && response.status === 200) {

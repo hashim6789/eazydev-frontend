@@ -8,6 +8,8 @@ import {
   updateLesson,
   removeLesson,
   setCurrentStep,
+  removeCourseDetails,
+  resetCourse,
 } from "../../../../store/slice";
 
 import { ICourse, ILesson } from "../../../../types";
@@ -96,7 +98,8 @@ export const CourseForm: React.FC = () => {
         mentorId: getUserProperty("id"),
       });
       navigate("/mentor/courses");
-      showSuccessToast("Course published successfully.");
+      dispatch(resetCourse());
+      showSuccessToast("Course requested successfully.");
     } catch (error: any) {
       showErrorToast(
         error.response.data.error ||
@@ -106,6 +109,7 @@ export const CourseForm: React.FC = () => {
   };
 
   const handleSaveDraft = async () => {
+    dispatch(resetCourse());
     showSuccessToast("Draft saved successfully.");
     navigate("/mentor/courses");
   };
@@ -189,13 +193,13 @@ export const CourseForm: React.FC = () => {
               </div>
 
               <div className="flex justify-between pt-4">
-                <button
+                {/* <button
                   type="button"
                   onClick={() => dispatch(setCurrentStep(2))}
                   className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
                 >
                   Back to Lessons
-                </button>
+                </button> */}
 
                 <div className="space-x-3">
                   <button

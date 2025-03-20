@@ -62,6 +62,9 @@ const courseSlice = createSlice({
       state.course = initialState.course;
       state.currentStep = 1;
     },
+    removeCourseDetails(state) {
+      state.course = initialState.course;
+    },
   },
 });
 
@@ -74,6 +77,7 @@ export const {
   resetCourse,
   setThumbnail,
   updateCourseStatus,
+  removeCourseDetails,
 } = courseSlice.actions;
 
 export const courseReducers = courseSlice.reducer;

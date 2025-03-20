@@ -78,7 +78,7 @@ const CourseLearningLayout = () => {
         {/* Sidebar Header */}
         <div className="p-4 border-b border-gray-200">
           <button
-            onClick={() => navigate("/learner/my-learnings")}
+            onClick={() => navigate("/learner/learnings")}
             className="flex items-center text-blue-600 hover:text-blue-700"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />

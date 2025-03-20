@@ -14,6 +14,7 @@ import MaterialCreation from "../modules/mentor/pages/material/MaterialCreation"
 import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
+import MentorMeetingManagement from "../modules/mentor/pages/meetings/MentorMeetingManagement";
 
 export const MentorRoutes = (
   isAuthenticated: boolean,
@@ -54,6 +55,7 @@ export const MentorRoutes = (
                   },
                 ],
               },
+              { path: "meetings", element: <MentorMeetingManagement /> },
               { path: "lessons", element: <LessonManagement /> },
               {
                 path: "materials",
