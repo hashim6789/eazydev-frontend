@@ -6,6 +6,11 @@ import ProtectedRoute from "./ProtectedRoute";
 import OtpVerificationComponent from "../modules/auth/pages/Otp";
 import LearnerLayout from "../modules/learner/pages/LearnerLayout";
 import LandingPage from "../modules/learner/pages/LearnerLandingPage";
+import LearnerCoursesPage from "../modules/learner/pages/course/LearnerCoursesPage";
+import CourseDetails from "../modules/learner/pages/course/CourseDetailPage";
+import WrappedCourseCheckout from "../modules/learner/pages/checkout/CourseCheckout";
+import PaymentSuccess from "../modules/learner/pages/payment/PaymentSuccess";
+import ProfilePage from "../modules/mentor/pages/Profile";
 
 export const LearnerRoutes = (
   isAuthenticated: boolean,
@@ -49,6 +54,14 @@ export const LearnerRoutes = (
   {
     path: "/learner",
     children: [
+      {
+        element: <LearnerLayout />,
+        children: [
+          { path: "courses", element: <LearnerCoursesPage /> },
+          { path: "courses/:courseId", element: <CourseDetails /> },
+        ],
+      },
+
       // {
       //   path: "auth/:token/change-password",
       //   element: <LearnerChangePasswordPage />,
@@ -74,7 +87,18 @@ export const LearnerRoutes = (
               },
               {
                 element: <LearnerLayout />,
-                children: [{ path: "dashboard", element: <LandingPage /> }],
+                children: [
+                  { path: "dashboard", element: <LandingPage /> },
+                  { path: "profile", element: <ProfilePage /> },
+                  {
+                    path: "checkout/:courseId",
+                    element: <WrappedCourseCheckout />,
+                  },
+                  {
+                    path: "purchase-success/:purchaseId",
+                    element: <PaymentSuccess />,
+                  },
+                ],
               },
             ],
           },

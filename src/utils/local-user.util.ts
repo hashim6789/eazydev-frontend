@@ -1,3 +1,5 @@
+import { UserRole } from "../types";
+
 export const getUserProperty = (key: keyof UserData) => {
   const userData = localStorage.getItem("user");
 
@@ -21,4 +23,5 @@ interface UserData {
   profilePicture: string;
   isBlocked: boolean;
   isVerified: boolean;
+  role: UserRole;
 }

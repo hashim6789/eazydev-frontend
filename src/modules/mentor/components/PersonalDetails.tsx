@@ -7,9 +7,7 @@ import axios from "axios";
 import { api, config } from "../../../configs";
 import { showErrorToast, showSuccessToast } from "../../../utils";
 import userImage from "../../../assets/img/user_image.avif";
-
-// import LoadingComponent from "../LoadingComponent";
-// import ErrorComponent from "../ErrorComponent";
+import { getUserProperty } from "../../../utils/local-user.util";
 
 // Form Validation Schema
 const schema = z.object({
@@ -20,7 +18,14 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const PersonalDetails: React.FC = () => {
-  const [profilePicture, setProfilePicture] = useState<string>(userImage);
+  const email = getUserProperty("email");
+  const role = getUserProperty("role");
+  const name = `${getUserProperty("firstName")} ${
+    getUserProperty("lastName") ?? ""
+  }`;
+  const [profilePicture, setProfilePicture] = useState<string>(
+    (getUserProperty("profilePicture") as string) ?? userImage
+  );
   const [userDetails, setUserDetails] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -30,8 +35,8 @@ const PersonalDetails: React.FC = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await api.get(`/api/profile/mentor`);
-        setUserDetails(response.data.data);
+        const response = await api.get(`/api/users/personal`);
+        setUserDetails(response.data);
         if (response.data.data.profilePicture) {
           setProfilePicture(response.data.data.profilePicture);
         }
@@ -196,17 +201,17 @@ const PersonalDetails: React.FC = () => {
           </div>
 
           {/* Phone */}
-          <div>
+          {/* <div>
             <label className={`block text-sm font-medium text-gray-700 mb-1`}>
-              Phone
+              Status
             </label>
             <input
               type="tel"
-              defaultValue={userDetails?.phone || "+1 (555) 123-4567"}
+              // defaultValue={userDetails.isBlocked}
               className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 outline-none bg-transparent"
               disabled={!isEditable}
             />
-          </div>
+          </div> */}
         </div>
 
         <div className="flex justify-end mt-6">

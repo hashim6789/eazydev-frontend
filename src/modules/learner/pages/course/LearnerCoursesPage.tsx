@@ -1,15 +1,15 @@
-// import React from "react";
+import React from "react";
 
-// import CourseGrid from "../../components/course/CourseGrid";
+import CourseGrid from "../../components/course/CourseGrid";
 
-// interface LearnerCoursesPageProps {}
+interface LearnerCoursesPageProps {}
 
-// const LearnerCoursesPage: React.FC<LearnerCoursesPageProps> = ({}) => {
-//   return (
-//     <div>
-//       <CourseGrid />
-//     </div>
-//   );
-// };
+const LearnerCoursesPage: React.FC<LearnerCoursesPageProps> = ({}) => {
+  return (
+    <div>
+      <CourseGrid />
+    </div>
+  );
+};
 
-// export default LearnerCoursesPage;
+export default LearnerCoursesPage;

@@ -33,8 +33,10 @@ export interface PopulatedCourse {
   id: string;
   title: string;
   mentor: {
+    id: string;
     profilePicture: string;
     firstName: string;
+    lastName: string;
   };
   category: { id: string; title: string };
   description: string | null;
@@ -60,7 +62,6 @@ export interface PopulatedCourseDetails {
   description: string | null;
   thumbnail: string;
   price: number;
-  // duration: number;
   status: string;
 }
 

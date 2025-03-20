@@ -1,9 +1,10 @@
 // import { useState, useEffect } from "react";
-// import { Course } from "../../../shared/types/Course";
-// import api from "../../../shared/utils/api";
+
 // import useCourseManagement from "../../../hooks/useCourseManagement";
 // import { useSelector } from "react-redux";
 // import { RootState } from "../../../store";
+// import { PopulatedCourse } from "../../../types";
+// import { api } from "../../../configs";
 
 // interface UseCourseTableFunctionalityOptions {
 //   itemsPerPage: number;
@@ -18,7 +19,7 @@
 //   const [searchQuery, setSearchQuery] = useState("");
 //   const [category, setCategpry] = useState("all");
 
-//   const [data, setData] = useState<Course[]>([]);
+//   const [data, setData] = useState<PopulatedCourse[]>([]);
 //   const [loading, setLoading] = useState(false);
 //   const [totalPages, setTotalPages] = useState(1);
 
