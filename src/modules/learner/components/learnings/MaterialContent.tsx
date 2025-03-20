@@ -40,11 +40,11 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
         setLoading(true);
         try {
           const response = await api.post(
-            `/api/progress/${progressId}/get-signed-url`,
+            `/api/progresses/${progressId}/get-signed-url`,
             { fileKey: material.fileKey, materialType: material.type }
           );
           if (response && response.status === 200) {
-            setSignedUrl(response.data.data);
+            setSignedUrl(response.data);
           } else {
             throw new Error("Failed to fetch signed URL.");
           }
@@ -143,7 +143,7 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
       {/* Navigation */}
-      <div className="flex justify-between items-center mb-6">
+      {/* <div className="flex justify-between items-center mb-6">
         <button
           // onClick={() => onNavigate("prev")}
           className="flex items-center text-blue-500 hover:text-blue-600 transition"
@@ -158,7 +158,7 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
           Next
           <ChevronRight className="w-5 h-5 ml-1" />
         </button>
-      </div>
+      </div> */}
 
       {/* Content */}
       {material.type === "reading" ? <ReadingContent /> : <VideoContent />}

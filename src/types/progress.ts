@@ -37,7 +37,7 @@ export interface ProgressLesson {
   isCompleted: boolean;
 }
 
-export interface PopulatedProgressLearnings {
+export interface PopulatedProgressLearningsDTO {
   userId: string;
   mentor: {
     id: string;
