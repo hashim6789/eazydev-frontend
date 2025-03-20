@@ -10,6 +10,7 @@ import {
   ChevronRight,
   Clock,
 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const LearningProgressPage: React.FC = () => {
   const {
@@ -20,6 +21,7 @@ const LearningProgressPage: React.FC = () => {
     error,
     handlePageChange,
   } = useProgressList({ itemsPerPage: 4 });
+  const navigate = useNavigate();
 
   // Loading State
   if (isLoading) {
@@ -124,6 +126,9 @@ const LearningProgressPage: React.FC = () => {
                         ? "bg-green-50 text-green-700 hover:bg-green-100"
                         : "bg-blue-50 text-blue-700 hover:bg-blue-100"
                     }`}
+                    onClick={() =>
+                      navigate(`/learner/learnings/${learning.id}`)
+                    }
                   >
                     {learning.isCourseCompleted
                       ? "Review Course"

@@ -11,8 +11,8 @@ import CourseDetails from "../modules/learner/pages/course/CourseDetailPage";
 import WrappedCourseCheckout from "../modules/learner/pages/checkout/CourseCheckout";
 import PaymentSuccess from "../modules/learner/pages/payment/PaymentSuccess";
 import ProfilePage from "../modules/mentor/pages/Profile";
-import MyLearningsPage from "../modules/learner/pages/learnings/MyLearningsPage";
 import LearningProgressPage from "../modules/learner/pages/learnings/LearnigProgressPage";
+import CourseLearningLayout from "../modules/learner/pages/learnings/LearningCoursePage";
 
 export const LearnerRoutes = (
   isAuthenticated: boolean,
@@ -103,7 +103,10 @@ export const LearnerRoutes = (
                   {
                     path: "learnings",
                     element: <LearningProgressPage />,
-                    // element: <MyLearningsPage />,
+                  },
+                  {
+                    path: "learnings/:progressId",
+                    element: <CourseLearningLayout />,
                   },
                 ],
               },
