@@ -4,8 +4,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import {
   authReducers,
   courseReducers,
+  groupReducers,
   learningsReducers,
   materialReducers,
+  messageReducers,
   themeReducers,
 } from "./slice";
 
@@ -16,6 +18,8 @@ const store = configureStore({
     material: materialReducers,
     course: courseReducers,
     learnings: learningsReducers,
+    group: groupReducers,
+    message: messageReducers,
   },
 });
 

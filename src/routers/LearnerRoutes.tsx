@@ -15,6 +15,7 @@ import LearningProgressPage from "../modules/learner/pages/learnings/LearnigProg
 import CourseLearningLayout from "../modules/learner/pages/learnings/LearningCoursePage";
 import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingManagement";
 import MeetingRoom from "../modules/ call/VideoCallManagement";
+import MainChatLayout from "../modules/chat/LearnerChatManagement";
 
 export const LearnerRoutes = (
   isAuthenticated: boolean,
@@ -114,6 +115,7 @@ export const LearnerRoutes = (
                     path: "meetings/:progressId",
                     element: <LearnerMeetingManagement />,
                   },
+                  { path: "chat", element: <MainChatLayout /> },
 
                   // {
                   //   path: "call/:roomId",
