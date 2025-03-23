@@ -3,7 +3,7 @@ import Peer, { MediaConnection } from "peerjs";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../types";
 
-export const usePeerConnection = (roomId: string, api: any, role: UserRole) => {
+export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
   const [peerId, setPeerId] = useState<string>("");
   const [otherPeerId, setOtherPeerId] = useState<string | null>(null);
   const peerInstance = useRef<Peer | null>(null);
@@ -39,11 +39,12 @@ export const usePeerConnection = (roomId: string, api: any, role: UserRole) => {
         setPeerId(id);
 
         try {
-          const response = await api.post(`/api/meetings/${roomId}/join`, {
+          const response = await api.post(`/api/meetings/${meetId}/join`, {
             peerId: id,
           });
-          if (response.status === 200 && response.data.data.otherPeerId) {
-            setOtherPeerId(response.data.data.otherPeerId);
+          if (response.status === 200 && response.data.otherPeerId) {
+            console.log(response.data.otherPeerId);
+            setOtherPeerId(response.data.otherPeerId);
           }
         } catch (error) {
           console.error("Error joining meeting:", error);
@@ -52,6 +53,7 @@ export const usePeerConnection = (roomId: string, api: any, role: UserRole) => {
 
       peer.on("call", async (call: MediaConnection) => {
         try {
+          console.log("call started");
           const stream = await navigator.mediaDevices.getUserMedia({
             video: true,
             audio: true,
@@ -81,7 +83,7 @@ export const usePeerConnection = (roomId: string, api: any, role: UserRole) => {
     initializePeer();
 
     return () => peerInstance.current?.destroy();
-  }, [roomId, api]);
+  }, [meetId, api]);
 
   const toggleVideo = () => {
     if (localStream) {
@@ -153,7 +155,7 @@ export const usePeerConnection = (roomId: string, api: any, role: UserRole) => {
     setIsCallStarted(false); // Reset to initial state
     setIsWaitingForOpponent(false); // Reset waiting state
     if (role === "learner") {
-      navigate(`/learner/my-learnings`);
+      navigate(`/learner/learnings`);
     } else {
       navigate(`/mentor/meetings`);
     }

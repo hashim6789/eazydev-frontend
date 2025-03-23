@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type Sender = {
-  _id: string;
+  id: string;
   name: string;
   profilePicture: string;
 };
 
 interface Message {
-  _id: string;
+  id: string;
   sender: Sender;
   message: string;
   createdAt: string;
@@ -47,7 +47,7 @@ const messageSlice = createSlice({
     },
     updateMessage(state, action: PayloadAction<Message>) {
       const index = state.messages.findIndex(
-        (msg) => msg._id === action.payload._id
+        (msg) => msg.id === action.payload.id
       );
       if (index !== -1) {
         state.messages[index] = action.payload;
@@ -55,7 +55,7 @@ const messageSlice = createSlice({
     },
     deleteMessage(state, action: PayloadAction<string>) {
       state.messages = state.messages.filter(
-        (msg) => msg._id !== action.payload
+        (msg) => msg.id !== action.payload
       );
     },
   },

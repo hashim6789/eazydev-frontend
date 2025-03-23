@@ -5,14 +5,14 @@ import { Socket } from "socket.io-client";
 import userImage from "../../assets/img/user_image.avif";
 import { addMessage } from "../../store/slice";
 import { formatTo12HourTime } from "../../utils/date.util";
+import { getUserProperty } from "../../utils/local-user.util";
 
 interface ChatMessagesProps {
   socket: Socket;
 }
 
 const ChatMessages = ({ socket }: ChatMessagesProps) => {
-  const user = JSON.parse(localStorage.getItem("data") ?? "{}");
-  const userId = user.id;
+  const userId = getUserProperty("id");
   const { messages, loading, error } = useSelector(
     (state: RootState) => state.message
   );
@@ -50,17 +50,17 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
         !error &&
         messages.map((message) => (
           <div
-            key={message._id}
+            key={message.id}
             className={`flex ${
-              message.sender._id === userId ? "justify-end" : "justify-start"
+              message.sender.id === userId ? "justify-end" : "justify-start"
             }`}
           >
             <div
               className={`max-w-[70%] flex ${
-                message.sender._id === userId ? "flex-row-reverse" : "flex-row"
+                message.sender.id === userId ? "flex-row-reverse" : "flex-row"
               }`}
             >
-              {message.sender._id !== userId && (
+              {message.sender.id !== userId && (
                 <div className="flex flex-col items-center space-y-1 mr-2">
                   <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                     <img
@@ -71,14 +71,14 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
                 </div>
               )}
               <div>
-                {message.sender._id !== userId && (
+                {message.sender.id !== userId && (
                   <p className="text-sm text-gray-500 mb-1 ml-1">
                     {message.sender.name}
                   </p>
                 )}
                 <div
                   className={`rounded-lg px-4 py-2 ${
-                    message.sender._id === userId
+                    message.sender.id === userId
                       ? "bg-blue-600 text-white"
                       : "bg-gray-100 text-gray-800"
                   }`}
@@ -86,7 +86,7 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
                   <p className="break-words">{message.message}</p>
                   <p
                     className={`text-xs mt-1 ${
-                      message.sender._id === userId
+                      message.sender.id === userId
                         ? "text-blue-100"
                         : "text-gray-500"
                     }`}

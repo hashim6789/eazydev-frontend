@@ -17,7 +17,7 @@ interface MeetingRoomProps {
 }
 
 const MeetingRoom: React.FC<MeetingRoomProps> = ({ role }) => {
-  const { roomId } = useParams();
+  const { meetId } = useParams();
   const {
     peerId,
     otherPeerId,
@@ -31,7 +31,7 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ role }) => {
     isWaitingForOpponent,
     isAudioEnabled,
     isVideoEnabled,
-  } = usePeerConnection(roomId!, api, role);
+  } = usePeerConnection(meetId!, api, role);
 
   // Handle call initiation
   const handleInitiateCall = () => {

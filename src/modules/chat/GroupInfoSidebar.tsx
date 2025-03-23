@@ -2,6 +2,7 @@ import { X } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import userImage from "../../assets/img/user_image.avif";
+import { getUserProperty } from "../../utils/local-user.util";
 
 interface GroupInfoSidebarProps {
   onClose: () => void;
@@ -9,11 +10,14 @@ interface GroupInfoSidebarProps {
 
 // Group Info Sidebar Component
 const GroupInfoSidebar = ({ onClose }: GroupInfoSidebarProps) => {
-  const userData = JSON.parse(localStorage.getItem("data") || "{}");
+  const { groups, selectedGroupId } = useSelector(
+    (state: RootState) => state.group
+  );
+  const group = groups.find((item) => item.id === selectedGroupId) || groups[0];
+  const mentor = group.mentor;
+  const learners = group.learners;
+  const userId = getUserProperty("id");
 
-  const { groups } = useSelector((state: RootState) => state.group);
-  const mentor = groups[0].mentor;
-  const learners = groups[0].learners;
   return (
     <aside className="w-64 border-l bg-white h-full">
       <div className="p-4 border-b flex justify-between items-center">
@@ -34,8 +38,10 @@ const GroupInfoSidebar = ({ onClose }: GroupInfoSidebarProps) => {
                 <img src={mentor.profilePicture || userImage} alt="" />
               </div>
               <div>
-                {mentor._id !== userData.id ? (
-                  <p className="font-medium text-gray-800">{`${mentor.firstName} ${mentor.lastName}`}</p>
+                {mentor.id !== userId ? (
+                  <p className="font-medium text-gray-800">{`${
+                    mentor.firstName
+                  } ${mentor.lastName || ""}`}</p>
                 ) : (
                   <p className="font-medium text-gray-800">You</p>
                 )}
@@ -49,12 +55,14 @@ const GroupInfoSidebar = ({ onClose }: GroupInfoSidebarProps) => {
           <div className="space-y-2">
             {learners &&
               learners.map((learner) => (
-                <div key={learner._id} className="flex items-center space-x-2">
+                <div key={learner.id} className="flex items-center space-x-2">
                   <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
                     <img src={learner.profilePicture || userImage} alt="" />
                   </div>
-                  {learner._id !== userData.id ? (
-                    <span className="text-gray-800">{`${learner.firstName} ${learner.lastName}`}</span>
+                  {learner.id !== userId ? (
+                    <span className="text-gray-800">{`${learner.firstName} ${
+                      learner.lastName || ""
+                    }`}</span>
                   ) : (
                     <p className="font-medium text-gray-800">You</p>
                   )}

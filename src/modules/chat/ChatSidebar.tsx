@@ -15,7 +15,7 @@ import {
   fetchMessagesSuccess,
 } from "../../store/slice/messageSlice";
 import { api } from "../../configs";
-import { ErrorState, LoadingState } from "../shared/Error";
+import { ErrorState, LoadingState, NoContentState } from "../shared/Error";
 
 interface ChatSidebarProps {
   socket: Socket;
@@ -27,23 +27,23 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    const fetchGroups = async () => {
-      dispatch(fetchGroupsStart());
-      try {
-        const response = await api.get("/api/chats/groups");
-        if (response && response.status === 200) {
-          dispatch(fetchGroupsSuccess(response.data.data));
-        } else {
-          dispatch(fetchGroupsFailure("failed to fetch groups"));
-        }
-      } catch (error: any) {
-        dispatch(fetchGroupsFailure(error.response.data.message));
-      }
-    };
+  // useEffect(() => {
+  //   const fetchGroups = async () => {
+  //     dispatch(fetchGroupsStart());
+  //     try {
+  //       const response = await api.get("/api/chats/groups");
+  //       if (response && response.status === 200) {
+  //         dispatch(fetchGroupsSuccess(response.data));
+  //       } else {
+  //         dispatch(fetchGroupsFailure("failed to fetch groups"));
+  //       }
+  //     } catch (error: any) {
+  //       dispatch(fetchGroupsFailure(error.response.data.message));
+  //     }
+  //   };
 
-    fetchGroups();
-  }, [dispatch]);
+  //   fetchGroups();
+  // }, [dispatch]);
 
   useEffect(() => {
     if (selectedGroupId) {
@@ -67,7 +67,7 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
         socket.emit("leave chat", { groupId: selectedGroupId });
         console.log("user joined groupid", selectedGroupId);
         dispatch(selectGroup(groupId));
-        dispatch(fetchMessagesSuccess(response.data.data));
+        dispatch(fetchMessagesSuccess(response.data));
         // socket.emit("join chat", { groupId });
         // console.log("user joined groupid", groupId);
       }
@@ -77,6 +77,8 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
     }
   };
 
+  console.log("groups", groups);
+
   return (
     <aside className="w-64 border-r bg-white h-full overflow-y-auto">
       <div className="p-4 border-b">
@@ -85,20 +87,27 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
       <div className="py-2">
         {loading && <LoadingState />}
         {error && <ErrorState />}
+        {groups && groups.length === 0 && (
+          <NoContentState
+            title="You are not enrolled any courses"
+            message="There are no groups"
+          />
+        )}
         {!loading &&
           !error &&
+          groups &&
           groups.map((group) => (
             <button
-              key={group._id}
-              onClick={() => handleGroupChat(group._id)}
+              key={group.id}
+              onClick={() => handleGroupChat(group.id)}
               className={`w-full px-4 py-3 flex items-center space-x-3 hover:bg-gray-50 transition-colors duration-150
-                ${selectedGroupId === group._id ? "bg-blue-50" : ""}`}
+                ${selectedGroupId === group.id ? "bg-blue-50" : ""}`}
             >
               <img
                 src={group.thumbnail}
                 alt="Course Thumbnail"
                 className={`h-8 w-8 rounded-full ${
-                  selectedGroupId === group._id
+                  selectedGroupId === group.id
                     ? "border-blue-600"
                     : "border-gray-500"
                 }`}
@@ -106,7 +115,7 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
               <div className="text-left">
                 <p
                   className={`font-medium ${
-                    selectedGroupId === group._id
+                    selectedGroupId === group.id
                       ? "text-blue-600"
                       : "text-gray-800"
                   }`}

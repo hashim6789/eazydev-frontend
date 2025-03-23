@@ -60,10 +60,10 @@ export const MentorRoutes = (
               { path: "meetings", element: <MentorMeetingManagement /> },
               { path: "chats", element: <MainChatLayout /> },
 
-              // {
-              //   path: "call/:roomId",
-              //   element: <MeetingRoom role="mentor" />,
-              // },
+              {
+                path: "call/:meetId",
+                element: <MeetingRoom role="mentor" />,
+              },
 
               { path: "lessons", element: <LessonManagement /> },
               {

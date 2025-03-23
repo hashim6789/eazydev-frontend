@@ -70,7 +70,8 @@ const MainChatLayout = () => {
       try {
         const response = await api.get("/api/chats/groups");
         if (response && response.status === 200) {
-          dispatch(fetchGroupsSuccess(response.data.data));
+          console.log("response", response.data);
+          dispatch(fetchGroupsSuccess(response.data));
         } else {
           dispatch(fetchGroupsFailure("Failed to fetch groups"));
         }

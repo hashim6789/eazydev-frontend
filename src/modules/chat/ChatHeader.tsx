@@ -11,7 +11,9 @@ const ChatHeader = ({ onMenuClick, onInfoClick }: ChatHeaderProps) => {
   const { groups, selectedGroupId, isTyping, onlineCount } = useSelector(
     (state: RootState) => state.group
   );
-  const group = groups.find((group) => group._id === selectedGroupId);
+  const group = groups
+    ? groups.find((group) => group.id === selectedGroupId)
+    : false;
 
   return (
     <div className="h-16 border-b bg-white flex items-center justify-between px-4">
@@ -24,7 +26,7 @@ const ChatHeader = ({ onMenuClick, onInfoClick }: ChatHeaderProps) => {
           <Menu size={20} />
         </button>
 
-        {group && (
+        {selectedGroupId && group ? (
           <div className="flex flex-col">
             <h2 className="font-semibold text-gray-800">{group.title}</h2>
 
@@ -45,6 +47,13 @@ const ChatHeader = ({ onMenuClick, onInfoClick }: ChatHeaderProps) => {
               )}
             </div>
           </div>
+        ) : (
+          <div className="flex flex-col">
+            <h2 className="font-semibold text-gray-800">Select a Group</h2>
+
+            {/* Status indicators row */}
+            <div className="flex items-center space-x-2 text-xs"></div>
+          </div>
         )}
       </div>
 
@@ -54,15 +63,17 @@ const ChatHeader = ({ onMenuClick, onInfoClick }: ChatHeaderProps) => {
       </div>
 
       {/* Right: Group Info Button */}
-      <button
-        onClick={onInfoClick}
-        className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-150 flex items-center space-x-1"
-      >
-        <span className="text-sm text-gray-600 hidden sm:inline">
-          Group Info
-        </span>
-        <Users size={20} className="text-gray-600" />
-      </button>
+      {selectedGroupId && (
+        <button
+          onClick={onInfoClick}
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-150 flex items-center space-x-1"
+        >
+          <span className="text-sm text-gray-600 hidden sm:inline">
+            Group Info
+          </span>
+          <Users size={20} className="text-gray-600" />
+        </button>
+      )}
     </div>
   );
 };

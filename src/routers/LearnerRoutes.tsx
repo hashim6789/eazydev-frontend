@@ -117,10 +117,10 @@ export const LearnerRoutes = (
                   },
                   { path: "chat", element: <MainChatLayout /> },
 
-                  // {
-                  //   path: "call/:roomId",
-                  //   element: <MeetingRoom role="learner" />,
-                  // },
+                  {
+                    path: "call/:meetId",
+                    element: <MeetingRoom role="learner" />,
+                  },
                 ],
               },
             ],

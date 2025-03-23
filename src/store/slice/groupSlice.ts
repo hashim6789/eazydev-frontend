@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
-  _id: string;
+  id: string;
   firstName: string;
   lastName: string;
   profilePicture: string;
 }
 
 interface Group {
-  _id: string;
+  id: string;
   title: string;
   thumbnail: string;
   memberCount: number;
@@ -45,6 +45,7 @@ const groupSlice = createSlice({
       state.error = null;
     },
     fetchGroupsSuccess(state, action: PayloadAction<Group[]>) {
+      console.log("action.payload", action.payload);
       state.loading = false;
       state.groups = action.payload;
     },
@@ -57,7 +58,7 @@ const groupSlice = createSlice({
     },
     updateGroup(state, action: PayloadAction<Group>) {
       const index = state.groups.findIndex(
-        (group) => group._id === action.payload._id
+        (group) => group.id === action.payload.id
       );
       if (index !== -1) {
         state.groups[index] = action.payload;
@@ -65,7 +66,7 @@ const groupSlice = createSlice({
     },
     deleteGroup(state, action: PayloadAction<string>) {
       state.groups = state.groups.filter(
-        (group) => group._id !== action.payload
+        (group) => group.id !== action.payload
       );
     },
     selectGroup(state, action: PayloadAction<string>) {
