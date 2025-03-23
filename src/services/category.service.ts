@@ -1,12 +1,13 @@
 import axios from "axios";
 import { Category, FilterOption } from "../types";
+import { api } from "../configs";
 
 export const fetchCategoriesAsFilterOptions = async (): Promise<
   FilterOption[]
 > => {
   try {
     // Fetch categories from the API
-    const response = await axios.get<Category[]>("/api/categories");
+    const response = await api.get<Category[]>("/api/categories");
     const categories = response.data;
 
     // Map categories to FilterOption format

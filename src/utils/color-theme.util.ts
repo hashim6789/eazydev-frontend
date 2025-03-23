@@ -153,3 +153,13 @@ export const useThemeStyles = () => {
   const { mode, color } = useSelector((state: RootState) => state.theme);
   return getThemeStyles(color, mode);
 };
+
+export const generateColor = (key: string) => {
+  let hash = 0;
+  for (let i = 0; i < key.length; i++) {
+    hash = key.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const color = `#${((hash >> 0) & 0xffffff).toString(16).padStart(6, "0")}`;
+  return color;
+};
