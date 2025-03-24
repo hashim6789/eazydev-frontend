@@ -1,37 +1,18 @@
-// Sidebar.tsx
 import React from "react";
 import { NavLink } from "react-router-dom";
-import {
-  Home,
-  Users,
-  Calendar,
-  BookOpen,
-  MessageSquare,
-  BarChart,
-  HelpCircle,
-} from "lucide-react";
 import { useThemeStyles } from "../../utils/color-theme.util";
+import { SidebarContent } from "../../types";
 
 interface SidebarProps {
   isSidebarOpen: boolean;
+  sidebarContents: SidebarContent[];
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen }) => {
-  // Get styles based on current theme
+const Sidebar: React.FC<SidebarProps> = ({
+  isSidebarOpen,
+  sidebarContents,
+}) => {
   const styles = useThemeStyles();
-
-  const menuItems = [
-    { path: "/mentor/dashboard", name: "Dashboard", icon: Home },
-    { path: "/mentor/courses", name: "Courses", icon: Users },
-    // { path: "/mentor/lessons", name: "Lessons", icon: Users },
-    // { path: "/mentor/materials", name: "Materials", icon: Users },
-    // { path: "/mentor/students", name: "Students", icon: Users },
-    { path: "/mentor/meetings", name: "Meetings", icon: Calendar },
-    // { path: "/mentor/resources", name: "Resources", icon: BookOpen },
-    { path: "/mentor/chats", name: "Chat Groups", icon: MessageSquare },
-    { path: "/mentor/analytics", name: "Analytics", icon: BarChart },
-    // { path: "/mentor/support", name: "Support", icon: HelpCircle },
-  ];
 
   return (
     <aside
@@ -43,7 +24,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isSidebarOpen }) => {
     >
       <div className="flex flex-col flex-1 overflow-y-auto">
         <nav className="flex-1 px-2 py-4 space-y-2">
-          {menuItems.map((item) => {
+          {sidebarContents.map((item) => {
             const Icon = item.icon;
             return (
               <NavLink

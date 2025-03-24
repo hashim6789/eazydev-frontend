@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ChevronRight, Edit, MoreVertical, Trash2, Clock } from "lucide-react";
+import { ChevronRight, Edit, MoreVertical, Trash2 } from "lucide-react";
 import { useThemeStyles } from "../../../utils/color-theme.util"; // Theme utility
 import { getCourseStatusColor } from "../../../utils"; // Helper for status colors
 import { ManagementCourse } from "../../../types";

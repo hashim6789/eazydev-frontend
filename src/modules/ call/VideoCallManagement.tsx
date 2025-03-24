@@ -1,13 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import {
-  MicIcon,
-  MonitorIcon,
-  PhoneOffIcon,
-  ShareIcon,
-  VideoIcon,
-} from "lucide-react";
+import { MicIcon, PhoneOffIcon, VideoIcon } from "lucide-react";
 import { SubRole } from "../../types";
 import { usePeerConnection } from "../../hooks/usePeer";
 import { api } from "../../configs";
@@ -19,7 +13,6 @@ interface MeetingRoomProps {
 const MeetingRoom: React.FC<MeetingRoomProps> = ({ role }) => {
   const { meetId } = useParams();
   const {
-    peerId,
     otherPeerId,
     videoRef,
     remoteVideoRef,

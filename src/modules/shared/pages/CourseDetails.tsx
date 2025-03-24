@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Book, Clock, Calendar, User, Tag, DollarSign } from "lucide-react";
+import { Book, DollarSign } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../../store";

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
 import { api } from "../configs";
-import { SubRole, User, UserRole } from "../types";
+import { User } from "../types";
 import {
   verifyOtpStart,
   verifyOtpSuccess,

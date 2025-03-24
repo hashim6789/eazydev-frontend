@@ -4,7 +4,6 @@ import axios from "axios";
 import { IMaterial } from "../../../../types";
 import Input from "./Input";
 import { RadioGroup } from "./RadioGroup";
-import { FileUpload } from "./FileUpload";
 import { Textarea } from "./TextArea";
 import { api } from "../../../../configs";
 import { showErrorToast, showSuccessToast } from "../../../../utils";

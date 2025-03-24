@@ -2,7 +2,6 @@ import React from "react";
 import useProgressList from "../../../../hooks/useProgressList";
 import {
   ArrowRight,
-  Award,
   Book,
   BookOpen,
   CheckCircle,
@@ -51,7 +50,7 @@ const LearningProgressPage: React.FC = () => {
 
       {/* Learnings List */}
       <div className="space-y-6">
-        {learnings.map((learning, index) => (
+        {learnings.map((learning) => (
           <div
             key={learning.id}
             className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all duration-200"

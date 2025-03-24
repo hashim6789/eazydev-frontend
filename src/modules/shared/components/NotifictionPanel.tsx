@@ -8,7 +8,7 @@ interface NotificationPanelProps {
 
 const NotificationPanel: React.FC<NotificationPanelProps> = ({ userId }) => {
   const [showNotification, setShowNotification] = useState(false);
-  const { notifications, loading, error, unreadCount, markAllAsRead } =
+  const { notifications, loading, unreadCount, markAllAsRead } =
     useNotifications(userId);
 
   const toggleNotificationPanel = () => {

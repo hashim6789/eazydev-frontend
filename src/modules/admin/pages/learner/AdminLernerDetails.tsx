@@ -1,5 +1,5 @@
 //imported build-in ui components
-import { BookOpen, Clock, Users } from "lucide-react";
+import { BookOpen } from "lucide-react";
 
 //imported build-in hooks
 import { useParams } from "react-router-dom";

@@ -1,11 +1,4 @@
-import {
-  Clock,
-  Book,
-  MoreVertical,
-  Edit,
-  Trash2,
-  ChevronRight,
-} from "lucide-react";
+import { Book, MoreVertical, Edit, Trash2, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Lesson } from "../../../types/lesson";

@@ -1,155 +1,77 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
-import {
-  Chart as ChartJS,
-  ArcElement,
-  Tooltip,
-  Legend,
-  PointElement,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  BarElement,
-  Title,
-} from "chart.js";
 import { Pie, Bar, Line } from "react-chartjs-2";
-import { CourseStatus } from "../../../types";
-import { getUserProperty } from "../../../utils/local-user.util";
-import { api } from "../../../configs";
-import { generateColor } from "../../../utils/color-theme.util";
-
-ChartJS.register(
-  ArcElement,
-  Tooltip,
-  Legend,
-  PointElement,
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  LineElement,
-  Title
-);
-
-// Interface definitions for the fetched data
-interface CourseStatusData {
-  status: CourseStatus;
-  count: number;
-}
-
-interface EnrollmentRate {
-  month: string;
-  enrollments: number;
-}
-
-interface CompletionRate {
-  course: string;
-  completionRate: number;
-}
-
-interface RevenueRate {
-  name: string;
-  value: number;
-}
-
-// Course status colors
-const COURSE_STATUS_COLORS: Record<CourseStatus, string> = {
-  approved: "#8B5CF6",
-  rejected: "#EF4444",
-  // completed: "#10B981",
-  requested: "#F59E0B",
-  published: "#3B82F6",
-  draft: "#6B7280",
-};
+import { GraduationCap, Lightbulb, Users } from "lucide-react";
+import { ChartCard } from "../../shared/components";
+import useMentorDashboardData from "../../../hooks/useMenorDashboard";
 
 const MentorDashboard: React.FC = () => {
-  // State management for fetched data
-  const [courseStatuses, setCourseStatuses] = useState<CourseStatusData[]>([]);
-  const [enrollmentData, setEnrollmentData] = useState<EnrollmentRate[]>([]);
-  const [completionRateData, setCompletionRateData] = useState<
-    CompletionRate[]
-  >([]);
-  const [revenueData, setRevenueData] = useState<RevenueRate[]>([]);
+  const {
+    courseStatusChartData,
+    revenueChartData,
+    completionRateChartData,
+    enrollmentChartData,
+    error,
+    loading,
+  } = useMentorDashboardData();
 
-  // Fetch data on component mount
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await api.get<{
-          courseStatusData: CourseStatusData[];
-          enrollmentData: EnrollmentRate[];
-          completionRateData: CompletionRate[];
-          revenueData: RevenueRate[];
-        }>(`/api/analysis/mentors`);
-
-        if (response.status === 200) {
-          setCourseStatuses(response.data.courseStatusData);
-          setEnrollmentData(response.data.enrollmentData);
-          setCompletionRateData(response.data.completionRateData);
-          setRevenueData(response.data.revenueData);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Chart configurations
-  const courseStatusChartData = {
-    labels: courseStatuses.map((status) => status.status),
-    datasets: [
-      {
-        label: "Course Status",
-        data: courseStatuses.map((status) => status.count),
-        backgroundColor: courseStatuses.map(
-          (status) => COURSE_STATUS_COLORS[status.status]
-        ),
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const revenueChartData = {
-    labels: revenueData.map((data) => data.name),
-    datasets: [
-      {
-        label: "Revenue",
-        data: revenueData.map((data) => data.value),
-        backgroundColor: revenueData.map((data) => generateColor(data.name)),
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  const completionRateChartData = {
-    labels: completionRateData.map((data) => data.course),
-    datasets: [
-      {
-        label: "Completion Rate",
-        data: completionRateData.map((data) => data.completionRate),
-        backgroundColor: "#8B5CF6",
-      },
-    ],
-  };
-
-  const enrollmentChartData = {
-    labels: enrollmentData.map((data) => data.month),
-    datasets: [
-      {
-        label: "Monthly Enrollments",
-        data: enrollmentData.map((data) => data.enrollments),
-        borderColor: "#10B981",
-        borderWidth: 2,
-        fill: false,
-      },
-    ],
-  };
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-3xl font-bold text-purple-800">Mentor Dashboard</h1>
+      <h1 className="text-3xl font-bold">Mentor Dashboard</h1>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-500">Total Users</p>
+              {/* <h3 className="text-3xl font-bold text-gray-800 mt-1">
+                    {stats.totalUsers}
+                  </h3> */}
+              <p className="text-sm text-green-600 mt-2">
+                ↑ 12% from last month
+              </p>
+            </div>
+            <div className="bg-blue-100 p-3 rounded-full">
+              <Users className="h-6 w-6 text-blue-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-500">Mentors</p>
+              {/* <h3 className="text-3xl font-bold text-gray-800 mt-1">
+                    {stats.mentors}
+                  </h3> */}
+              <p className="text-sm text-green-600 mt-2">
+                ↑ 5% from last month
+              </p>
+            </div>
+            <div className="bg-purple-100 p-3 rounded-full">
+              <Lightbulb className="h-6 w-6 text-purple-600" />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-500">Learners</p>
+              {/* <h3 className="text-3xl font-bold text-gray-800 mt-1">
+                    {stats.learners}
+                  </h3> */}
+              <p className="text-sm text-green-600 mt-2">
+                ↑ 15% from last month
+              </p>
+            </div>
+            <div className="bg-green-100 p-3 rounded-full">
+              <GraduationCap className="h-6 w-6 text-green-600" />
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <ChartCard title="Course Status Distribution">
@@ -171,16 +93,5 @@ const MentorDashboard: React.FC = () => {
     </div>
   );
 };
-
-// Reusable ChartCard component
-const ChartCard: React.FC<{ title: string; children: React.ReactNode }> = ({
-  title,
-  children,
-}) => (
-  <div className="bg-white shadow-lg rounded-lg p-4">
-    <h2 className="text-lg font-semibold mb-2">{title}</h2>
-    <div className="h-[300px]">{children}</div>
-  </div>
-);
 
 export default MentorDashboard;

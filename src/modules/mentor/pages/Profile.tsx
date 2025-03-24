@@ -1,18 +1,10 @@
-import React, { useEffect, useState } from "react";
-import {
-  User,
-  KeyRound,
-  CreditCard,
-  Camera,
-  Settings,
-  Bell,
-} from "lucide-react";
+import React, { useState } from "react";
+import { User, KeyRound, Settings, Bell } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { useThemeStyles } from "../../../utils/color-theme.util";
 import PersonalDetails from "../components/PersonalDetails";
 import ChangePassword from "../components/ChangePassword";
-import { getUserProperty } from "../../../utils/local-user.util";
 import PurchaseHistory from "../components/PurchaseHistory";
 
 type NavState =

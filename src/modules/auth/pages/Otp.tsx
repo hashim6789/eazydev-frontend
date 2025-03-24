@@ -1,5 +1,5 @@
 import React from "react";
-import { Timer, ArrowRight, CheckCircle } from "lucide-react";
+import { Timer, ArrowRight } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import useOtp from "../../../hooks/userOtp";

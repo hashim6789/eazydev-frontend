@@ -18,7 +18,6 @@ const CoursesTable: React.FC<CoursesTableProps> = () => {
     currentPage,
     searchQuery,
     courseFilterStatus,
-    range,
     sort,
     data,
     totalPages,
@@ -28,7 +27,6 @@ const CoursesTable: React.FC<CoursesTableProps> = () => {
     handleSearchChange,
     handleFilterChange,
     handleSortChange,
-    handleDelete,
   } = useCourseTable({ itemsPerPage: 5 });
 
   const navigate = useNavigate();

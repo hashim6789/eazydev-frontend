@@ -9,7 +9,7 @@ import { useThemeStyles } from "../../../../utils/color-theme.util";
 import { showErrorToast, showSuccessToast } from "../../../../utils";
 import { ArrowLeft } from "lucide-react";
 import {
-  editMaterial,
+  // editMaterial,
   resetForm,
   setMaterial,
 } from "../../../../store/slice/materialSlice";
@@ -34,7 +34,6 @@ const MaterialDetails: React.FC = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
     watch,
   } = useForm<Material>({
@@ -43,9 +42,9 @@ const MaterialDetails: React.FC = () => {
 
   const selectedType = watch("type");
 
-  const [uploading, setUploading] = useState<boolean>(false);
+  const [uploading] = useState<boolean>(false);
   const fileKey = material ? material.fileKey : null;
-  const [preview, setPreview] = useState<string | null>(fileKey); // Store the preview URL
+  const [preview] = useState<string | null>(fileKey); // Store the preview URL
 
   // Function to handle file upload (you can customize this)
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,11 +60,11 @@ const MaterialDetails: React.FC = () => {
     }
   }, [data, dispatch]);
 
-  const handleChange = (field: keyof Material, value: any) => {
-    if (field === "duration") value = Number(value);
-    dispatch(editMaterial({ [field]: value }));
-    setValue(field, value);
-  };
+  // const handleChange = (field: keyof Material, value: any) => {
+  //   if (field === "duration") value = Number(value);
+  //   dispatch(editMaterial({ [field]: value }));
+  //   setValue(field, value);
+  // };
 
   const handleEditClick = () => {
     setIsEditing(!isEditing);

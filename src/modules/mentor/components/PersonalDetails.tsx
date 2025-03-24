@@ -18,17 +18,17 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const PersonalDetails: React.FC = () => {
-  const email = getUserProperty("email");
-  const role = getUserProperty("role");
-  const name = `${getUserProperty("firstName")} ${
-    getUserProperty("lastName") ?? ""
-  }`;
+  // const email = getUserProperty("email");
+  // const role = getUserProperty("role");
+  // const name = `${getUserProperty("firstName")} ${
+  //   getUserProperty("lastName") ?? ""
+  // }`;
   const [profilePicture, setProfilePicture] = useState<string>(
     (getUserProperty("profilePicture") as string) ?? userImage
   );
   const [userDetails, setUserDetails] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [, setLoading] = useState<boolean>(true);
+  const [, setError] = useState<string | null>(null);
   const [isEditable, setIsEditable] = useState<boolean>(false);
 
   // Fetch user details on mount

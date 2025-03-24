@@ -5,7 +5,7 @@ export const timeSchema = z
   .nonempty("Time is required")
   .refine(
     (time) => {
-      const [hours, minutes] = time.split(":").map(Number);
+      const [, minutes] = time.split(":").map(Number);
       return minutes === 0;
     },
     { message: "Time must follow the hourly pattern (e.g., 11:00, 12:00)." }

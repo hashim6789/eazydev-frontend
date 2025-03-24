@@ -46,7 +46,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
     handleSearchChange,
     handleFilterChange,
     handleToggleStatus,
-  } = useCategoryTable({ itemsPerPage: 5 });
+  } = useCategoryTable({ itemsPerPage: 5, role: "admin" });
 
   const {
     register,

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Material, MaterialType } from "../types/material";
 import { api } from "../configs";
 import { showErrorToast, showSuccessToast } from "../utils";
@@ -11,8 +11,8 @@ interface UseMaterialTableFunctionalityOptions {
 
 export function useMaterialTable({
   itemsPerPage,
-  filterField,
-}: UseMaterialTableFunctionalityOptions) {
+}: // filterField,
+UseMaterialTableFunctionalityOptions) {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const [materialFilterType, setMaterialFilterType] = useState<
@@ -43,13 +43,13 @@ export function useMaterialTable({
     return () => clearTimeout(debounceTimeout);
   }, [materialFilterType, searchQuery, currentPage, itemsPerPage]);
 
-  const filteredData = useMemo(() => {
-    return data.filter((item) => {
-      return String(item[filterField])
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-    });
-  }, [data, searchQuery, filterField]);
+  // const filteredData = useMemo(() => {
+  //   return data.filter((item) => {
+  //     return String(item[filterField])
+  //       .toLowerCase()
+  //       .includes(searchQuery.toLowerCase());
+  //   });
+  // }, [data, searchQuery, filterField]);
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleSearchChange = (query: string) => {

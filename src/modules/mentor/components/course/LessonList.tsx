@@ -13,7 +13,7 @@ interface LessonsListProps {
   onNext: () => void;
 }
 
-export const LessonsList: React.FC<LessonsListProps> = ({ onBack, onNext }) => {
+export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
   const dispatch = useDispatch<AppDispatch>();
   const { lessons, mentorId, courseId } = useSelector((state: RootState) => ({
     lessons: state.course.course.lessons,

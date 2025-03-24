@@ -1,12 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  ChevronUp,
-  ChevronDown,
-  BookOpen,
-  ArrowLeft,
-  CheckCircle,
-} from "lucide-react";
+import { ChevronUp, ChevronDown, BookOpen, ArrowLeft } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
 
@@ -14,7 +8,6 @@ import useFetch from "../../../../hooks/useFetch";
 import MaterialContent from "../../components/learnings/MaterialContent";
 import {
   setCurrentMaterial,
-  setLearningsError,
   setLessons,
   setMentor,
 } from "../../../../store/slice";
@@ -25,7 +18,6 @@ import {
 } from "../../../shared/Error";
 import {
   PopulatedProgressLearningsDTO,
-  ProgressLesson,
   ProgressMaterial,
 } from "../../../../types";
 

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { config } from "../configs";
-import { PopulatedCourse } from "../types";
 
 const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
   if (!url) {

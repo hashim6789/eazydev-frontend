@@ -17,7 +17,7 @@ import {
   forgotPasswordFailure,
   logout,
 } from "../store/slice";
-import { showSuccessToast, showErrorToast } from "../utils";
+import { showErrorToast } from "../utils";
 import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
 import { SubRole, User, UserRole } from "../types";
 import { api, config } from "../configs";

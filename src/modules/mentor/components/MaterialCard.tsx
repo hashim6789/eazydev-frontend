@@ -1,15 +1,7 @@
-import {
-  Book,
-  ChevronRight,
-  Clock,
-  Edit,
-  MoreVertical,
-  Trash2,
-  Video,
-} from "lucide-react";
+import { ChevronRight, Clock, Edit, MoreVertical, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Material, MaterialType } from "../../../types/material";
+import { Material } from "../../../types/material";
 import { useThemeStyles } from "../../../utils/color-theme.util";
 import { getMaterialTypeIcon } from "../../../utils/icon.util";
 

@@ -2,8 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useThemeStyles } from "../../../utils/color-theme.util";
 import { useCourseTable } from "../../../hooks/useCourseTable";
-import { CourseStatus } from "../pages/Dashboard";
 import { getCourseStatusColor } from "../../../utils";
+import { CourseStatus } from "../../../types";
 
 interface CourseTableProps {}
 
@@ -21,7 +21,6 @@ export const CourseTable: React.FC<CourseTableProps> = () => {
     data,
   } = useCourseTable({
     itemsPerPage: 6,
-    filterField: "title",
   });
 
   return (

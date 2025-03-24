@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LogOut, Menu, Moon, Settings, Sun, User, Palette } from "lucide-react";
+import { LogOut, Menu, Moon, Sun, User, Palette } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import userImage from "../../assets/img/user_image.avif";
@@ -7,43 +7,40 @@ import useAuth from "../../hooks/useAuth";
 import { AppDispatch, RootState } from "../../store";
 import { useThemeStyles } from "../../utils/color-theme.util";
 import { setColorTheme, toggleThemeMode } from "../../store/slice";
-import { UserThemeType } from "../../types";
+import { UserRole, UserThemeType } from "../../types";
 import { getUserProperty } from "../../utils/local-user.util";
 import NotificationPanel from "../shared/components/NotifictionPanel";
 
 interface NavbarProps {
   toggleSidebar: () => void;
+  role: UserRole;
 }
 
-const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
+const Navbar: React.FC<NavbarProps> = ({ toggleSidebar, role }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isThemeDropdownOpen, setIsThemeDropdownOpen] = useState(false);
   const { handleLogout } = useAuth();
   const navigate = useNavigate();
 
-  // Get theme state from Redux
   const { mode, color } = useSelector((state: RootState) => state.theme);
   const dispatch = useDispatch<AppDispatch>();
 
-  // Get styles based on current theme
   const styles = useThemeStyles();
 
-  // Handle theme mode toggle
   const changeThemeMode = (): void => {
     dispatch(toggleThemeMode());
   };
 
-  // Handle color theme change
   const changeColorTheme = (newColor: UserThemeType): void => {
     dispatch(setColorTheme(newColor));
   };
 
-  // Get user data from localStorage
-  const userData = JSON.parse(localStorage.getItem("data") || "{}");
-  const fullName = `${userData.firstName || ""} ${
-    userData.lastName || ""
-  }`.trim();
-  const profileImage = userData.profilePicture;
+  const profilePicture = getUserProperty("profilePicture") as string;
+  const userName = `${getUserProperty("firstName")} ${
+    getUserProperty("lastName") || ""
+  }`;
+  const userId = getUserProperty("id") as string;
+  const email = getUserProperty("email") as string;
 
   const getInitials = (name: string) => {
     return name
@@ -62,6 +59,8 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
     { name: "Teal", value: "teal" },
   ];
 
+  const userRole = role === "admin" ? "Admin" : "Mentor";
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-4 h-16 transition-all duration-300 ease-in-out ${styles.navBg} ${styles.textPrimary} border-b ${styles.border}`}
@@ -75,12 +74,12 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
           <Menu size={20} />
         </button>
         <h1 className="text-lg font-semibold hidden md:block">
-          Mentor Dashboard
+          {userRole} Dashboard
         </h1>
       </div>
 
       <div className="flex items-center space-x-3 relative">
-        <NotificationPanel userId={userData.id} />
+        <NotificationPanel userId={userId} />
 
         {/* Theme Color Selector */}
         <div className="relative">
@@ -135,10 +134,10 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
             onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             className={`w-10 h-10 rounded-full flex items-center justify-center cursor-pointer border-2 ${styles.border} overflow-hidden`}
           >
-            {profileImage ? (
+            {profilePicture ? (
               <img
-                src={profileImage}
-                alt={fullName}
+                src={profilePicture || userImage}
+                alt={userName}
                 onError={(e) => {
                   e.currentTarget.src = userImage;
                   e.currentTarget.alt = "Placeholder Image";
@@ -149,7 +148,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
               <div
                 className={`w-full h-full ${styles.mediumBg} ${styles.text} flex items-center justify-center font-bold text-lg`}
               >
-                {getInitials(fullName)}
+                {getInitials(userName)}
               </div>
             )}
           </div>
@@ -169,30 +168,25 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
                 }`}
               >
                 <p className={`text-sm font-semibold ${styles.textPrimary}`}>
-                  {fullName}
+                  {userName}
                 </p>
                 <p className={`text-xs ${styles.textSecondary} truncate`}>
-                  {userData.email}
+                  {email}
                 </p>
               </div>
 
-              <button
-                onClick={() => {
-                  navigate("/mentor/profile");
-                  setIsDropdownOpen(false);
-                }}
-                className={`w-full px-4 py-2 text-left text-sm ${styles.textSecondary} hover:${styles.lightBg} flex items-center gap-2 transition-colors duration-200`}
-              >
-                <User className={`w-4 h-4 ${styles.text}`} />
-                Profile
-              </button>
-
-              <button
-                className={`w-full px-4 py-2 text-left text-sm ${styles.textSecondary} hover:${styles.lightBg} flex items-center gap-2 transition-colors duration-200`}
-              >
-                <Settings className={`w-4 h-4 ${styles.text}`} />
-                Settings
-              </button>
+              {role === "mentor" && (
+                <button
+                  onClick={() => {
+                    navigate("/mentor/profile");
+                    setIsDropdownOpen(false);
+                  }}
+                  className={`w-full px-4 py-2 text-left text-sm ${styles.textSecondary} hover:${styles.lightBg} flex items-center gap-2 transition-colors duration-200`}
+                >
+                  <User className={`w-4 h-4 ${styles.text}`} />
+                  Profile
+                </button>
+              )}
 
               <div
                 className={`border-t ${
@@ -202,7 +196,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSidebar }) => {
 
               <button
                 onClick={() =>
-                  handleLogout("mentor", getUserProperty("id") as string)
+                  handleLogout(role, getUserProperty("id") as string)
                 }
                 className={`w-full px-4 py-2 text-left text-sm ${
                   mode === "dark" ? "text-red-400" : "text-red-600"

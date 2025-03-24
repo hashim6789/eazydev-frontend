@@ -1,4 +1,3 @@
-import { Category } from "./category";
 import { MaterialType } from "./material";
 
 export type CourseStatus =

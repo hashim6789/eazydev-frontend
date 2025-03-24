@@ -1,29 +1,16 @@
 import { Navigate } from "react-router-dom";
-// import ProtectedRoute from "./ProtectedRoutes";
 import LoginPage from "../modules/auth/pages/Login";
-import { ThemeType, UserRole } from "../types";
+import { UserRole } from "../types";
 import ProtectedRoute from "./ProtectedRoute";
-import AdminLayout from "../modules/layouts/AdminLayout";
 import AdminDashboard from "../modules/admin/pages/AdminDashboard";
 import AdminUserDetails from "../modules/admin/pages/learner/AdminLernerDetails";
 import AdminUserManagement from "../modules/admin/pages/users/AdminUserManagement";
 import AdminCourseManagement from "../modules/admin/pages/course/AdminCourseManagement";
 import AdminCategoryManagement from "../modules/admin/pages/category/AdminCategoryManagement";
-import AdminCourseDetails from "../modules/shared/pages/CourseDetails";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
-// import AdminLearnerDetails from "../modules/admin/pages/learner/AdminLernerDetails";
-// import AdminMentorManagement from "../modules/admin/pages/mentor/AdminMentorManagement";
-// import AdminMentorDetails from "../modules/admin/pages/mentor/AdminMentorDetails";
-// import AdminCourseManagement from "../modules/admin/pages/course/AdminCourseManagement";
-// import CourseDetails from "../modules/admin/pages/course/CourseDetails";
-// import MaterialDetailPage from "../modules/admin/pages/course/MaterialsDetailsPage";
-// import AdminCategoryManagement from "../modules/admin/pages/category/AdminCategoryManagement";
+import Layout from "../modules/layouts/Layout";
 
-export const AdminRoutes = (
-  isAuthenticated: boolean,
-  user: UserRole,
-  theme: ThemeType
-) => [
+export const AdminRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
     path: "/admin/login",
     element: isAuthenticated ? (
@@ -39,10 +26,9 @@ export const AdminRoutes = (
         element: <ProtectedRoute role="admin" />,
         children: [
           {
-            element: <AdminLayout />,
+            element: <Layout role="admin" />,
             children: [
               { path: "dashboard", element: <AdminDashboard /> },
-              ,
               {
                 path: "learners",
                 element: <AdminUserManagement role="learner" />,
@@ -78,11 +64,3 @@ export const AdminRoutes = (
     ],
   },
 ];
-
-// { path: "courses", element: <AdminCourseManagement /> },
-// { path: "courses/:courseId", element: <CourseDetails /> },
-// {
-//   path: "materials/:materialId",
-//   element: <MaterialDetailPage />,
-// },
-// { path: "categories", element: <AdminCategoryManagement /> },

@@ -1,5 +1,6 @@
 import useFetch from "../../../hooks/useFetch";
 import { IPurchase } from "../../../types/purchase";
+import { ErrorState, LoadingState, NoContentState } from "../../shared/Error";
 
 const PurchaseHistory: React.FC = () => {
   const {
@@ -8,10 +9,9 @@ const PurchaseHistory: React.FC = () => {
     error,
   } = useFetch<IPurchase[]>("/api/purchases");
 
-  //   if (loading) return <LoadingComponent item="Purchase History" theme="blue" />;
-  //   if (error) return <ErrorComponent item="Purchase History" theme="blue" />;
-  //   if (histories && histories.length === 0)
-  //     return <NoContentComponent item="Purchase History" theme="blue" />;
+  if (loading) return <LoadingState />;
+  if (error) return <ErrorState />;
+  if (histories && histories.length === 0) return <NoContentState />;
 
   return (
     <div className="space-y-6">

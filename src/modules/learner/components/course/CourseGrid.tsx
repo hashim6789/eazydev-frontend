@@ -1,5 +1,5 @@
 import React from "react";
-import { Search, BookOpen, GraduationCap } from "lucide-react";
+import { BookOpen, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useCourseTable } from "../../../../hooks/useCourseTable";
 import {

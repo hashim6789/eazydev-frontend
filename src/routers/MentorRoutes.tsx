@@ -1,10 +1,8 @@
 import { Navigate } from "react-router-dom";
-// import ProtectedRoute from "./ProtectedRoutes";
 import LoginPage from "../modules/auth/pages/Login";
-import { ThemeType, UserRole } from "../types";
+import { UserRole } from "../types";
 import ProtectedRoute from "./ProtectedRoute";
 import OtpVerificationComponent from "../modules/auth/pages/Otp";
-import MentorLayout from "../modules/layouts/MentorLayout";
 import MentorDashboard from "../modules/mentor/pages/Dashboard";
 import ProfilePage from "../modules/mentor/pages/Profile";
 import CourseManagement from "../modules/mentor/pages/course/CourseManagement";
@@ -17,12 +15,9 @@ import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 import MentorMeetingManagement from "../modules/mentor/pages/meetings/MentorMeetingManagement";
 import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
+import Layout from "../modules/layouts/Layout";
 
-export const MentorRoutes = (
-  isAuthenticated: boolean,
-  user: UserRole,
-  theme: ThemeType
-) => [
+export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
     path: "/mentor/login",
     element: isAuthenticated ? (
@@ -42,7 +37,7 @@ export const MentorRoutes = (
             element: <OtpVerificationComponent userRole="mentor" />,
           },
           {
-            element: <MentorLayout />,
+            element: <Layout role="mentor" />,
             children: [
               { path: "dashboard", element: <MentorDashboard /> },
               { path: "profile", element: <ProfilePage /> },

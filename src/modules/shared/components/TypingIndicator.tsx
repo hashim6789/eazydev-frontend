@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MessageSquareText } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";

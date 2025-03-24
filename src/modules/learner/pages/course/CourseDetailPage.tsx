@@ -1,4 +1,4 @@
-import { Clock, Award, Monitor } from "lucide-react";
+import { Award, Monitor } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { RootState } from "../../../../store";
@@ -8,7 +8,6 @@ import BackComponent from "../../components/BackComponent";
 import useUnAuthorizedFetch from "../../../../hooks/useUnAuthorizedFetch";
 import { PopulatedCourseDetails } from "../../../../types";
 import { IPurchase } from "../../../../types/purchase";
-import { showInfoToast } from "../../../../utils";
 import { useEffect, useState } from "react";
 
 const CourseDetails = () => {

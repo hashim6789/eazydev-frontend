@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Category, FilterOption } from "../types";
 import { api } from "../configs";
 

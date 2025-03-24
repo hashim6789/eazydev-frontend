@@ -1,11 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import {
-  selectGroup,
-  fetchGroupsFailure,
-  fetchGroupsStart,
-  fetchGroupsSuccess,
-} from "../../store/slice/groupSlice";
+import { selectGroup } from "../../store/slice/groupSlice";
 
 import { useEffect } from "react";
 import { Socket } from "socket.io-client";
@@ -26,24 +21,6 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
     (state: RootState) => state.group
   );
   const dispatch = useDispatch<AppDispatch>();
-
-  // useEffect(() => {
-  //   const fetchGroups = async () => {
-  //     dispatch(fetchGroupsStart());
-  //     try {
-  //       const response = await api.get("/api/chats/groups");
-  //       if (response && response.status === 200) {
-  //         dispatch(fetchGroupsSuccess(response.data));
-  //       } else {
-  //         dispatch(fetchGroupsFailure("failed to fetch groups"));
-  //       }
-  //     } catch (error: any) {
-  //       dispatch(fetchGroupsFailure(error.response.data.message));
-  //     }
-  //   };
-
-  //   fetchGroups();
-  // }, [dispatch]);
 
   useEffect(() => {
     if (selectedGroupId) {

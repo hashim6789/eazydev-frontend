@@ -4,15 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
 import {
   setCourseDetails,
-  addLesson,
-  updateLesson,
-  removeLesson,
+  // addLesson,
+  // updateLesson,
+  // removeLesson,
   setCurrentStep,
-  removeCourseDetails,
   resetCourse,
 } from "../../../../store/slice";
 
-import { ICourse, ILesson } from "../../../../types";
+import { ICourse } from "../../../../types";
 import { ProgressBar } from "./ProgressBar";
 import { CourseDetails } from "./CourseDetail";
 import { LessonsList } from "./LessonList";
@@ -62,31 +61,31 @@ export const CourseForm: React.FC = () => {
     }
   };
 
-  const handleAddLesson = async (lesson: ILesson) => {
-    try {
-      const createData = {
-        title: lesson.title,
-        description: lesson.description,
-        mentorId: lesson.mentorId,
-        courseId: course.id,
-      };
-      const response = await api.post("/api/lessons", createData);
-      if (response && response.status === 201) {
-        showSuccessToast("Lesson created successfully.");
-        dispatch(addLesson(lesson));
-      }
-    } catch (error: any) {
-      showErrorToast("An error occurred while creating the lesson.");
-    }
-  };
+  // const handleAddLesson = async (lesson: ILesson) => {
+  //   try {
+  //     const createData = {
+  //       title: lesson.title,
+  //       description: lesson.description,
+  //       mentorId: lesson.mentorId,
+  //       courseId: course.id,
+  //     };
+  //     const response = await api.post("/api/lessons", createData);
+  //     if (response && response.status === 201) {
+  //       showSuccessToast("Lesson created successfully.");
+  //       dispatch(addLesson(lesson));
+  //     }
+  //   } catch (error: any) {
+  //     showErrorToast("An error occurred while creating the lesson.");
+  //   }
+  // };
 
-  const handleUpdateLesson = (index: number, lesson: ILesson) => {
-    dispatch(updateLesson({ index, lesson }));
-  };
+  // const handleUpdateLesson = (index: number, lesson: ILesson) => {
+  //   dispatch(updateLesson({ index, lesson }));
+  // };
 
-  const handleRemoveLesson = (index: number) => {
-    dispatch(removeLesson(index));
-  };
+  // const handleRemoveLesson = (index: number) => {
+  //   dispatch(removeLesson(index));
+  // };
 
   const handlePublishCourse = async () => {
     try {

@@ -11,7 +11,7 @@ import AvailableSlots from "../../../shared/components/AvailableSlots";
 
 const MentorMeetingManagement: React.FC = () => {
   const [slots, setSlots] = useState<ISlot[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [, setLoading] = useState<boolean>(false);
 
   // Fetch slots with useCallback for better dependency management
   const fetchSlots = useCallback(async () => {

@@ -7,3 +7,4 @@ export * from "./AuthHandler";
 export * from "./TableRow";
 export * from "./SortDropDown";
 export * from "./InputModal";
+export * from "./ChartCard";

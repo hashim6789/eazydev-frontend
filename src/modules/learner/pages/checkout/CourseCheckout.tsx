@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CreditCard, Shield, CheckCircle, ArrowLeft, Info } from "lucide-react";
+import { CreditCard, Shield } from "lucide-react";
 import { loadStripe } from "@stripe/stripe-js";
 import {
   Elements,
@@ -16,23 +16,23 @@ import { getUserProperty } from "../../../../utils/local-user.util";
 const stripePromise = loadStripe(config.VITE_STRIPE_PK);
 
 // Custom card style for better UI
-const cardElementOptions = {
-  // style: {
-  //   base: {
-  //     fontSize: "16px",
-  //     color: "#424770",
-  //     "::placeholder": {
-  //       color: "#aab7c4",
-  //     },
-  //     fontFamily: "system-ui, -apple-system, sans-serif",
-  //   },
-  //   invalid: {
-  //     color: "#9e2146",
-  //     iconColor: "#9e2146",
-  //   },
-  // },
-  hidePostalCode: true,
-};
+// const cardElementOptions = {
+// style: {
+//   base: {
+//     fontSize: "16px",
+//     color: "#424770",
+//     "::placeholder": {
+//       color: "#aab7c4",
+//     },
+//     fontFamily: "system-ui, -apple-system, sans-serif",
+//   },
+//   invalid: {
+//     color: "#9e2146",
+//     iconColor: "#9e2146",
+//   },
+// },
+// hidePostalCode: true,
+// };
 
 // const CourseCheckout = () => {
 //   const { courseId } = useParams();
@@ -491,11 +491,11 @@ const CheckoutForm = ({}: any) => {
   const { courseId } = useParams();
   const [processingPayment, setProcessingPayment] = useState(false);
   const [paymentError, setPaymentError] = useState("");
-  const [paymentStep, setPaymentStep] = useState("details");
+  const [, setPaymentStep] = useState("details");
   const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading] = useState<boolean>(false);
 
-  const [orderSummaryOpen, setOrderSummaryOpen] = useState<boolean>(false);
+  // const [orderSummaryOpen, setOrderSummaryOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 

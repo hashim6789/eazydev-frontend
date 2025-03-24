@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  ChevronLeft,
-  ChevronRight,
-  BookOpen,
-  Clock,
-  CheckCircle,
-} from "lucide-react";
+import { BookOpen, Clock, CheckCircle } from "lucide-react";
 import { AppDispatch, RootState } from "../../../../store";
 import { api } from "../../../../configs";
 import { updateMaterialProgress } from "../../../../store/slice";

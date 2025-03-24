@@ -4,7 +4,6 @@ import {
   ChevronDown,
   Video,
   FileText,
-  MessageSquare,
   Lock,
   Clock,
 } from "lucide-react";
@@ -130,7 +129,7 @@ const MaterialList: React.FC<{
 
       {/* Materials list */}
       <div className={`border-t ${theme.border}`}>
-        {lesson.materials.map((material, index) => (
+        {lesson.materials.map((material) => (
           <div
             onClick={() => navigate(`/mentor/my-materials/${material.id}`)}
             key={material.id}

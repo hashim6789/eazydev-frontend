@@ -1,8 +1,7 @@
-import React from "react";
 import { Users, Menu, Activity } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
-import TypingIndicator from "../../../common/components/TypingIndicator";
+import TypingIndicator from "../../../shared/components/TypingIndicator";
 
 interface ChatHeaderProps {
   onMenuClick: () => void;
@@ -10,9 +9,10 @@ interface ChatHeaderProps {
 }
 
 const ChatHeader = ({ onMenuClick, onInfoClick }: ChatHeaderProps) => {
-  const { groups, selectedGroupId, isTyping, typeName, onlineCount } =
-    useSelector((state: RootState) => state.group);
-  const group = groups.find((group) => group._id === selectedGroupId);
+  const { groups, selectedGroupId, isTyping, onlineCount } = useSelector(
+    (state: RootState) => state.group
+  );
+  const group = groups.find((group) => group.id === selectedGroupId);
 
   return (
     <div className="h-16 border-b bg-white flex items-center justify-between px-4">

@@ -1,5 +1,5 @@
 // src/components/CourseCreation/CourseDetails.tsx - Course Details Form
-import React, { useEffect } from "react";
+import React from "react";
 import { useFormContext } from "react-hook-form";
 import { Category, ICourse } from "../../../../types";
 import Input from "./Input";
@@ -40,6 +40,7 @@ export const CourseDetails: React.FC<CourseDetailsProps> = ({ onSubmit }) => {
     fileName: string
   ) => {
     try {
+      console.log(fileKey);
       // Simulating the Cloudinary upload using the file preview
       const formData = new FormData();
       const fileBlob = await fetch(filePreview).then((r) => r.blob());

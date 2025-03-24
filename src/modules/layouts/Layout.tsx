@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useThemeStyles } from "../../utils/color-theme.util";
-import Navbar from "../components/MentorNavbar";
-import Sidebar from "../components/MentorSidebar";
-import { Footer } from "../components/MentorFooter";
+import Navbar from "../components/Navbar";
+import Sidebar from "../components/Sidebar";
+import { Footer } from "../components/Footer";
+import { AdminSidebarItems, mentorSidebarItems } from "../shared/values";
+import { UserRole } from "../../types";
 
-const MentorLayout: React.FC = () => {
+interface LayoutProps {
+  role: UserRole;
+}
+
+const Layout: React.FC<LayoutProps> = ({ role }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(true);
 
   // Get styles based on the current theme
@@ -15,15 +21,21 @@ const MentorLayout: React.FC = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const sidebarContents =
+    role === "admin" ? AdminSidebarItems : mentorSidebarItems;
+
   return (
     <div
       className={`flex flex-col min-h-screen ${styles.darkBg} transition-colors duration-300`}
     >
       {/* Navbar */}
-      <Navbar toggleSidebar={toggleSidebar} />
+      <Navbar role={role} toggleSidebar={toggleSidebar} />
       <div className={`flex flex-1 overflow-hidden pt-16 `}>
         {/* Sidebar */}
-        <Sidebar isSidebarOpen={isSidebarOpen} />
+        <Sidebar
+          sidebarContents={sidebarContents}
+          isSidebarOpen={isSidebarOpen}
+        />
         {/* Main Content */}
         <div
           className={`flex flex-col flex-1 min-h-screen ${
@@ -35,11 +47,11 @@ const MentorLayout: React.FC = () => {
             <Outlet />
           </div>
           {/* Footer */}
-          <Footer />
+          <Footer role={role} />
         </div>
       </div>
     </div>
   );
 };
 
-export default MentorLayout;
+export default Layout;

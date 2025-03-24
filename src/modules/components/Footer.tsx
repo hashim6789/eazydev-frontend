@@ -1,8 +1,13 @@
 // Footer.tsx
 import React from "react";
 import { useThemeStyles } from "../../utils/color-theme.util";
+import { UserRole } from "../../types";
+interface FooterProps {
+  role: UserRole;
+}
 
-export const Footer: React.FC = () => {
+export const Footer: React.FC<FooterProps> = ({ role }) => {
+  const userRole = role === "admin" ? "Admin" : "Mentor";
   // Get styles based on current theme
   const styles = useThemeStyles();
 
@@ -18,7 +23,7 @@ export const Footer: React.FC = () => {
         text-sm
       `}
     >
-      © 2024 Mentor Dashboard. All rights reserved.
+      © 2025 {userRole} Dashboard. All rights reserved.
     </footer>
   );
 };

@@ -37,7 +37,7 @@ export function useCategoryTable({
         const result = response.data;
         console.log(result);
 
-        setCategoryData(result.body);
+        setCategoryData(result);
         setTotalPages(result.last_page);
       } catch (error) {
         console.error(CategoryMessages.ERROR.FETCH, error);
@@ -130,6 +130,7 @@ export function useCategoryTable({
   };
 
   const handleEditTitle = (categoryId: string) => {
+    console.log(categoryId);
     setIsEditModalOpen(true);
   };
 

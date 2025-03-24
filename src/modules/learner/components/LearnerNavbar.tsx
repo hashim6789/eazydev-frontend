@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import useAuth from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
@@ -9,7 +9,6 @@ import { getUserProperty } from "../../../utils/local-user.util";
 const CourseNavbar: React.FC = () => {
   const { handleLogout } = useAuth();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const navigate = useNavigate();
 
   const { isAuthenticated, isVerified, isBlocked } = useSelector(
     (state: RootState) => state.auth
@@ -141,26 +140,6 @@ const CourseNavbar: React.FC = () => {
           >
             My Chats
           </NavLink>
-          {/* <NavLink
-            to="/learner/video-call"
-            className={({ isActive }) =>
-              isActive
-                ? "text-blue-600 border-b-2 border-blue-600 flex items-center px-1"
-                : "text-gray-600 hover:text-gray-900 flex items-center px-1"
-            }
-          >
-            Video Call
-          </NavLink>
-          <NavLink
-            to="/learner/meets"
-            className={({ isActive }) =>
-              isActive
-                ? "text-blue-600 border-b-2 border-blue-600 flex items-center px-1"
-                : "text-gray-600 hover:text-gray-900 flex items-center px-1"
-            }
-          >
-            My meetings
-          </NavLink> */}
         </div>
       </div>
     </nav>

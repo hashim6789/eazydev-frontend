@@ -59,12 +59,12 @@ const LoginPage: React.FC<LoginPageProps> = ({
     register: registerSignup,
     handleSubmit: handleSignupSubmit,
     formState: { errors: signupErrors },
-    watch,
+    // watch,
   } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
   });
 
-  const password = watch("password", "");
+  // const password = watch("password", "");
 
   // Form submissions
   const submitLogin = (data: LoginFormData) => {

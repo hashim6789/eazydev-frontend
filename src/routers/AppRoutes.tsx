@@ -15,9 +15,9 @@ const AppRoutes: React.FC = () => {
   const {} = useSelector((state: RootState) => state.theme);
 
   const routes = [
-    ...AdminRoutes(isAuthenticated, user, "light"),
-    ...MentorRoutes(isAuthenticated, user, "light"),
-    ...LearnerRoutes(isAuthenticated, user, "light"),
+    ...AdminRoutes(isAuthenticated, user),
+    ...MentorRoutes(isAuthenticated, user),
+    ...LearnerRoutes(isAuthenticated, user),
     {
       path: "/login",
       element: <LoginPage role="learner" theme="blue" loginImage="" />,

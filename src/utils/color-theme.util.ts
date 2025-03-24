@@ -1,4 +1,4 @@
-import { ModeType, ThemeType, UserThemeType } from "../types/User";
+import { ModeType, UserThemeType } from "../types/User";
 
 // Theme style properties
 export interface ThemeStyles {

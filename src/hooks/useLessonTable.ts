@@ -1,6 +1,4 @@
 import { useState, useEffect } from "react";
-
-import Swal from "sweetalert2";
 import { Lesson } from "../types/lesson";
 import { api } from "../configs";
 import { showErrorToast, showSuccessToast } from "../utils";

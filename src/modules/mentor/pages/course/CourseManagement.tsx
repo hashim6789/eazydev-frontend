@@ -8,12 +8,9 @@ import { NoContentState } from "../../../shared/Error/NoContentState";
 import { LoadingState } from "../../../shared/Error/LoadingState";
 import { courseManagementPath } from "../../../../utils/path.util";
 import { useCourseTable } from "../../../../hooks/useCourseTable";
-import { CourseStatus } from "../Dashboard";
-import { getCourseStatusColor } from "../../../../utils";
 import CourseCard from "../../components/CourseCard";
 import { Pagination } from "../../../shared/components";
-
-const paths = [{ title: "My Courses", link: "/mentor/my-courses" }];
+import { CourseStatus } from "../../../../types";
 
 const CourseManagement: React.FC = () => {
   const navigate = useNavigate();

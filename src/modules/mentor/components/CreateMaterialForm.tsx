@@ -1,4 +1,3 @@
-import React from "react";
 import { useCreateMaterial } from "../../../hooks/useCreateMaterial";
 
 const CreateMaterialForm = () => {
@@ -7,7 +6,6 @@ const CreateMaterialForm = () => {
     handleSubmit,
     onSubmit,
     handleFileUpload,
-    watch,
     errors,
     uploading,
     preview,
