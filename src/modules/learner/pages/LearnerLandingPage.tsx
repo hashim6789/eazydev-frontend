@@ -27,11 +27,11 @@ const LandingPage = () => {
                     alt={`User ${i}`}
                     className="w-24 h-24 rounded-lg object-cover"
                   />
-                  {i === 1 && (
+                  {/* {i === 1 && (
                     <span className="absolute bottom-0 left-0 bg-blue-500 text-white px-3 py-1 rounded-br-lg rounded-tl-lg text-sm">
                       Online
                     </span>
-                  )}
+                  )} */}
                 </div>
               ))}
             </div>
