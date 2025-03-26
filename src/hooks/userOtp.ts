@@ -128,12 +128,12 @@ const useOtp = (onComplete?: (otp: string) => void) => {
       console.log(otpString);
       dispatch(verifyOtpStart());
       try {
-        const response = await api.post(`/api/auth/otp-verify`, {
+        const response = await api.post<User>(`/api/auth/otp-verify`, {
           otp: otpString,
           userId,
         });
         if (response.status === 200) {
-          const user = response.data.user as User;
+          const user = response.data as User;
           console.log("user", user);
           dispatch(verifyOtpSuccess({ user }));
 
@@ -144,7 +144,11 @@ const useOtp = (onComplete?: (otp: string) => void) => {
           }
         }
       } catch (error: any) {
-        dispatch(verifyOtpFailure(AuthMessages.VERIFY_OTP_FAILED));
+        dispatch(
+          verifyOtpFailure(
+            error.response.data.error || AuthMessages.VERIFY_OTP_FAILED
+          )
+        );
         console.error(AuthMessages.VERIFY_OTP_FAILED, error);
       }
     } else {

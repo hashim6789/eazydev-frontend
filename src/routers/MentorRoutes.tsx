@@ -16,6 +16,7 @@ import MentorMeetingManagement from "../modules/mentor/pages/meetings/MentorMeet
 import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import Layout from "../modules/layouts/Layout";
+import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 
 export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -29,6 +30,10 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
     path: "/mentor",
     children: [
+      {
+        path: "auth/:token/change-password",
+        element: <ChangePasswordPage role="mentor" />,
+      },
       {
         element: <ProtectedRoute role="mentor" />,
         children: [

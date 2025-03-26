@@ -15,6 +15,7 @@ import CourseLearningLayout from "../modules/learner/pages/learnings/LearningCou
 import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingManagement";
 import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
+import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 
 export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -43,6 +44,10 @@ export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
     path: "/learner",
     children: [
+      {
+        path: "auth/:token/change-password",
+        element: <ChangePasswordPage role="learner" />,
+      },
       {
         element: <LearnerLayout />,
         children: [

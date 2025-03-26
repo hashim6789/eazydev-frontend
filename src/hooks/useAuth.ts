@@ -62,7 +62,7 @@ const useAuth = () => {
   const handleSignup = async (credentials: SignupSchema, role: SubRole) => {
     dispatch(signupStart());
     try {
-      const response = await axios.post(
+      const response = await axios.post<User>(
         `${config.API_BASE_URL}/api/auth/signup`,
         {
           ...credentials,
@@ -72,7 +72,7 @@ const useAuth = () => {
       );
 
       if (response.status === 201) {
-        const user = response.data.user as User;
+        const user = response.data;
         dispatch(signupSuccess({ user }));
         console.log(`navigate to /${role}/otp`);
         navigate(`/${role}/otp`);
@@ -124,17 +124,22 @@ const useAuth = () => {
   ) => {
     dispatch(forgotPasswordStart());
     try {
-      await axios.post(`${config.API_BASE_URL}/api/auth/forgot-password`, {
-        email: data.email,
-        role,
-      });
-      dispatch(forgotPasswordSuccess());
-    } catch (err: any) {
-      if (err.response.data.error) {
-        dispatch(forgotPasswordFailure(err.response.data.error));
-      } else {
-        dispatch(forgotPasswordFailure(AuthMessages.FORGOT_PASSWORD_FAILED));
+      const response = await axios.post<{ success: boolean }>(
+        `${config.API_BASE_URL}/api/auth/forgot-password`,
+        {
+          email: data.email,
+          role,
+        }
+      );
+      if (response.status === 200 && response.data.success) {
+        dispatch(forgotPasswordSuccess());
       }
+    } catch (err: any) {
+      dispatch(
+        forgotPasswordFailure(
+          err.response.data.error || AuthMessages.FORGOT_PASSWORD_FAILED
+        )
+      );
       console.error(AuthMessages.FORGOT_PASSWORD_FAILED, err);
     }
   };
