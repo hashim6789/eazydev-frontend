@@ -16,6 +16,7 @@ import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingMa
 import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
+import CourseCertificateManagement from "../modules/learner/pages/learnings/LearnerCertificateManagement";
 
 export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -86,6 +87,10 @@ export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
                   {
                     path: "learnings/:progressId",
                     element: <CourseLearningLayout />,
+                  },
+                  {
+                    path: "learnings/:progressId/certificate",
+                    element: <CourseCertificateManagement />,
                   },
                   {
                     path: "meetings/:progressId",

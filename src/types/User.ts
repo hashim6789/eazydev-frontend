@@ -15,3 +15,9 @@ export interface User {
   isBlocked: boolean;
 }
 export type UserStatus = "blocked" | "unblocked";
+
+export interface UserBaseDetails {
+  id: string;
+  firstName: string;
+  lastName: string;
+}

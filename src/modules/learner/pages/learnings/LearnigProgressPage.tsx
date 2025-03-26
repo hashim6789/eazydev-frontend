@@ -106,6 +106,10 @@ const LearningProgressPage: React.FC = () => {
                         style={{ width: `${learning.progress}%` }}
                       />
                     </div>
+                    {/* Display Progress Percentage */}
+                    <span className="text-sm text-gray-600 mt-1 block">
+                      {Math.round(learning.progress)}% completed
+                    </span>
                   </div>
 
                   {/* Completed Lessons */}
@@ -134,6 +138,21 @@ const LearningProgressPage: React.FC = () => {
                       : "Continue Learning"}
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </button>
+
+                  {/* Generate Certificate Button */}
+                  {learning.isCourseCompleted && (
+                    <button
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg text-sm font-medium hover:bg-green-600 transition-colors flex items-center"
+                      onClick={() =>
+                        navigate(
+                          `/learner/learnings/${learning.id}/certificate`
+                        )
+                      }
+                    >
+                      Generate Certificate
+                      <CheckCircle className="w-4 h-4 ml-1" />
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
