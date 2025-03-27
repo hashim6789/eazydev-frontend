@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CourseStatus, ICourse, ILesson } from "../../types";
+import { Course, CourseStatus, ICourse, ILesson, Lesson } from "../../types";
 import { getUserProperty } from "../../utils/local-user.util";
 
 interface CourseState {
-  course: ICourse;
+  course: Course;
   currentStep: number;
 }
 
@@ -11,8 +11,16 @@ const initialState: CourseState = {
   course: {
     id: "",
     title: "",
-    mentorId: getUserProperty("id") as string, // This would typically be filled via authentication
-    categoryId: "",
+    mentor: {
+      id: getUserProperty("id") as string,
+      firstName: getUserProperty("firstName") as string,
+      lastName: getUserProperty("lastName") as string,
+      profilePicture: getUserProperty("profilePicture") as string,
+    },
+    category: {
+      id: "",
+      title: "",
+    },
     description: "",
     thumbnail: "",
     lessons: [],
@@ -26,7 +34,10 @@ const courseSlice = createSlice({
   name: "course",
   initialState,
   reducers: {
-    setCourseDetails(state, action: PayloadAction<Partial<ICourse>>) {
+    setFetchedCourseDetails(state, action: PayloadAction<Course>) {
+      state.course = action.payload;
+    },
+    setCourseDetails(state, action: PayloadAction<Partial<Course>>) {
       state.course = { ...state.course, ...action.payload };
     },
     updateCourseStatus(
@@ -36,7 +47,7 @@ const courseSlice = createSlice({
       const { newStatus } = action.payload;
       state.course.status = newStatus;
     },
-    addLesson(state, action: PayloadAction<ILesson>) {
+    addLesson(state, action: PayloadAction<Lesson>) {
       state.course.lessons.push(action.payload);
     },
 
@@ -47,7 +58,7 @@ const courseSlice = createSlice({
     },
     updateLesson(
       state,
-      action: PayloadAction<{ index: number; lesson: ILesson }>
+      action: PayloadAction<{ index: number; lesson: Lesson }>
     ) {
       const { index, lesson } = action.payload;
       state.course.lessons[index] = lesson;
@@ -69,6 +80,7 @@ const courseSlice = createSlice({
 });
 
 export const {
+  setFetchedCourseDetails,
   setCourseDetails,
   addLesson,
   updateLesson,

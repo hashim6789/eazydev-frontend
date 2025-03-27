@@ -20,4 +20,5 @@ export interface UserBaseDetails {
   id: string;
   firstName: string;
   lastName: string;
+  profilePicture: string;
 }

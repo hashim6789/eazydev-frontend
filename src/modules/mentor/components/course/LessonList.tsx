@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "../../../../store";
-import { addLesson, updateLesson, removeLesson } from "../../../../store/slice";
 import { PlusIcon, PencilIcon, TrashIcon } from "lucide-react";
-import { ILesson } from "../../../../types";
 import { LessonForm } from "./LessonForm";
-import { api } from "../../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../../utils";
+import { Lesson } from "../../../../types";
+import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
 
 interface LessonsListProps {
   onBack: () => void;
@@ -14,52 +10,39 @@ interface LessonsListProps {
 }
 
 export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { lessons, mentorId, courseId } = useSelector((state: RootState) => ({
-    lessons: state.course.course.lessons,
-    mentorId: state.course.course.mentorId,
-    courseId: state.course.course.id,
-  }));
+  const {
+    course,
+    handleLessonManagement,
+    isAddingLesson,
+    setIsAddingLesson,
+    currentStep,
+    setStep,
+  } = useMentorCourseManagement(false);
 
-  const [isAddingLesson, setIsAddingLesson] = useState(false);
   const [editingLessonIndex, setEditingLessonIndex] = useState<number | null>(
     null
   );
 
-  const handleAddLesson = async (lesson: ILesson) => {
-    try {
-      const materialIds = lesson.materials.map((item) => item.id);
-      const data = { ...lesson, materials: materialIds, courseId };
-      const response = await api.post("/api/lessons", data);
-      if (response && response.status === 201) {
-        dispatch(addLesson({ ...lesson, mentorId }));
-        setIsAddingLesson(false);
-        showSuccessToast("Lesson added successfully");
-      }
-    } catch (error: any) {
-      showErrorToast("failed add lesson!");
-    }
+  const { lessons } = course;
+
+  // Handlers for Adding, Editing, and Removing Lessons
+  const handleAddLesson = async (lesson: Lesson) => {
+    handleLessonManagement.add(lesson);
   };
 
-  const handleUpdateLesson = (lesson: ILesson) => {
+  const handleUpdateLesson = (lesson: Lesson) => {
     if (editingLessonIndex !== null) {
-      dispatch(
-        updateLesson({
-          index: editingLessonIndex,
-          lesson: { ...lesson, mentorId },
-        })
-      );
+      handleLessonManagement.update(editingLessonIndex, lesson);
       setEditingLessonIndex(null);
     }
   };
 
   const handleRemoveLesson = (index: number) => {
-    dispatch(removeLesson(index));
+    handleLessonManagement.remove(index);
   };
 
   const handleEditLesson = (index: number) => {
     setEditingLessonIndex(index);
-    setIsAddingLesson(false);
   };
 
   return (
@@ -145,13 +128,6 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
 
       {/* Navigation Buttons */}
       <div className="flex justify-between pt-4 border-t">
-        {/* <button
-          type="button"
-          onClick={onBack}
-          className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
-        >
-          Back to Course Details
-        </button> */}
         <button
           type="button"
           onClick={onNext}

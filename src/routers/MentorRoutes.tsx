@@ -17,6 +17,7 @@ import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import Layout from "../modules/layouts/Layout";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
+import CourseEditing from "../modules/mentor/pages/course/CourseEdit";
 
 export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -51,6 +52,7 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
                 children: [
                   { path: "", element: <CourseManagement /> },
                   { path: "create", element: <CourseCreation /> },
+                  { path: ":courseId/edit", element: <CourseEditing /> },
                   {
                     path: ":courseId",
                     element: <CourseDetailsPage role="mentor" />,

@@ -1,4 +1,5 @@
 import { MaterialType } from "./material";
+import { UserBaseDetails } from "./User";
 
 export type CourseStatus =
   | "approved"
@@ -79,6 +80,31 @@ export interface ICourse {
   status: CourseStatus;
   createdAt?: Date;
   updatedAt?: Date;
+}
+export interface Course {
+  id: string;
+  title: string;
+  mentor: UserBaseDetails;
+  category: { id: string; title: string };
+  description: string;
+  thumbnail: string;
+  lessons: Lesson[];
+  price: number;
+  status: CourseStatus;
+}
+export interface Lesson {
+  id: string;
+  title: string;
+  description: string;
+  materials: Material[];
+}
+export interface Material {
+  id: string;
+  title: string;
+  description: string;
+  type: "reading" | "video";
+  duration: number;
+  fileKey: string;
 }
 
 export interface ILesson {

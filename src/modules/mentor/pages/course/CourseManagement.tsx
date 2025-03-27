@@ -72,7 +72,11 @@ const CourseManagement: React.FC = () => {
             {data.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {data.map((course) => (
-                  <CourseCard course={course} handleDelete={handleDelete} />
+                  <CourseCard
+                    key={course.id}
+                    course={course}
+                    handleDelete={handleDelete}
+                  />
                 ))}
               </div>
             ) : (

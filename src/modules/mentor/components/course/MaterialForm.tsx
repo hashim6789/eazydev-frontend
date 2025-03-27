@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
-import { IMaterial } from "../../../../types";
-import Input from "./Input";
-import { RadioGroup } from "./RadioGroup";
-import { Textarea } from "./TextArea";
+import { Material } from "../../../../types";
 import { api } from "../../../../configs";
 import { showErrorToast, showSuccessToast } from "../../../../utils";
-import { getUserProperty } from "../../../../utils/local-user.util";
+import { MaterialFormSchema, MaterialSchema } from "../../../../schemas";
 
 interface MaterialFormProps {
-  initialData?: IMaterial;
-  onSubmit: (material: IMaterial) => void;
+  initialData?: Material;
+  onSubmit: (material: Material) => void;
   onCancel: () => void;
 }
 
@@ -20,13 +19,12 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
-  const defaultValues: Partial<IMaterial> = initialData || {
-    title: "",
-    description: "",
-    mentorId: getUserProperty("id") as string,
-    type: "reading",
-    duration: 10,
-    fileKey: "",
+  const defaultValues: MaterialFormSchema = {
+    title: initialData?.title || "",
+    description: initialData?.description || "",
+    type: initialData?.type || "reading",
+    duration: initialData?.duration || 10,
+    fileKey: initialData?.fileKey || "",
   };
 
   const {
@@ -35,11 +33,13 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
     watch,
     setValue,
     formState: { errors },
-  } = useForm<IMaterial>({ defaultValues });
+  } = useForm<MaterialFormSchema>({
+    resolver: zodResolver(MaterialSchema),
+    defaultValues,
+  });
 
   const materialType = watch("type");
-  const [fileKey, setFileKey] = useState<string>(defaultValues.fileKey || "");
-  const [fileName, setFileName] = useState<string>("");
+  const [fileName, setFileName] = useState<string>(defaultValues.fileKey || "");
   const [isUploading, setUploading] = useState<boolean>(false);
   const [preview, setPreview] = useState<string | null>(null);
 
@@ -49,7 +49,6 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // Validate file type
     if (
       (materialType === "reading" && file.type !== "application/pdf") ||
       (materialType === "video" && file.type !== "video/mp4")
@@ -60,9 +59,8 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
 
     setUploading(true);
     try {
-      // Request signed URL from backend
       const response = await api.post<{ signedUrl: string; fileKey: string }>(
-        `/api/upload/signed-url`,
+        "/api/upload/signed-url",
         {
           fileName: file.name,
           fileType: file.type,
@@ -71,18 +69,14 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
       );
 
       const { signedUrl, fileKey } = response.data;
-
-      // Upload file to S3
       await axios.put(signedUrl, file);
       showSuccessToast(`The ${materialType} was uploaded successfully.`);
 
-      // Store file key in form and update preview
-      setValue("fileKey", fileKey); // Update fileKey in form state
-      setFileKey(fileKey);
+      setValue("fileKey", fileKey);
       setFileName(file.name);
 
       if (materialType === "reading" || materialType === "video") {
-        setPreview(URL.createObjectURL(file)); // Set preview
+        setPreview(URL.createObjectURL(file));
       }
     } catch (error) {
       console.error("File upload failed:", error);
@@ -92,58 +86,107 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
     }
   };
 
-  const handleMaterialSubmit = async (data: IMaterial) => {
-    onSubmit({ ...data, fileKey });
+  const handleMaterialSubmit: SubmitHandler<MaterialFormSchema> = (data) => {
+    onSubmit({ ...data, fileKey: data.fileKey || "", id: "" });
   };
 
   return (
-    <div className="space-y-4">
+    // <form onSubmit={handleSubmit(handleMaterialSubmit)} className="space-y-6">
+    <div>
       {/* Material Title */}
-      <Input
-        label="Material Title"
-        name="title"
-        register={register}
-        rules={{ required: "Title is required" }}
-        error={errors.title}
-        placeholder="e.g., Introduction Video"
-      />
+      <div className="space-y-2">
+        <label
+          htmlFor="title"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Material Title
+        </label>
+        <input
+          type="text"
+          id="title"
+          {...register("title")}
+          className={`block w-full px-3 py-2 border rounded-md ${
+            errors.title ? "border-red-500" : "border-gray-300"
+          }`}
+          placeholder="e.g., Introduction Video"
+        />
+        {errors.title && (
+          <p className="text-sm text-red-600">{errors.title.message}</p>
+        )}
+      </div>
 
       {/* Material Description */}
-      <Textarea
-        label="Material Description"
-        name="description"
-        register={register}
-        rules={{ required: "Description is required" }}
-        error={errors.description}
-        placeholder="Brief description of this material..."
-        rows={2}
-      />
+      <div className="space-y-2">
+        <label
+          htmlFor="description"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Material Description
+        </label>
+        <textarea
+          id="description"
+          {...register("description")}
+          className={`block w-full px-3 py-2 border rounded-md ${
+            errors.description ? "border-red-500" : "border-gray-300"
+          }`}
+          placeholder="Brief description of this material..."
+          rows={3}
+        />
+        {errors.description && (
+          <p className="text-sm text-red-600">{errors.description.message}</p>
+        )}
+      </div>
 
       {/* Material Type */}
-      <RadioGroup
-        label="Material Type"
-        name="type"
-        register={register}
-        rules={{ required: "Type is required" }}
-        error={errors.type}
-        options={[
-          { value: "reading", label: "Reading (PDF, Document)" },
-          { value: "video", label: "Video" },
-        ]}
-      />
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-gray-700">
+          Material Type
+        </label>
+        <div className="flex space-x-4">
+          <label className="flex items-center">
+            <input
+              type="radio"
+              value="reading"
+              {...register("type")}
+              className="mr-2"
+            />
+            Reading (PDF, Document)
+          </label>
+          <label className="flex items-center">
+            <input
+              type="radio"
+              value="video"
+              {...register("type")}
+              className="mr-2"
+            />
+            Video
+          </label>
+        </div>
+        {errors.type && (
+          <p className="text-sm text-red-600">{errors.type.message}</p>
+        )}
+      </div>
 
       {/* Duration */}
-      <Input
-        label="Duration (minutes)"
-        name="duration"
-        register={register}
-        rules={{
-          required: "Duration is required",
-          min: { value: 1, message: "Duration must be at least 1 minute" },
-        }}
-        error={errors.duration}
-        type="number"
-      />
+      <div className="space-y-2">
+        <label
+          htmlFor="duration"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Duration (minutes)
+        </label>
+        <input
+          type="number"
+          {...register("duration", { valueAsNumber: true })} // Ensure the value is parsed as a number
+          className={`block w-full px-3 py-2 border rounded-md ${
+            errors.duration ? "border-red-500" : "border-gray-300"
+          }`}
+          placeholder="Enter duration in minutes"
+        />
+        {errors.duration && (
+          <p className="text-sm text-red-600">{errors.duration.message}</p>
+        )}
+      </div>
 
       {/* File Upload */}
       <div className="space-y-2">
@@ -191,7 +234,7 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
           Cancel
         </button>
         <button
-          type="button"
+          type="submit"
           onClick={handleSubmit(handleMaterialSubmit)}
           className="px-3 py-1.5 bg-blue-600 rounded-md text-white hover:bg-blue-700 text-sm"
         >
@@ -199,5 +242,6 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
         </button>
       </div>
     </div>
+    // </form>
   );
 };

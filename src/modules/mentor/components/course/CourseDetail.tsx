@@ -1,139 +1,175 @@
-// src/components/CourseCreation/CourseDetails.tsx - Course Details Form
-import React from "react";
-import { useFormContext } from "react-hook-form";
-import { Category, ICourse } from "../../../../types";
-import Input from "./Input";
-import { Select } from "./Select";
-import { Textarea } from "./TextArea";
-import { FileUpload } from "./FileUpload";
-import useFetch from "../../../../hooks/useFetch";
-import axios from "axios";
-import { config } from "../../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../../utils";
-import { setThumbnail } from "../../../../store/slice";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../../../store";
+import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Category } from "../../../../types";
+import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
+import {
+  CourseDetailsFormSchema,
+  CourseDetailsSchema,
+} from "../../../../schemas";
 
-interface CourseDetailsProps {
-  onSubmit: (data: Partial<ICourse>) => void;
-  initialData: Partial<ICourse>;
-}
-
-export const CourseDetails: React.FC<CourseDetailsProps> = ({ onSubmit }) => {
+export const CourseDetails: React.FC = () => {
   const {
-    register,
     handleSubmit,
+    register,
+    setValue,
     formState: { errors },
-  } = useFormContext<ICourse>();
-  const { course } = useSelector((state: RootState) => state.course);
-  const dispatch = useDispatch<AppDispatch>();
+    watch,
+  } = useForm<CourseDetailsFormSchema>({
+    resolver: zodResolver(CourseDetailsSchema),
+  });
 
-  const { data: categories } = useFetch<Category[]>("/api/categories");
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
-  // const handleThumbnailUpload = (fileKey: string, previewUrl: string) => {
-  //   setThumbnailPreview(previewUrl);
-  // };
+  const { categories, course, handleThumbnailUpload, handleCourseSubmit } =
+    useMentorCourseManagement(false);
 
-  const handleThumbnailUpload = async (
-    fileKey: string,
-    filePreview: string,
-    fileName: string
+  //     // Watch the category field to sync form values dynamically
+  // const watchCategory = watch("category");
+
+  const handleCategoryChange = (id: string) => {
+    const category = categories.find((cat) => cat.id === id); // Find category by ID
+    if (category) {
+      setSelectedCategory(category); // Update selectedCategory state
+      console.log("Selected category:", category);
+      setValue("category", category); // Update form state with full category object
+    }
+  };
+  const onSubmit: SubmitHandler<CourseDetailsFormSchema> = (data) => {
+    handleCourseSubmit({
+      ...data,
+      category: data.category || undefined, // Ensure valid category data
+    });
+  };
+
+  const handleThumbnailChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    try {
-      console.log(fileKey);
-      // Simulating the Cloudinary upload using the file preview
-      const formData = new FormData();
-      const fileBlob = await fetch(filePreview).then((r) => r.blob());
-      formData.append("file", fileBlob, fileName);
-      formData.append("upload_preset", config.CLOUDINARY_PRESET);
-      console.log(
-        fileName,
-        config.CLOUDINARY_PRESET,
-        config.CLOUDINARY_CLOUD_NAME
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const filePreview = URL.createObjectURL(file);
+      const secureUrl = await handleThumbnailUpload(
+        file.name,
+        filePreview,
+        file.name
       );
-
-      const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
-        formData
-      );
-
-      if (response.status === 200) {
-        const secureUrl = response.data.secure_url;
-        dispatch(setThumbnail({ thumbnail: secureUrl }));
-        showSuccessToast("Thumbnail uploaded successfully!");
+      if (secureUrl) {
+        setValue("thumbnail", secureUrl); // Set the thumbnail value in the form
       }
-    } catch (error) {
-      console.error("Error uploading to Cloudinary:", error);
-      showErrorToast("Failed to upload image.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <h2 className="text-xl font-semibold">Course Details</h2>
+      <h2 className="text-xl font-semibold">
+        {course.id ? "Edit Course" : "Create Course"}
+      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Input
-          label="Course Title"
-          name="title"
-          register={register}
-          rules={{ required: "Title is required" }}
-          error={errors.title}
+      {/* Course Title */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Course Title
+        </label>
+        <input
+          type="text"
           placeholder="e.g., Complete React Developer Course"
+          className={`w-full px-4 py-3 border rounded-md focus:outline-none ${
+            errors.title ? "border-red-500" : "border-gray-300"
+          }`}
+          {...register("title")}
         />
-
-        <Input
-          label="Price ($)"
-          name="price"
-          register={register}
-          rules={{
-            required: "Price is required",
-            min: { value: 0, message: "Price must be positive" },
-          }}
-          error={errors.price}
-          type="number"
-          placeholder="e.g., 49.99"
-        />
+        {errors.title && (
+          <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
+        )}
       </div>
 
-      <Select
-        label="Category"
-        name="categoryId"
-        register={register}
-        rules={{ required: "Category is required" }}
-        error={errors.categoryId}
-        options={
-          categories
-            ? categories.map((cat) => ({ value: cat.id, label: cat.title }))
-            : []
-        }
-        placeholder="Select a category"
-      />
+      {/* Price */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Price ($)
+        </label>
+        <input
+          type="number"
+          placeholder="e.g., 49.99"
+          className={`w-full px-4 py-3 border rounded-md focus:outline-none ${
+            errors.price ? "border-red-500" : "border-gray-300"
+          }`}
+          {...register("price", { valueAsNumber: true })}
+        />
+        {errors.price && (
+          <p className="mt-1 text-sm text-red-600">{errors.price.message}</p>
+        )}
+      </div>
 
-      <Textarea
-        label="Course Description"
-        name="description"
-        register={register}
-        rules={{ required: "Description is required" }}
-        error={errors.description}
-        placeholder="Describe what students will learn in this course..."
-        rows={4}
-      />
+      {/* Category Select */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Category
+        </label>
+        <select
+          className={`w-full px-3 py-2 border rounded-md focus:outline-none ${
+            errors.category ? "border-red-500" : "border-gray-300"
+          }`}
+          value={selectedCategory?.id || ""}
+          onChange={(e) => {
+            handleCategoryChange(e.target.value); // Pass the selected value (ID) to the handler
+          }}
+        >
+          <option value="" disabled>
+            {selectedCategory
+              ? `Selected: ${selectedCategory.title}`
+              : "Select a category"}
+          </option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.title}
+            </option>
+          ))}
+        </select>
+        {errors.category && (
+          <p className="mt-1 text-sm text-red-600">{errors.category.message}</p>
+        )}
+      </div>
 
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-gray-700">
+      {/* Course Description */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Course Description
+        </label>
+        <textarea
+          placeholder="Describe what students will learn in this course..."
+          rows={4}
+          className={`w-full px-4 py-3 border rounded-md focus:outline-none ${
+            errors.description ? "border-red-500" : "border-gray-300"
+          }`}
+          {...register("description")}
+        />
+        {errors.description && (
+          <p className="mt-1 text-sm text-red-600">
+            {errors.description.message}
+          </p>
+        )}
+      </div>
+
+      {/* Course Thumbnail Upload */}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
           Course Thumbnail
         </label>
-        {!course.thumbnail && (
-          <FileUpload
-            accept="image/*"
-            onFileUpload={(fileKey, filePreview, fileName) =>
-              handleThumbnailUpload(fileKey, filePreview, fileName)
-            }
-            maxSizeMB={2}
-          />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleThumbnailChange}
+          className="mt-2 w-full px-4 py-2 border rounded-md focus:outline-none"
+        />
+        {errors.thumbnail && (
+          <p className="mt-1 text-sm text-red-600">
+            {errors.thumbnail.message}
+          </p>
         )}
-
         {course.thumbnail && (
           <div className="mt-2">
             <img
@@ -145,12 +181,13 @@ export const CourseDetails: React.FC<CourseDetailsProps> = ({ onSubmit }) => {
         )}
       </div>
 
+      {/* Submit Button */}
       <div className="pt-4 flex justify-end">
         <button
           type="submit"
           className="px-6 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700"
         >
-          Continue to Lessons
+          {course.id ? "Update Course" : "Create Course"}
         </button>
       </div>
     </form>

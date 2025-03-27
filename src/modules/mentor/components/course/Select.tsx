@@ -1,9 +1,14 @@
-// src/components/UI/Select.tsx - Reusable Select component
 import React from "react";
-import { FieldError, UseFormRegister } from "react-hook-form";
+import {
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  UseFormRegister,
+} from "react-hook-form";
+import { Category } from "../../../../types";
 
 interface SelectOption {
-  value: string;
+  value: Category; // Store the entire Category object
   label: string;
 }
 
@@ -12,9 +17,11 @@ interface SelectProps {
   name: string;
   register: UseFormRegister<any>;
   rules?: Record<string, any>;
-  error?: FieldError;
+  // Updated error type to handle broader types returned by React Hook Form
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
   options: SelectOption[];
   placeholder?: string;
+  onChange?: (value: { id: string; title: string }) => void;
 }
 
 export const Select: React.FC<SelectProps> = ({
@@ -25,6 +32,7 @@ export const Select: React.FC<SelectProps> = ({
   error,
   options,
   placeholder,
+  onChange,
 }) => {
   return (
     <div className="space-y-1">
@@ -39,6 +47,14 @@ export const Select: React.FC<SelectProps> = ({
             ? "border-red-300 focus:border-red-300 focus:ring-red-200"
             : "border-gray-300 focus:border-blue-300 focus:ring-blue-200"
         }`}
+        onChange={(e) => {
+          const selectedValue = options.find(
+            (option) => option.value.id === e.target.value
+          )?.value;
+          if (onChange && selectedValue) {
+            onChange(selectedValue as Category); // Explicitly cast as Category
+          }
+        }}
       >
         {placeholder && (
           <option value="" disabled>
@@ -46,12 +62,18 @@ export const Select: React.FC<SelectProps> = ({
           </option>
         )}
         {options.map((option) => (
-          <option key={option.value} value={option.value}>
+          <option key={option.value.id} value={option.value.id}>
             {option.label}
           </option>
         ))}
       </select>
-      {error && <p className="text-sm text-red-600">{error.message}</p>}
+      {/* Error rendering with type guard */}
+      {error &&
+        typeof error === "object" &&
+        "message" in error &&
+        error.message && (
+          <p className="text-sm text-red-600">{String(error.message)}</p>
+        )}
     </div>
   );
 };

@@ -11,7 +11,7 @@ import {
   resetCourse,
 } from "../../../../store/slice";
 
-import { ICourse } from "../../../../types";
+import { Course } from "../../../../types";
 import { ProgressBar } from "./ProgressBar";
 import { CourseDetails } from "./CourseDetail";
 import { LessonsList } from "./LessonList";
@@ -27,7 +27,7 @@ export const CourseForm: React.FC = () => {
   );
   const navigate = useNavigate();
 
-  const methods = useForm<ICourse>({
+  const methods = useForm<Course>({
     defaultValues: course,
   });
 
@@ -37,17 +37,17 @@ export const CourseForm: React.FC = () => {
     { id: 3, name: "Review & Publish" },
   ];
 
-  const handleCourseDetailsSubmit = async (data: Partial<ICourse>) => {
+  const handleCourseDetailsSubmit = async (data: Partial<Course>) => {
     try {
       const createData = {
         title: data.title,
         description: data.description,
-        mentorId: course.mentorId,
-        categoryId: data.categoryId,
+        mentorId: course.mentor.id,
+        categoryId: data.category?.id,
         thumbnail: course.thumbnail,
         price: data.price,
       };
-      const response = await api.post<{ course: ICourse }>(
+      const response = await api.post<{ course: Course }>(
         "/api/courses",
         createData
       );
@@ -61,7 +61,7 @@ export const CourseForm: React.FC = () => {
     }
   };
 
-  // const handleAddLesson = async (lesson: ILesson) => {
+  // const handleAddLesson = async (lesson: Lesson) => {
   //   try {
   //     const createData = {
   //       title: lesson.title,
@@ -79,7 +79,7 @@ export const CourseForm: React.FC = () => {
   //   }
   // };
 
-  // const handleUpdateLesson = (index: number, lesson: ILesson) => {
+  // const handleUpdateLesson = (index: number, lesson: Lesson) => {
   //   dispatch(updateLesson({ index, lesson }));
   // };
 
@@ -124,10 +124,7 @@ export const CourseForm: React.FC = () => {
       <div className="bg-white rounded-lg shadow-md p-6 mt-6">
         <FormProvider {...methods}>
           {currentStep === 1 && (
-            <CourseDetails
-              onSubmit={handleCourseDetailsSubmit}
-              initialData={course}
-            />
+            <CourseDetails onSubmit={handleCourseDetailsSubmit} />
           )}
 
           {currentStep === 2 && (

@@ -57,7 +57,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, handleDelete }) => {
                 className={`absolute right-0 mt-2 w-48 ${styles.cardBg} rounded-md shadow-lg z-10 py-1 border ${styles.border}`}
               >
                 <button
-                  onClick={() => navigate(`/mentor/courses/${course.id}`)}
+                  onClick={() => navigate(`/mentor/courses/${course.id}/edit`)}
                   className={`flex items-center w-full px-4 py-2 text-sm ${styles.textPrimary} ${styles.hover}`}
                 >
                   <Edit className="w-4 h-4 mr-2" />

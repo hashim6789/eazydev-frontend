@@ -5,7 +5,7 @@ import Certificate from "../../components/learnings/Certicate";
 import { CertificateData } from "../../../../types";
 
 const CourseCertificateManagement: React.FC = () => {
-  const { progressId } = useParams(); // Retrieve progressId from the URL
+  const { progressId } = useParams();
   const [certificateData, setCertificateData] =
     useState<CertificateData | null>(null);
   const [loading, setLoading] = useState(false);

@@ -1,13 +1,17 @@
-// src/components/UI/Textarea.tsx - Reusable Textarea component
 import React from "react";
-import { FieldError, UseFormRegister } from "react-hook-form";
+import {
+  FieldError,
+  FieldErrorsImpl,
+  Merge,
+  UseFormRegister,
+} from "react-hook-form";
 
 interface TextareaProps {
   label: string;
   name: string;
   register: UseFormRegister<any>;
   rules?: Record<string, any>;
-  error?: FieldError;
+  error?: FieldError | Merge<FieldError, FieldErrorsImpl<any>> | undefined;
   placeholder?: string;
   rows?: number;
 }
@@ -37,7 +41,12 @@ export const Textarea: React.FC<TextareaProps> = ({
             : "border-gray-300 focus:border-blue-300 focus:ring-blue-200"
         }`}
       />
-      {error && <p className="text-sm text-red-600">{error.message}</p>}
+      {error &&
+        typeof error === "object" &&
+        "message" in error &&
+        error.message && (
+          <p className="text-sm text-red-600">{String(error.message)}</p>
+        )}
     </div>
   );
 };

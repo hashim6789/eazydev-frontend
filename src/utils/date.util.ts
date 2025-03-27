@@ -20,3 +20,14 @@ export const numberToDateString = (timestamp: number): string => {
     day: "numeric",
   }).format(new Date(timestamp));
 };
+
+// Format duration
+export const formatDuration = (totalSeconds: number): string => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+  return `${minutes}m`;
+};

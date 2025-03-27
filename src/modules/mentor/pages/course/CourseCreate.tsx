@@ -1,11 +1,11 @@
 // src/components/CourseCreation/index.tsx - Main entry point for course creation
 import React from "react";
-import { CourseForm } from "../../components/course";
+import { CourseFormA } from "../../components/course";
 
 const CourseCreation: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-6">
-      <CourseForm />
+      <CourseFormA isEditing={false} />
     </div>
   );
 };

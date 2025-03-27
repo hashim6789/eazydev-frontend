@@ -9,3 +9,5 @@ export * from "./Input";
 export * from "./FileUpload";
 export * from "./CourseForm";
 export * from "./CourseDetail";
+export * from "./CourseFormEdit";
+export * from "./CourseReview";
