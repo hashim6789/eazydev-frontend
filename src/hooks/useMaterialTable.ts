@@ -39,7 +39,7 @@ UseMaterialTableFunctionalityOptions) {
       }
     };
 
-    const debounceTimeout = setTimeout(fetchData, 500); // Debounce effect
+    const debounceTimeout = setTimeout(fetchData, 500);
     return () => clearTimeout(debounceTimeout);
   }, [materialFilterType, searchQuery, currentPage, itemsPerPage]);
 
