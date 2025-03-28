@@ -13,7 +13,6 @@ const MentorMeetingManagement: React.FC = () => {
   const [slots, setSlots] = useState<ISlot[]>([]);
   const [, setLoading] = useState<boolean>(false);
 
-  // Fetch slots with useCallback for better dependency management
   const fetchSlots = useCallback(async () => {
     setLoading(true);
     try {
@@ -28,19 +27,17 @@ const MentorMeetingManagement: React.FC = () => {
     }
   }, []);
 
-  // Initial fetch on component mount
   useEffect(() => {
     fetchSlots();
   }, [fetchSlots]);
 
-  // Handles adding a new slot
   const handleAddSlot = async (data: SlotFormData) => {
     try {
       const hour = parseInt(data.time.split(":")[0], 10);
       const newSlot = {
         mentorId: getUserProperty("id"),
         time: hour,
-        isBooked: false, // Default value for a new slot
+        isBooked: false,
       };
 
       const response = await api.post("/api/slots", newSlot);
@@ -60,14 +57,11 @@ const MentorMeetingManagement: React.FC = () => {
     <div className="w-full h-full p-6 bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-semibold mb-4">Manage Availability</h2>
 
-      {/* Scheduled Meetings Table */}
       <ScheduledMeetingsTable role="mentor" />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        {/* Available Slots List */}
         <AvailableSlots slots={slots} />
 
-        {/* Slot Form to add new slots */}
         <SlotForm onSubmit={handleAddSlot} />
       </div>
     </div>
