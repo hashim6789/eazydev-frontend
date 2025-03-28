@@ -131,7 +131,7 @@ const MaterialList: React.FC<{
       <div className={`border-t ${theme.border}`}>
         {lesson.materials.map((material) => (
           <div
-            onClick={() => navigate(`/mentor/my-materials/${material.id}`)}
+            onClick={() => navigate(`/mentor/materials/${material.id}`)}
             key={material.id}
             className={`flex items-center p-4 hover:${theme.lightBg} transition-colors border-b ${theme.border} last:border-b-0 cursor-pointer`}
           >

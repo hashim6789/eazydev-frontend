@@ -61,6 +61,7 @@ const MessageInput = ({ socket }: MessageInputProps) => {
         const data = {
           id,
           sender,
+          groupId: selectedGroupId,
           message: messageData.message,
           createdAt: messageData.createdAt,
         };

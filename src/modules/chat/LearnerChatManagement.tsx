@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { io, Socket } from "socket.io-client";
 import ChatMessages from "./ChatMessages";
 import { api, config } from "../../configs";
+import { getUserProperty } from "../../utils/local-user.util";
 
 // Connect to the Socket.io server
 const socket = io(`${config.API_BASE_URL}/chats`, {
@@ -27,9 +28,9 @@ const useSocket = (socket: Socket) => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("data") || "{}");
+    const userId = getUserProperty("id") as string;
 
-    socket.emit("setup", userData.id);
+    socket.emit("setup", userId);
 
     const handleConnected = () => {
       console.log("user connected");
@@ -44,6 +45,7 @@ const useSocket = (socket: Socket) => {
     };
 
     socket.on("connected", handleConnected);
+    // socket.on("receive message", handleConnected);
     socket.on("start typing", handleStartTyping);
     socket.on("stop typing", handleStopTyping);
     socket.on("online", handleOnlineCount);

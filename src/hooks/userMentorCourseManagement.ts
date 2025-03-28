@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useFormContext } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { AppDispatch, RootState } from "../store";
-import { Category, Course, Lesson, IMaterial, ILesson } from "../types";
+import { Category, Course, Lesson, Material } from "../types";
 import useFetch from "./useFetch";
 import { api, config } from "../configs";
 import {
@@ -15,42 +14,36 @@ import {
   addLesson,
   updateLesson,
   removeLesson,
+  removeMaterial,
+  updateMaterial,
+  addMaterial,
 } from "../store/slice";
 import { showErrorToast, showSuccessToast } from "../utils";
 
-export const useMentorCourseManagement = (isEditing: boolean) => {
+export const useMentorCourseManagement = () => {
+  // Redux and navigation hooks
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-  const { course, currentStep } = useSelector(
+  const { course, currentStep, isEditing } = useSelector(
     (state: RootState) => state.course
   );
 
+  // Local states for lessons and materials
   const [isAddingLesson, setIsAddingLesson] = useState(false);
+  const [editingLessonIndex, setEditingLessonIndex] = useState<number | null>(
+    null
+  );
 
-  // const {
-  //   register,
-  //   setValue,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useFormContext<Course>();
-
-  const { data: categories } = useFetch<Category[]>("/api/categories");
-
-  const [materials, setMaterials] = useState<IMaterial[]>([]);
+  const [materials, setMaterials] = useState<Material[]>([]);
   const [isAddingMaterial, setIsAddingMaterial] = useState(false);
   const [editingMaterialIndex, setEditingMaterialIndex] = useState<
     number | null
   >(null);
 
-  // useEffect(() => {
-  //   if (course.id) {
-  //     setValue("title", course.title);
-  //     setValue("price", course.price);
-  //     setValue("description", course.description);
-  //     setValue("category", course.category);
-  //   }
-  // }, [course, setValue]);
+  // Fetch categories
+  const { data: categories } = useFetch<Category[]>("/api/categories");
 
+  // Thumbnail Upload Handler
   const handleThumbnailUpload = async (
     fileKey: string,
     filePreview: string,
@@ -79,6 +72,7 @@ export const useMentorCourseManagement = (isEditing: boolean) => {
     }
   };
 
+  // Course Submission Handler
   const handleCourseSubmit = async (data: Partial<Course>) => {
     try {
       const updatedData = {
@@ -112,12 +106,12 @@ export const useMentorCourseManagement = (isEditing: boolean) => {
     }
   };
 
+  // Course Publishing Handler
   const handlePublishCourse = async () => {
     try {
-      await api.patch(`/api/courses/${course.id}`, {
-        newStatus: "requested",
-      });
+      await api.patch(`/api/courses/${course.id}`, { newStatus: "requested" });
       navigate("/mentor/courses");
+      dispatch(setCurrentStep(1));
       dispatch(resetCourse());
       showSuccessToast(
         isEditing
@@ -127,76 +121,154 @@ export const useMentorCourseManagement = (isEditing: boolean) => {
     } catch (error: any) {
       showErrorToast(
         error.response.data.error ||
-          `An error occurred while publishing the course.`
+          "An error occurred while publishing the course."
       );
     }
   };
 
+  // Save Draft Handler
   const handleSaveDraft = () => {
+    dispatch(setCurrentStep(1));
     dispatch(resetCourse());
     showSuccessToast("Draft saved successfully.");
     navigate("/mentor/courses");
   };
 
-  // Lesson Management Functions
+  // Lesson Management Handlers
   const handleLessonManagement = {
-    add: async (lesson: Lesson) => {
+    add: async (lesson: Lesson, materialIds: string[]) => {
       try {
+        console.log(course.id);
         const response = await api.post<string>("/api/lessons", {
           ...lesson,
           mentorId: course.mentor.id,
           courseId: course.id,
-          materials: materials.map((item) => item.id),
+          materials: materialIds,
         });
+
         if (response.status === 201 && response.data) {
           dispatch(addLesson({ ...lesson, id: response.data }));
-          showSuccessToast("lesson created successfully");
+          showSuccessToast("Lesson created successfully");
+          setIsAddingLesson(false);
+          return response.data;
+        }
+        return null;
+      } catch (error: any) {
+        showErrorToast(error.response.data.error || "Failed to create lesson");
+        return null;
+      }
+    },
+
+    update: async (index: number, lesson: Lesson, materialIds: string[]) => {
+      try {
+        const response = await api.put<string>(`/api/lessons/${lesson.id}`, {
+          ...lesson,
+          mentorId: course.mentor.id,
+          courseId: course.id,
+          materials: materialIds,
+        });
+
+        if (response.status === 200) {
+          dispatch(updateLesson({ index, lesson }));
+          showSuccessToast("Lesson updated successfully");
+          setEditingLessonIndex(null);
           setIsAddingLesson(false);
         }
       } catch (error: any) {
-        showErrorToast(error.response.data.error || "lesson creation faild");
+        showErrorToast(error.response.data.error || "Failed to update lesson");
       }
     },
 
-    update: (index: number, lesson: Lesson) =>
-      dispatch(updateLesson({ index, lesson })),
-    remove: (index: number) => dispatch(removeLesson(index)),
+    remove: async (index: number) => {
+      try {
+        const lesson = course.lessons[index];
+        const response = await api.delete(
+          `/api/lessons/${lesson.id}/courses/${course.id}`
+        );
+
+        if (response.status === 200) {
+          dispatch(removeLesson(index));
+          showSuccessToast("Lesson deleted successfully");
+          setIsAddingLesson(false);
+          setEditingLessonIndex(null);
+        }
+      } catch (error: any) {
+        showErrorToast(error.response.data.error || "Failed to delete lesson");
+      }
+    },
   };
 
-  // Material Management Functions
   const handleMaterialManagement = {
-    add: async (material: IMaterial) => {
+    add: async (lessonIndex: number, material: Material) => {
       try {
-        const response = await axios.post<{ material: IMaterial }>(
-          `/api/materials`,
+        const response = await api.post<string>("/api/materials", material);
+
+        if (response.status === 201) {
+          dispatch(
+            addMaterial({
+              lessonIndex,
+              material: { ...material, id: response.data },
+            })
+          );
+          setIsAddingMaterial(false);
+          showSuccessToast("Material created successfully");
+          return response.data;
+        }
+        return null;
+      } catch (error: any) {
+        showErrorToast("Failed to create material");
+        return null;
+      }
+    },
+
+    update: async (
+      lessonIndex: number,
+      materialIndex: number,
+      material: Material
+    ) => {
+      try {
+        console.log("material", material);
+        const response = await api.put<string>(
+          `/api/materials/${material.id}`,
           material
         );
-        if (response && response.status === 201) {
-          setMaterials((prev) => [...prev, response.data.material]);
-          setIsAddingMaterial(false);
-          showSuccessToast("Material successfully created");
+
+        if (response.status === 200) {
+          dispatch(
+            updateMaterial({
+              lessonIndex,
+              materialIndex,
+              material,
+            })
+          );
+          setEditingMaterialIndex(null);
+          showSuccessToast("Material updated successfully");
+          return true;
         }
-      } catch (error) {
-        showErrorToast("Failed to add material.");
+        return false;
+      } catch (error: any) {
+        showErrorToast(
+          error.response.data.error || "Failed to update material"
+        );
+        return false;
       }
     },
-    update: (index: number, material: IMaterial) => {
-      if (editingMaterialIndex !== null) {
-        setMaterials((prev) => {
-          const updated = [...prev];
-          updated[index] = material;
-          return updated;
-        });
-        setEditingMaterialIndex(null);
+
+    remove: async (lessonIndex: number, materialIndex: number) => {
+      try {
+        const material = course.lessons[lessonIndex].materials[materialIndex];
+        const response = await api.delete(`/api/materials/${material.id}`);
+
+        if (response.status === 200) {
+          dispatch(removeMaterial({ lessonIndex, materialIndex }));
+          setEditingMaterialIndex(null);
+          showSuccessToast("Material deleted successfully");
+        }
+      } catch (error: any) {
+        showErrorToast("Failed to delete material");
       }
     },
-    remove: (index: number) => {
-      setMaterials((prev) => {
-        const updated = [...prev];
-        updated.splice(index, 1);
-        return updated;
-      });
-    },
+
     startAdding: () => setIsAddingMaterial(true),
     stopAdding: () => setIsAddingMaterial(false),
     startEditing: (index: number) => setEditingMaterialIndex(index),
@@ -204,24 +276,26 @@ export const useMentorCourseManagement = (isEditing: boolean) => {
   };
 
   return {
-    // register,
-    // handleSubmit,
-    // errors,
     categories: categories || [],
     course,
     currentStep,
-    // setValue,
+    isEditing,
+    materials,
+    setMaterials,
+    setEditingMaterialIndex,
     handleThumbnailUpload,
     handleCourseSubmit,
     handlePublishCourse,
     handleSaveDraft,
     isAddingLesson,
     setIsAddingLesson,
+    setEditingLessonIndex,
     handleLessonManagement,
-    handleMaterialManagement,
     isAddingMaterial,
+    editingLessonIndex,
     editingMaterialIndex,
-    materials,
+    setIsAddingMaterial,
+    handleMaterialManagement,
     setStep: (step: number) => dispatch(setCurrentStep(step)),
   };
 };

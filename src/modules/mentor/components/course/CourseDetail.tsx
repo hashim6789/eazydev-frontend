@@ -11,6 +11,17 @@ import {
 
 export const CourseDetails: React.FC = () => {
   const {
+    categories,
+    course,
+    setStep,
+    handleThumbnailUpload,
+    handleCourseSubmit,
+  } = useMentorCourseManagement();
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    course.category
+  );
+
+  const {
     handleSubmit,
     register,
     setValue,
@@ -18,15 +29,14 @@ export const CourseDetails: React.FC = () => {
     watch,
   } = useForm<CourseDetailsFormSchema>({
     resolver: zodResolver(CourseDetailsSchema),
+    defaultValues: {
+      title: course.title, // Default value for 'title'
+      price: course.price, // Default value for 'price'
+      category: course.category, // Default value for 'category'
+      description: course.description, // Default value for 'description'
+      thumbnail: course.thumbnail, // Default value for 'thumbnail' URL
+    },
   });
-
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null
-  );
-
-  const { categories, course, handleThumbnailUpload, handleCourseSubmit } =
-    useMentorCourseManagement(false);
-
   //     // Watch the category field to sync form values dynamically
   // const watchCategory = watch("category");
 
@@ -190,6 +200,17 @@ export const CourseDetails: React.FC = () => {
           {course.id ? "Update Course" : "Create Course"}
         </button>
       </div>
+      {course.id && (
+        <div className="pt-4 flex justify-start">
+          <button
+            type="button"
+            onClick={() => setStep(2)}
+            className="px-6 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700"
+          >
+            Go to Lessons
+          </button>
+        </div>
+      )}
     </form>
   );
 };

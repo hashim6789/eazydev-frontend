@@ -33,6 +33,13 @@ interface AdminDashboardData {
   loading: boolean;
 }
 
+interface AdminAnalyzeResponseType {
+  mentorStatusData: UserStatusData[];
+  learnerStatusData: UserStatusData[];
+  coursePerformanceData: CoursePerformanceData[];
+  monthlyRevenueData: MonthlyRevenueData[];
+}
+
 const useAdminDashboardData = (): AdminDashboardData => {
   const [mentorStatuses, setMentorStatuses] = useState<UserStatusData[]>([]);
   const [learnerStatuses, setLearnerStatuses] = useState<UserStatusData[]>([]);
@@ -50,11 +57,23 @@ const useAdminDashboardData = (): AdminDashboardData => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.get(`/api/analysis/admin`);
-        setMentorStatuses(response.data.data.mentorStatusData);
-        setLearnerStatuses(response.data.data.learnerStatusData);
-        setCoursePerformanceData(response.data.data.coursePerformanceData);
-        setMonthlyRevenueData(response.data.data.monthlyRevenueData);
+        const response = await api.get<AdminAnalyzeResponseType>(
+          `/api/analysis/admin`
+        );
+
+        const {
+          mentorStatusData,
+          learnerStatusData,
+          coursePerformanceData,
+          monthlyRevenueData,
+        } = response.data;
+
+        console.log(response.data);
+
+        setMentorStatuses(mentorStatusData);
+        setLearnerStatuses(learnerStatusData);
+        setCoursePerformanceData(coursePerformanceData);
+        setMonthlyRevenueData(monthlyRevenueData);
         setError(null);
       } catch (err) {
         console.error("Error fetching admin data:", err);

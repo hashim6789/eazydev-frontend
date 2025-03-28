@@ -6,21 +6,18 @@ import { LessonsList } from "./LessonList";
 import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
 import CourseReview from "./CourseReview";
 
-interface CourseFormProps {
-  isEditing?: boolean;
-}
+interface CourseFormProps {}
 
-export const CourseFormA: React.FC<CourseFormProps> = ({
-  isEditing = false,
-}) => {
+export const CourseFormA: React.FC<CourseFormProps> = ({}) => {
   const methods = useForm();
   const {
     currentStep,
+    isEditing,
     handleCourseSubmit,
     handlePublishCourse,
     handleSaveDraft,
     setStep,
-  } = useMentorCourseManagement(isEditing);
+  } = useMentorCourseManagement();
 
   const steps = [
     { id: 1, name: "Course Details" },
@@ -43,28 +40,6 @@ export const CourseFormA: React.FC<CourseFormProps> = ({
             <LessonsList onBack={() => setStep(1)} onNext={() => setStep(3)} />
           )}
           {currentStep === 3 && (
-            // <div className="space-y-6">
-            //   <h2 className="text-xl font-semibold">
-            //     {isEditing
-            //       ? "Review Updates to Your Course"
-            //       : "Review Your Course"}
-            //   </h2>
-            //   <div className="flex justify-between pt-4">
-            //     <button
-            //       onClick={handleSaveDraft}
-            //       className="px-4 py-2 border border-blue-500 rounded-md text-blue-500"
-            //     >
-            //       Save as Draft
-            //     </button>
-            //     <button
-            //       onClick={handlePublishCourse}
-            //       className="px-4 py-2 bg-blue-600 rounded-md text-white hover:bg-blue-700"
-            //     >
-            //       {isEditing ? "Request Update" : "Publish Course"}
-            //     </button>
-            //   </div>
-            // </div>
-
             <CourseReview
               isEditing={isEditing}
               onSaveDraft={handleSaveDraft}

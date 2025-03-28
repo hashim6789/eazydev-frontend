@@ -8,6 +8,7 @@ import { LessonFormSchema, LessonSchema } from "../../../../schemas";
 import { MaterialForm } from "./MaterialForm";
 import { api } from "../../../../configs";
 import { showErrorToast, showSuccessToast } from "../../../../utils";
+import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
 
 interface LessonFormProps {
   initialData?: Lesson;
@@ -20,6 +21,17 @@ export const LessonForm: React.FC<LessonFormProps> = ({
   onSubmit,
   onCancel,
 }) => {
+  const {
+    course,
+    handleMaterialManagement,
+    isAddingMaterial,
+    editingLessonIndex,
+    setIsAddingMaterial,
+    // materials,
+    // setMaterials,
+    editingMaterialIndex,
+    setEditingMaterialIndex,
+  } = useMentorCourseManagement();
   const {
     register,
     handleSubmit,
@@ -35,10 +47,7 @@ export const LessonForm: React.FC<LessonFormProps> = ({
   const [materials, setMaterials] = useState<Material[]>(
     initialData?.materials || []
   );
-  const [isAddingMaterial, setIsAddingMaterial] = useState(false);
-  const [editingMaterialIndex, setEditingMaterialIndex] = useState<
-    number | null
-  >(null);
+  console.log("material form", materials);
 
   const handleLessonSubmit: SubmitHandler<LessonFormSchema> = (data) => {
     onSubmit({
@@ -49,28 +58,59 @@ export const LessonForm: React.FC<LessonFormProps> = ({
   };
 
   const handleAddMaterial = async (material: Material) => {
-    try {
-      const response = await api.post<string>("/api/materials", material);
-      if (response.status === 201 && response.data)
-        setMaterials((prevMaterials) => [
-          ...prevMaterials,
-          { ...material, id: response.data },
-        ]);
-      showSuccessToast("material created successfully");
-      setIsAddingMaterial(false);
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || "Failed to create material");
+    console.log("add material", material);
+    const materialId = await handleMaterialManagement.add(
+      editingLessonIndex ?? course.lessons.length,
+      material
+    );
+
+    if (!materialId) {
+      return;
     }
+    setMaterials((prev) => [...prev, { ...material, id: materialId }]);
+    setIsAddingMaterial(false);
+
+    // try {
+    //   const response = await api.post<string>("/api/materials", material);
+    //   if (response.status === 201 && response.data)
+    //     setMaterials((prevMaterials) => [
+    //       ...prevMaterials,
+    //       { ...material, id: response.data },
+    //     ]);
+    //   showSuccessToast("material created successfully");
+    // } catch (error: any) {
+    //   showErrorToast(error.response.data.error || "Failed to create material");
+    // }
   };
 
-  const handleUpdateMaterial = (material: Material) => {
-    if (editingMaterialIndex !== null) {
-      setMaterials((prevMaterials) => {
-        const updatedMaterials = [...prevMaterials];
-        updatedMaterials[editingMaterialIndex] = material;
+  const handleUpdateMaterial = async (material: Material) => {
+    // if (editingMaterialIndex !== null) {
+    //   setMaterials((prevMaterials) => {
+    //     const updatedMaterials = [...prevMaterials];
+    //     updatedMaterials[editingMaterialIndex] = material;
+    //     return updatedMaterials;
+    //   });
+    //   setEditingMaterialIndex(null);
+    // }
+
+    console.log("update material", material);
+    const lessonIndex = editingLessonIndex ?? course.lessons.length;
+    const materialIndex =
+      editingMaterialIndex ?? course.lessons[lessonIndex].materials.length;
+    const success = await handleMaterialManagement.update(
+      lessonIndex,
+      materialIndex,
+      material
+    );
+    if (success) {
+      setIsAddingMaterial(false);
+
+      setMaterials((prev) => {
+        // If editingMaterialIndex exists, replace the material at that index
+        const updatedMaterials = [...prev];
+        updatedMaterials[materialIndex] = material;
         return updatedMaterials;
       });
-      setEditingMaterialIndex(null);
     }
   };
 

@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import useFetch from "../../../../hooks/useFetch";
-import { useForm } from "react-hook-form";
 import { AppDispatch, RootState } from "../../../../store";
 import { Material } from "../../../../types/material";
 import { useThemeStyles } from "../../../../utils/color-theme.util";
-import { showErrorToast, showSuccessToast } from "../../../../utils";
 import { ArrowLeft } from "lucide-react";
-import {
-  // editMaterial,
-  resetForm,
-  setMaterial,
-} from "../../../../store/slice/materialSlice";
-import { updateMaterial } from "../../../../store/thunks/update-material.thunk";
+import { setMaterial } from "../../../../store/slice/materialSlice";
 import { DetailsHeader } from "../../components/MaterialsDetailsHeader";
 import { MaterialDetailsContent } from "../../components/MaterialDetailContent";
-import { MaterialActions } from "../../components/MaterialActions";
-import MaterialForm from "../../components/MaterialForm";
 
 const MaterialDetails: React.FC = () => {
   const { materialId } = useParams<{ materialId: string }>();
@@ -26,69 +17,14 @@ const MaterialDetails: React.FC = () => {
   const { material, error, loading } = useSelector(
     (state: RootState) => state.material
   );
-  const [isEditing, setIsEditing] = useState(false);
 
-  const { setValue } = useForm<Material>();
   const theme = useThemeStyles();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<Material>({
-    defaultValues: material || {},
-  });
-
-  const selectedType = watch("type");
-
-  const [uploading] = useState<boolean>(false);
-  const fileKey = material ? material.fileKey : null;
-  const [preview] = useState<string | null>(fileKey); // Store the preview URL
-
-  // Function to handle file upload (you can customize this)
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Handle file upload logic
-    }
-  };
 
   useEffect(() => {
     if (data) {
       dispatch(setMaterial(data));
     }
   }, [data, dispatch]);
-
-  // const handleChange = (field: keyof Material, value: any) => {
-  //   if (field === "duration") value = Number(value);
-  //   dispatch(editMaterial({ [field]: value }));
-  //   setValue(field, value);
-  // };
-
-  const handleEditClick = () => {
-    setIsEditing(!isEditing);
-    dispatch(resetForm());
-  };
-
-  const onSubmit = async () => {
-    setIsEditing(false);
-    try {
-      if (!material) return null;
-      const resultAction = await dispatch(
-        updateMaterial({
-          data: material,
-        })
-      );
-      if (updateMaterial.fulfilled.match(resultAction)) {
-        showSuccessToast("The course updated successfully.");
-      } else {
-        showErrorToast("The course update failed!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   if (loading) {
     return (
@@ -130,28 +66,6 @@ const MaterialDetails: React.FC = () => {
           <div className="p-6">
             <MaterialDetailsContent material={material} />
           </div>
-
-          {isEditing && (
-            <MaterialForm
-              onSubmit={onSubmit}
-              register={register}
-              handleSubmit={handleSubmit}
-              setValue={setValue}
-              handleFileUpload={handleFileUpload}
-              watch={watch}
-              errors={errors}
-              uploading={uploading}
-              preview={preview}
-              selectedType={selectedType}
-              mode="edit"
-              defaultValues={material}
-            />
-          )}
-
-          <MaterialActions
-            isEditing={isEditing}
-            handleEditClick={handleEditClick}
-          />
         </div>
       </div>
     </div>

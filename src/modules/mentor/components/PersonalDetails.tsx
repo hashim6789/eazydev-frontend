@@ -8,6 +8,7 @@ import { api, config } from "../../../configs";
 import { showErrorToast, showSuccessToast } from "../../../utils";
 import userImage from "../../../assets/img/user_image.avif";
 import { getUserProperty } from "../../../utils/local-user.util";
+import { User } from "../../../types";
 
 // Form Validation Schema
 const schema = z.object({
@@ -26,7 +27,7 @@ const PersonalDetails: React.FC = () => {
   const [profilePicture, setProfilePicture] = useState<string>(
     (getUserProperty("profilePicture") as string) ?? userImage
   );
-  const [userDetails, setUserDetails] = useState<any>(null);
+  const [userDetails, setUserDetails] = useState<User | null>(null);
   const [, setLoading] = useState<boolean>(true);
   const [, setError] = useState<string | null>(null);
   const [isEditable, setIsEditable] = useState<boolean>(false);
@@ -35,10 +36,10 @@ const PersonalDetails: React.FC = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await api.get(`/api/users/personal`);
+        const response = await api.get<User>(`/api/users/personal`);
         setUserDetails(response.data);
-        if (response.data.data.profilePicture) {
-          setProfilePicture(response.data.data.profilePicture);
+        if (response.data.profilePicture) {
+          setProfilePicture(response.data.profilePicture);
         }
       } catch (err) {
         setError("Failed to fetch user details");
@@ -71,7 +72,7 @@ const PersonalDetails: React.FC = () => {
         setProfilePicture(profilePicture);
 
         // Update profile image in backend
-        await api.put("/api/profile/mentor/profile-img", { profilePicture });
+        await api.put("/api/users/profile-img", { profilePicture });
       }
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -90,9 +91,9 @@ const PersonalDetails: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await api.put("/api/profile/mentor/personal", data);
+      const response = await api.put("/api/users/personal", data);
       if (response.status === 200) {
-        showSuccessToast(response.data.message);
+        showSuccessToast("personal data updated successfully");
         setIsEditable(false);
       }
     } catch (error: any) {
@@ -156,7 +157,7 @@ const PersonalDetails: React.FC = () => {
             </label>
             <input
               {...register("firstName")}
-              defaultValue={userDetails?.firstName}
+              defaultValue={userDetails?.firstName || ""}
               placeholder="Enter first name"
               className={`w-full p-2 rounded-md border ${
                 errors.firstName ? "border-red-500" : "border-gray-300"
@@ -175,7 +176,7 @@ const PersonalDetails: React.FC = () => {
             </label>
             <input
               {...register("lastName")}
-              defaultValue={userDetails?.lastName || "Hashim"}
+              defaultValue={userDetails?.lastName || ""}
               placeholder="Enter last name"
               className={`w-full p-2 rounded-md border ${
                 errors.lastName ? "border-red-500" : "border-gray-300"

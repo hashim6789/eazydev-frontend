@@ -1,3 +1,4 @@
+import { Category } from "./category";
 import { MaterialType } from "./material";
 import { UserBaseDetails } from "./User";
 
@@ -85,7 +86,7 @@ export interface Course {
   id: string;
   title: string;
   mentor: UserBaseDetails;
-  category: { id: string; title: string };
+  category: Category;
   description: string;
   thumbnail: string;
   lessons: Lesson[];

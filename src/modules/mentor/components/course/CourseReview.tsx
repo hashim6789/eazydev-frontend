@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { ChevronRight, Clock, BookOpen, Video, Edit } from "lucide-react";
 import { Course } from "../../../../types";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../../../store";
 import { formatDuration } from "../../../../utils/date.util";
+import { useNavigate } from "react-router-dom";
+import { removeCourseDetails, setCurrentStep } from "../../../../store/slice";
 
 interface CourseReviewProps {
   //   course: Course;
@@ -20,6 +22,8 @@ const CourseReview: React.FC<CourseReviewProps> = ({
 }) => {
   const [activeLesson, setActiveLesson] = useState<string | null>(null);
   const { course } = useSelector((state: RootState) => state.course);
+  const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
 
   // Calculate total course duration
   const totalCourseDuration = course.lessons.reduce(
@@ -42,6 +46,12 @@ const CourseReview: React.FC<CourseReviewProps> = ({
       default:
         return null;
     }
+  };
+
+  const handleGotoCourse = () => {
+    dispatch(setCurrentStep(1));
+    dispatch(removeCourseDetails());
+    navigate("/mentor/courses");
   };
 
   return (
@@ -162,18 +172,29 @@ const CourseReview: React.FC<CourseReviewProps> = ({
 
         {/* Action Buttons */}
         <div className="flex justify-between pt-4 space-x-4">
-          <button
-            onClick={onSaveDraft}
-            className="px-6 py-2 border rounded-md bg-white hover:bg-gray-50"
-          >
-            Save as Draft
-          </button>
-          <button
-            onClick={onPublishCourse}
-            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-          >
-            {isEditing ? "Request Update" : "Publish Course"}
-          </button>
+          {!isEditing ? (
+            <>
+              <button
+                onClick={onSaveDraft}
+                className="px-6 py-2 border rounded-md bg-white hover:bg-gray-50"
+              >
+                Save as Draft
+              </button>
+              <button
+                onClick={onPublishCourse}
+                className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+              >
+                {isEditing ? "Request Update" : "Publish Course"}
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={handleGotoCourse}
+              className="px-6 py-2 border rounded-md bg-white hover:bg-gray-50"
+            >
+              Go to courses
+            </button>
+          )}
         </div>
       </div>
     </div>

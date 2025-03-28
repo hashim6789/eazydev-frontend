@@ -1,32 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { api } from "../../../configs";
 import { showErrorToast, showSuccessToast } from "../../../utils";
-
-const verifyPasswordSchema = z.object({
-  currentPassword: z
-    .string()
-    .min(6, "Current password must be at least 6 characters"),
-});
-
-const changePasswordSchema = z
-  .object({
-    newPassword: z
-      .string()
-      .min(6, "New password must be at least 6 characters"),
-    confirmPassword: z
-      .string()
-      .min(6, "Confirm password must be at least 6 characters"),
-  })
-  .refine((data) => data.newPassword === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ["confirmPassword"], // path of error
-  });
-
-type VerifyPasswordFormData = z.infer<typeof verifyPasswordSchema>;
-type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;
+import {
+  ChangePasswordFormData,
+  changePasswordSchema,
+  VerifyPasswordFormData,
+  verifyPasswordSchema,
+} from "../../../schemas";
 
 interface ChangePasswordProps {}
 
@@ -52,34 +34,30 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
 
   const verifyCurrentPassword = async (data: VerifyPasswordFormData) => {
     try {
-      const response = await api.post(
-        "/api/profile/mentor/verify-password",
-        data
-      );
-      if (response.status === 200 && response.data) {
-        showSuccessToast(response.data.message);
+      const response = await api.post("/api/users/verify-password", data);
+      if (response.status === 200) {
+        showSuccessToast("The current password is verified successfully");
         setIsVerified(true);
       }
     } catch (error: any) {
-      showErrorToast(error.message);
+      showErrorToast(error.response.data.error);
       console.error(error);
     }
   };
 
   const changePassword = async (data: ChangePasswordFormData) => {
     try {
-      const response = await api.post(
-        "/api/profile/mentor/change-password",
-        data
-      );
-      if (response.status === 200 && response.data) {
-        showSuccessToast(response.data.message);
+      const response = await api.post("/api/users/change-password", data);
+      if (response.status === 200) {
+        showSuccessToast("password changed successfully");
         setIsVerified(false);
         setValueChangePassword("newPassword", "");
         setValueChangePassword("confirmPassword", "");
       }
     } catch (error: any) {
-      showErrorToast(error.message);
+      showErrorToast(
+        error.response.data.error || "failed to change the password!"
+      );
       console.error(error);
     }
   };

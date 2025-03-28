@@ -78,16 +78,17 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
       if (materialType === "reading" || materialType === "video") {
         setPreview(URL.createObjectURL(file));
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("File upload failed:", error);
-      showErrorToast("Failed to upload the file.");
+      showErrorToast(error.response.data.error || "Failed to upload the file.");
     } finally {
       setUploading(false);
     }
   };
 
   const handleMaterialSubmit: SubmitHandler<MaterialFormSchema> = (data) => {
-    onSubmit({ ...data, fileKey: data.fileKey || "", id: "" });
+    const materialId = initialData ? initialData.id : "";
+    onSubmit({ ...data, fileKey: data.fileKey || "", id: materialId });
   };
 
   return (

@@ -3,7 +3,7 @@ import { Book, DollarSign } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../../store";
-import { CourseStatus, ICourse, UserRole } from "../../../types";
+import { Course, CourseStatus, ICourse, UserRole } from "../../../types";
 import { api } from "../../../configs";
 import {
   getCourseStatusColor,
@@ -20,9 +20,7 @@ interface CourseDetailsPageProps {
 
 const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
   const { courseId } = useParams<{ courseId: string }>();
-  const course = useSelector<RootState, ICourse | null>(
-    (state) => state.course.course
-  );
+  const { course } = useSelector((state: RootState) => state.course);
   const dispatch = useDispatch<AppDispatch>();
   const theme = useThemeStyles();
 
@@ -36,7 +34,7 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
 
       setIsLoading(true);
       try {
-        const response = await api.get<ICourse>(`/api/courses/${courseId}`);
+        const response = await api.get<Course>(`/api/courses/${courseId}`);
         dispatch(setCourseDetails(response.data));
       } catch (error: any) {
         showErrorToast(

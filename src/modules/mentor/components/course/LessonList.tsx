@@ -3,6 +3,7 @@ import { PlusIcon, PencilIcon, TrashIcon } from "lucide-react";
 import { LessonForm } from "./LessonForm";
 import { Lesson } from "../../../../types";
 import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
+import { setMaterial } from "../../../../store/slice";
 
 interface LessonsListProps {
   onBack: () => void;
@@ -14,26 +15,25 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
     course,
     handleLessonManagement,
     isAddingLesson,
+    editingLessonIndex,
+    materials,
+    setMaterials,
+    setEditingLessonIndex,
     setIsAddingLesson,
-    currentStep,
-    setStep,
-  } = useMentorCourseManagement(false);
-
-  const [editingLessonIndex, setEditingLessonIndex] = useState<number | null>(
-    null
-  );
+  } = useMentorCourseManagement();
 
   const { lessons } = course;
 
   // Handlers for Adding, Editing, and Removing Lessons
   const handleAddLesson = async (lesson: Lesson) => {
-    handleLessonManagement.add(lesson);
+    const materialIds = materials.map((item) => item.id);
+    handleLessonManagement.add(lesson, materialIds);
   };
 
   const handleUpdateLesson = (lesson: Lesson) => {
     if (editingLessonIndex !== null) {
-      handleLessonManagement.update(editingLessonIndex, lesson);
-      setEditingLessonIndex(null);
+      const materialIds = materials.map((item) => item.id);
+      handleLessonManagement.update(editingLessonIndex, lesson, materialIds);
     }
   };
 
@@ -43,6 +43,7 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
 
   const handleEditLesson = (index: number) => {
     setEditingLessonIndex(index);
+    setMaterials(course.lessons[index].materials);
   };
 
   return (
