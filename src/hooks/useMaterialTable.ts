@@ -43,14 +43,6 @@ UseMaterialTableFunctionalityOptions) {
     return () => clearTimeout(debounceTimeout);
   }, [materialFilterType, searchQuery, currentPage, itemsPerPage]);
 
-  // const filteredData = useMemo(() => {
-  //   return data.filter((item) => {
-  //     return String(item[filterField])
-  //       .toLowerCase()
-  //       .includes(searchQuery.toLowerCase());
-  //   });
-  // }, [data, searchQuery, filterField]);
-
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
