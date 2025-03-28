@@ -1,5 +1,4 @@
 import { Pie, Bar, Line } from "react-chartjs-2";
-import { GraduationCap, Lightbulb, Users } from "lucide-react";
 import { ChartCard } from "../../shared/components";
 import useMentorDashboardData from "../../../hooks/useMenorDashboard";
 import {

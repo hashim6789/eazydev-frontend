@@ -3,7 +3,6 @@ import { useForm, FormProvider } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
 import {
-  setCourseDetails,
   // addLesson,
   // updateLesson,
   // removeLesson,
@@ -37,29 +36,29 @@ export const CourseForm: React.FC = () => {
     { id: 3, name: "Review & Publish" },
   ];
 
-  const handleCourseDetailsSubmit = async (data: Partial<Course>) => {
-    try {
-      const createData = {
-        title: data.title,
-        description: data.description,
-        mentorId: course.mentor.id,
-        categoryId: data.category?.id,
-        thumbnail: course.thumbnail,
-        price: data.price,
-      };
-      const response = await api.post<{ course: Course }>(
-        "/api/courses",
-        createData
-      );
-      if (response && response.status === 201) {
-        showSuccessToast("Course created successfully.");
-        dispatch(setCourseDetails(response.data.course));
-        dispatch(setCurrentStep(2)); // Move to the next step
-      }
-    } catch (error: any) {
-      showErrorToast("An error occurred while creating the course.");
-    }
-  };
+  // const handleCourseDetailsSubmit = async (data: Partial<Course>) => {
+  //   try {
+  //     const createData = {
+  //       title: data.title,
+  //       description: data.description,
+  //       mentorId: course.mentor.id,
+  //       categoryId: data.category?.id,
+  //       thumbnail: course.thumbnail,
+  //       price: data.price,
+  //     };
+  //     const response = await api.post<{ course: Course }>(
+  //       "/api/courses",
+  //       createData
+  //     );
+  //     if (response && response.status === 201) {
+  //       showSuccessToast("Course created successfully.");
+  //       dispatch(setCourseDetails(response.data.course));
+  //       dispatch(setCurrentStep(2)); // Move to the next step
+  //     }
+  //   } catch (error: any) {
+  //     showErrorToast("An error occurred while creating the course.");
+  //   }
+  // };
 
   // const handleAddLesson = async (lesson: Lesson) => {
   //   try {
@@ -123,9 +122,7 @@ export const CourseForm: React.FC = () => {
 
       <div className="bg-white rounded-lg shadow-md p-6 mt-6">
         <FormProvider {...methods}>
-          {currentStep === 1 && (
-            <CourseDetails onSubmit={handleCourseDetailsSubmit} />
-          )}
+          {currentStep === 1 && <CourseDetails />}
 
           {currentStep === 2 && (
             <LessonsList

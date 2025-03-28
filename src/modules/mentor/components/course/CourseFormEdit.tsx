@@ -13,7 +13,6 @@ export const CourseFormA: React.FC<CourseFormProps> = ({}) => {
   const {
     currentStep,
     isEditing,
-    handleCourseSubmit,
     handlePublishCourse,
     handleSaveDraft,
     setStep,

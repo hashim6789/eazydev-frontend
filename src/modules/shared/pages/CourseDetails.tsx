@@ -3,7 +3,7 @@ import { Book, DollarSign } from "lucide-react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import type { AppDispatch, RootState } from "../../../store";
-import { Course, CourseStatus, ICourse, UserRole } from "../../../types";
+import { Course, CourseStatus, UserRole } from "../../../types";
 import { api } from "../../../configs";
 import {
   getCourseStatusColor,

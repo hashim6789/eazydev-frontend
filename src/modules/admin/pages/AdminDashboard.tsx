@@ -11,7 +11,6 @@ import {
 } from "chart.js";
 import { Pie, Bar, Line } from "react-chartjs-2";
 import { ChartCard } from "../../shared/components";
-import { GraduationCap, Lightbulb, Users } from "lucide-react";
 import useAdminDashboardData from "../../../hooks/useAdminDashboard";
 
 ChartJS.register(

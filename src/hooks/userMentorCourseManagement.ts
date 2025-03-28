@@ -50,6 +50,7 @@ export const useMentorCourseManagement = () => {
     fileName: string
   ) => {
     try {
+      console.log(fileKey);
       const formData = new FormData();
       const fileBlob = await fetch(filePreview).then((r) => r.blob());
       formData.append("file", fileBlob, fileName);

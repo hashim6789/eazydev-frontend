@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Category } from "../../../../types";
 import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
@@ -26,7 +25,6 @@ export const CourseDetails: React.FC = () => {
     register,
     setValue,
     formState: { errors },
-    watch,
   } = useForm<CourseDetailsFormSchema>({
     resolver: zodResolver(CourseDetailsSchema),
     defaultValues: {

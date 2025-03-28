@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { ChevronRight, Clock, BookOpen, Video, Edit } from "lucide-react";
-import { Course } from "../../../../types";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../store";
 import { formatDuration } from "../../../../utils/date.util";

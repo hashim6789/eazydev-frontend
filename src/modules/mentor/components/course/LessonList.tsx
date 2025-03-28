@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { PlusIcon, PencilIcon, TrashIcon } from "lucide-react";
 import { LessonForm } from "./LessonForm";
 import { Lesson } from "../../../../types";
 import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
-import { setMaterial } from "../../../../store/slice";
 
 interface LessonsListProps {
   onBack: () => void;

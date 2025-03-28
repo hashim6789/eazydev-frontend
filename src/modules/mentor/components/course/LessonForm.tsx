@@ -1,13 +1,10 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { PlusIcon, PencilIcon, TrashIcon } from "lucide-react";
-import { Lesson, IMaterial, Material } from "../../../../types";
+import { Lesson, Material } from "../../../../types";
 import { LessonFormSchema, LessonSchema } from "../../../../schemas";
 import { MaterialForm } from "./MaterialForm";
-import { api } from "../../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../../utils";
 import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
 
 interface LessonFormProps {
