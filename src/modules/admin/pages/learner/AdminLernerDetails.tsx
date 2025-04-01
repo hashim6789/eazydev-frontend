@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 //imported custom hooks
 import useFetch from "../../../../hooks/useFetch";
-import { SubRole } from "../../../../types";
+import { Course, SubRole } from "../../../../types";
 import { FC } from "react";
 import { getButtonTheme } from "../../../../utils";
 import useUserBlock from "../../../../hooks/useUserBlock";
@@ -31,7 +31,7 @@ interface Learner {
   lastName: string | null;
   email: string;
   profilePicture: string | null;
-  //   purchasedCourses: IPopulatedCourse[];
+  courses: Course[];
   isBlocked: boolean | null;
 }
 

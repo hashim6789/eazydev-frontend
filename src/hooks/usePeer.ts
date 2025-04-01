@@ -14,7 +14,6 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
   const [isVideoEnabled, setIsVideoEnabled] = useState<boolean>(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState<boolean>(true);
 
-  // State to track call status
   const [isCallStarted, setIsCallStarted] = useState(false);
   const [isWaitingForOpponent, setIsWaitingForOpponent] = useState(true);
 
@@ -107,7 +106,7 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
 
   const initiateCall = () => {
     if (!peerInstance.current || !otherPeerId) return;
-    setIsCallStarted(true); // Hide "Start Call" button and show "End Call"
+    setIsCallStarted(true);
 
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -130,30 +129,26 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
       })
       .catch((error) => console.error("Media devices error:", error));
 
-    // Simulate waiting for opponent
     if (!otherPeerId) {
-      setIsWaitingForOpponent(true); // Show "Waiting for Opponent"
+      setIsWaitingForOpponent(true);
     }
   };
 
   const endCall = () => {
     if (peerInstance.current) {
-      // Close the peer connection
       peerInstance.current.disconnect();
       console.log("Peer connection disconnected");
 
-      // Stop local media tracks
       if (localStream) {
         localStream.getTracks().forEach((track) => track.stop());
         console.log("Local media tracks stopped");
       }
 
-      // Clear local states (if needed)
       setOtherPeerId(null);
       console.log("Call ended");
     }
-    setIsCallStarted(false); // Reset to initial state
-    setIsWaitingForOpponent(false); // Reset waiting state
+    setIsCallStarted(false);
+    setIsWaitingForOpponent(false);
     if (role === "learner") {
       navigate(`/learner/learnings`);
     } else {

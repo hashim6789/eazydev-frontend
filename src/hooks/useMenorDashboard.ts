@@ -55,7 +55,6 @@ const useMentorDashboardData = (): MentorDashboardData => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Fetch data on component mount
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -87,7 +86,6 @@ const useMentorDashboardData = (): MentorDashboardData => {
     fetchData();
   }, []);
 
-  // Chart configurations
   const courseStatusChartData = {
     labels: courseStatuses.map((status) => status.status),
     datasets: [

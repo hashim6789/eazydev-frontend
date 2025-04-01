@@ -288,7 +288,7 @@ const PaymentSuccess = () => {
           >
             <button
               className="w-full py-3 px-4 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-medium rounded-xl shadow-md hover:shadow-lg transform transition-all duration-200 hover:-translate-y-0.5 flex items-center justify-center"
-              onClick={() => navigate("/learner/courses")}
+              onClick={() => navigate("/learner/learnings")}
             >
               <svg
                 className="w-5 h-5 mr-2"

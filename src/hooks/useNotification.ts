@@ -32,10 +32,8 @@ export const useNotifications = (userId: string) => {
   }, [userId]);
 
   useEffect(() => {
-    // Join user-specific WebSocket room
     socket.emit("joinRoom", userId);
 
-    // Listen for incoming notifications
     socket.on("receiveNotification", (notification: Notification) => {
       setUnreadCount((prevCount) => prevCount + 1);
       setNotifications((prevNotifications) => [
@@ -44,7 +42,6 @@ export const useNotifications = (userId: string) => {
       ]);
     });
 
-    // Clean up the socket listener on unmount
     return () => {
       socket.off("receiveNotification");
     };
