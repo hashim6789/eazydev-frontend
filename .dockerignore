@@ -1,11 +1,9 @@
 README.md
 dist
-src
 public
 .vscode
 node_modules
 LICENSE
-package-lock.json
 .git
 .DS_Store
 .env
