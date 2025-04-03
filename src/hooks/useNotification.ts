@@ -17,7 +17,7 @@ export const useNotifications = (userId: string) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await api.get<Notification[]>(`/api/notify`);
+        const response = await api.get<Notification[]>(`/notify`);
         if (response && response.data) {
           setNotifications(response.data);
         }

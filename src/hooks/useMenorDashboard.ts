@@ -64,7 +64,7 @@ const useMentorDashboardData = (): MentorDashboardData => {
           enrollmentData: EnrollmentRate[];
           completionRateData: CompletionRate[];
           revenueData: RevenueRate[];
-        }>(`/api/analysis/mentors`);
+        }>(`/analysis/mentors`);
 
         if (response.status === 200) {
           setCourseStatuses(response.data.courseStatusData);

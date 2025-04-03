@@ -14,10 +14,9 @@ export const useAuthState = () => {
   useEffect(() => {
     const fetchAuthState = async () => {
       try {
-        const response = await api.get(
-          `${config.API_BASE_URL}/api/refresh/user`,
-          { withCredentials: true }
-        );
+        const response = await api.get(`${config.API_BASE_URL}/refresh/user`, {
+          withCredentials: true,
+        });
 
         if (response.status === 200) {
           setAuthState({

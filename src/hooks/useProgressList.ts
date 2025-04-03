@@ -19,7 +19,7 @@ const useProgressList = ({ itemsPerPage }: UseProgressListOptions) => {
       setLoading(true);
       try {
         const response = await api.get<PaginatedData<ProgressLearning>>(
-          `/api/progresses?page=${currentPage}&limit=${itemsPerPage}`
+          `/progresses?page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
 

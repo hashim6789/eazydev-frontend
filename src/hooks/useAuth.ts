@@ -64,7 +64,7 @@ const useAuth = () => {
     dispatch(signupStart());
     try {
       const response = await axios.post<User>(
-        `${config.API_BASE_URL}/api/auth/signup`,
+        `${config.API_BASE_URL}/auth/signup`,
         {
           ...credentials,
           role,
@@ -94,7 +94,7 @@ const useAuth = () => {
     dispatch(googleSignupStart());
     try {
       const response = await axios.post(
-        `${config.API_BASE_URL}/api/auth/google`,
+        `${config.API_BASE_URL}/auth/google`,
         {
           googleToken,
           role,
@@ -126,7 +126,7 @@ const useAuth = () => {
     dispatch(forgotPasswordStart());
     try {
       const response = await axios.post<{ success: boolean }>(
-        `${config.API_BASE_URL}/api/auth/forgot-password`,
+        `${config.API_BASE_URL}/auth/forgot-password`,
         {
           email: data.email,
           role,
@@ -148,7 +148,7 @@ const useAuth = () => {
   // for logout
   const handleLogout = async (role: UserRole, userId: string) => {
     try {
-      const response = await api.post("/api/auth/logout", { role, userId });
+      const response = await api.post("/auth/logout", { role, userId });
       if (response.status === 200) {
         dispatch(logout());
       }

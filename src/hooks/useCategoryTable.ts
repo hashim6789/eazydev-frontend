@@ -32,7 +32,7 @@ export function useCategoryTable({
       try {
         setCategoryData([]);
         const response = await api.get(
-          `/api/categories?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
+          `/categories?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
         console.log(result);
@@ -102,7 +102,7 @@ export function useCategoryTable({
 
     try {
       const response = await api.patch<{ success: boolean }>(
-        `/api/categories/${itemId}`,
+        `/categories/${itemId}`,
         {
           change,
           adminId: getUserProperty("id"),
@@ -143,7 +143,7 @@ export function useCategoryTable({
 
     try {
       const response = await api.put<{ category: Category }>(
-        `/api/categories/${categoryId}`,
+        `/categories/${categoryId}`,
         {
           title: newTitle,
           adminId: getUserProperty("id"),
@@ -169,13 +169,10 @@ export function useCategoryTable({
 
   const saveNewCategory = async (newTitle: string) => {
     try {
-      const response = await api.post<{ category: Category }>(
-        `/api/categories`,
-        {
-          title: newTitle,
-          adminId: getUserProperty("id"),
-        }
-      );
+      const response = await api.post<{ category: Category }>(`/categories`, {
+        title: newTitle,
+        adminId: getUserProperty("id"),
+      });
 
       if (response && response.data) {
         const data = response.data.category;

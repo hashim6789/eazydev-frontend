@@ -54,7 +54,7 @@ export function useCourseTable({
       try {
         const auth = isAuthenticated ? "" : "/no-auth";
         const response = await api.get(
-          `/api${auth}/courses?category=${category}&range=${range}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}&sort=${sort}`
+          `${auth}/courses?category=${category}&range=${range}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}&sort=${sort}`
         );
         const result = response.data;
         setData(result.body);

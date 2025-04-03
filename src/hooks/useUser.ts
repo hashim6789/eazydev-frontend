@@ -27,7 +27,7 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
       try {
         setData([]);
         const response = await api.get(
-          `/api/users?role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
+          `/users?role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
 
@@ -62,7 +62,7 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
 
     if (isConfirmed) {
       try {
-        await api.delete(`/api/users/${userId}`);
+        await api.delete(`/users/${userId}`);
         showSuccessToast(UserMessages.USER_DELETE_SUCCESS);
         setData((prevUsers) => prevUsers.filter((user) => user.id !== userId));
 

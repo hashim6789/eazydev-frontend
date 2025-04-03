@@ -37,7 +37,7 @@ const useUserBlock = (): UseBlockUnblockResponse => {
       const isConfirmed = await showConfirmationBox(action, role, change);
 
       if (isConfirmed) {
-        const endpoint = `/api/users/${id}/block`;
+        const endpoint = `/users/${id}/block`;
 
         // API call to block/unblock
         const response = await api.patch(endpoint, { change });

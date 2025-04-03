@@ -58,7 +58,7 @@ export const useCreateMaterial = () => {
     setUploading(true);
     try {
       // Request a signed URL from the backend
-      const response = await api.post(`/api/upload/signed-url`, {
+      const response = await api.post(`/upload/signed-url`, {
         fileName: file.name,
         fileType: file.type,
         materialType: selectedType,
@@ -91,7 +91,7 @@ export const useCreateMaterial = () => {
   // Handle form submission logic
   const onSubmit = async (formData: CreateMaterialFormData) => {
     try {
-      const response = await api.post(`/api/materials`, formData);
+      const response = await api.post(`/materials`, formData);
       if (response.status === 201) {
         const materialId = response.data.materialId;
         showSuccessToast(MaterialMessages.MATERIAL_CREATED_SUCCESS);

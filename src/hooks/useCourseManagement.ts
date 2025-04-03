@@ -22,7 +22,7 @@ const useCourseManagement = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get(`/api/categories`);
+      const response = await api.get(`/categories`);
       const result = response.data;
       console.log(result);
       setCategories(result.data);
@@ -52,7 +52,7 @@ const useCourseManagement = () => {
         lessons: lessonIds,
         category: course.category.id,
       };
-      const response = await api.post(`/api/courses`, postData);
+      const response = await api.post(`/courses`, postData);
 
       if (response && response.data) {
         showSuccessToast("Course created successfully!");
@@ -78,7 +78,7 @@ const useCourseManagement = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.put(`/api/courses/${courseId}`, updatedCourse);
+      const response = await api.put(`/courses/${courseId}`, updatedCourse);
       if (response && response.data) {
         showSuccessToast("Course updated successfully!");
       }
@@ -106,7 +106,7 @@ const useCourseManagement = () => {
       });
 
       if (result.isConfirmed) {
-        const response = await api.delete(`/api/courses/${courseId}`);
+        const response = await api.delete(`/courses/${courseId}`);
         if (response && response.status === 200) {
           showSuccessToast("Course deleted successfully!");
           return true;

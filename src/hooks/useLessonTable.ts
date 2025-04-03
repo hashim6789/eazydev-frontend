@@ -23,7 +23,7 @@ export function useLessonTable({
       setLoading(true);
       try {
         const response = await api.get(
-          `/api/lessons?search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
+          `/lessons?search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
         console.log(result);
@@ -55,7 +55,7 @@ export function useLessonTable({
 
     if (isConfirmed) {
       try {
-        await api.delete(`/api/lessons/${lessonId}`);
+        await api.delete(`/lessons/${lessonId}`);
         showSuccessToast("The lesson was deleted successfully!");
 
         // Remove the deleted lesson from the state

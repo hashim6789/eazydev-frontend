@@ -17,7 +17,7 @@ const useChangePassword = (userRole: SubRole) => {
     const fetchData = async () => {
       try {
         const response = await api.get<{ success: boolean }>(
-          `/api/auth/${token}/reset-password?role=${userRole}`
+          `/auth/${token}/reset-password?role=${userRole}`
         );
         if (response.status === 200 && response.data.success) {
           setValid(true);
@@ -38,7 +38,7 @@ const useChangePassword = (userRole: SubRole) => {
     try {
       setLoading(true);
       const response = await api.patch<{ success: boolean }>(
-        `/api/auth/reset-password`,
+        `/auth/reset-password`,
         {
           password,
           role: userRole,

@@ -85,7 +85,7 @@ const useOtp = (onComplete?: (otp: string) => void) => {
     inputRefs.current[0].focus();
 
     try {
-      const response = await api.post(`/api/auth/otp-resend`);
+      const response = await api.post(`/auth/otp-resend`);
       if (response.status === 201) {
         showSuccessToast(AuthMessages.RESEND_OTP_SUCCESS);
       }
@@ -128,7 +128,7 @@ const useOtp = (onComplete?: (otp: string) => void) => {
       console.log(otpString);
       dispatch(verifyOtpStart());
       try {
-        const response = await api.post<User>(`/api/auth/otp-verify`, {
+        const response = await api.post<User>(`/auth/otp-verify`, {
           otp: otpString,
           userId,
         });

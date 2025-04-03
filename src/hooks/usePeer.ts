@@ -38,7 +38,7 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
         setPeerId(id);
 
         try {
-          const response = await api.post(`/api/meetings/${meetId}/join`, {
+          const response = await api.post(`/meetings/${meetId}/join`, {
             peerId: id,
           });
           if (response.status === 200 && response.data.otherPeerId) {

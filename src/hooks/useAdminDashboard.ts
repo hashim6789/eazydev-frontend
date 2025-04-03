@@ -58,7 +58,7 @@ const useAdminDashboardData = (): AdminDashboardData => {
       setLoading(true);
       try {
         const response = await api.get<AdminAnalyzeResponseType>(
-          `/api/analysis/admin`
+          `/analysis/admin`
         );
 
         const {

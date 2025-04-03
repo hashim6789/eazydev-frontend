@@ -27,7 +27,7 @@ UseMaterialTableFunctionalityOptions) {
       setLoading(true);
       try {
         const response = await api.get(
-          `/api/materials?type=${materialFilterType}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
+          `/materials?type=${materialFilterType}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
         setData(result.body);
@@ -62,7 +62,7 @@ UseMaterialTableFunctionalityOptions) {
 
     if (isConfirmed) {
       try {
-        await api.delete(`/api/materials/${materialId}`);
+        await api.delete(`/materials/${materialId}`);
         showSuccessToast("The lesson was deleted successfully!");
         setData((prevMaterials) =>
           prevMaterials.filter((material) => material.id !== materialId)

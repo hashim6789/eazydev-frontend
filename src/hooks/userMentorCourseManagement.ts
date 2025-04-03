@@ -41,7 +41,7 @@ export const useMentorCourseManagement = () => {
   >(null);
 
   // Fetch categories
-  const { data: categories } = useFetch<Category[]>("/api/categories");
+  const { data: categories } = useFetch<Category[]>("/categories");
 
   // Thumbnail Upload Handler
   const handleThumbnailUpload = async (
@@ -57,7 +57,7 @@ export const useMentorCourseManagement = () => {
       formData.append("upload_preset", config.CLOUDINARY_PRESET);
 
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https:/.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
 
@@ -86,8 +86,8 @@ export const useMentorCourseManagement = () => {
       };
 
       const response = isEditing
-        ? await api.put(`/api/courses/${course.id}`, updatedData)
-        : await api.post<string>("/api/courses", updatedData);
+        ? await api.put(`/courses/${course.id}`, updatedData)
+        : await api.post<string>("/courses", updatedData);
 
       if (response.status === (isEditing ? 200 : 201)) {
         showSuccessToast(
@@ -110,7 +110,7 @@ export const useMentorCourseManagement = () => {
   // Course Publishing Handler
   const handlePublishCourse = async () => {
     try {
-      await api.patch(`/api/courses/${course.id}`, { newStatus: "requested" });
+      await api.patch(`/courses/${course.id}`, { newStatus: "requested" });
       navigate("/mentor/courses");
       dispatch(setCurrentStep(1));
       dispatch(resetCourse());
@@ -140,7 +140,7 @@ export const useMentorCourseManagement = () => {
     add: async (lesson: Lesson, materialIds: string[]) => {
       try {
         console.log(course.id);
-        const response = await api.post<string>("/api/lessons", {
+        const response = await api.post<string>("/lessons", {
           ...lesson,
           mentorId: course.mentor.id,
           courseId: course.id,
@@ -162,7 +162,7 @@ export const useMentorCourseManagement = () => {
 
     update: async (index: number, lesson: Lesson, materialIds: string[]) => {
       try {
-        const response = await api.put<string>(`/api/lessons/${lesson.id}`, {
+        const response = await api.put<string>(`/lessons/${lesson.id}`, {
           ...lesson,
           mentorId: course.mentor.id,
           courseId: course.id,
@@ -184,7 +184,7 @@ export const useMentorCourseManagement = () => {
       try {
         const lesson = course.lessons[index];
         const response = await api.delete(
-          `/api/lessons/${lesson.id}/courses/${course.id}`
+          `/lessons/${lesson.id}/courses/${course.id}`
         );
 
         if (response.status === 200) {
@@ -202,7 +202,7 @@ export const useMentorCourseManagement = () => {
   const handleMaterialManagement = {
     add: async (lessonIndex: number, material: Material) => {
       try {
-        const response = await api.post<string>("/api/materials", material);
+        const response = await api.post<string>("/materials", material);
 
         if (response.status === 201) {
           dispatch(
@@ -230,7 +230,7 @@ export const useMentorCourseManagement = () => {
       try {
         console.log("material", material);
         const response = await api.put<string>(
-          `/api/materials/${material.id}`,
+          `/materials/${material.id}`,
           material
         );
 
@@ -258,7 +258,7 @@ export const useMentorCourseManagement = () => {
     remove: async (lessonIndex: number, materialIndex: number) => {
       try {
         const material = course.lessons[lessonIndex].materials[materialIndex];
-        const response = await api.delete(`/api/materials/${material.id}`);
+        const response = await api.delete(`/materials/${material.id}`);
 
         if (response.status === 200) {
           dispatch(removeMaterial({ lessonIndex, materialIndex }));
