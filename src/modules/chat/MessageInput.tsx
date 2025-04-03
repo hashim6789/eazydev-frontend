@@ -40,7 +40,7 @@ const MessageInput = ({ socket }: MessageInputProps) => {
     try {
       data.message = data.message.trim();
       if (data.message === "") return;
-      const response = await api.post(`api/chats/messages`, {
+      const response = await api.post(`/chats/messages`, {
         ...data,
         groupId: selectedGroupId,
       });
@@ -65,7 +65,6 @@ const MessageInput = ({ socket }: MessageInputProps) => {
           message: messageData.message,
           createdAt: messageData.createdAt,
         };
-        console.log(data);
         socket.emit("send message", data);
         dispatch(addMessage(data));
 

@@ -26,7 +26,7 @@ const LessonView: React.FC<LessonViewProps> = ({ lessonId, title }) => {
   const handleToggle = useCallback(() => {
     setIsOpen((prev) => !prev);
     if (!fetchUrl) {
-      setFetchUrl(`/api/lessons/${lessonId}`);
+      setFetchUrl(`/lessons/${lessonId}`);
     }
   }, [fetchUrl, lessonId]);
 
@@ -65,7 +65,7 @@ const MaterialList: React.FC<{
     data: lesson,
     loading,
     error,
-  } = useFetch<ILessonPopulated>(`/api/lessons/${lessonId}`);
+  } = useFetch<ILessonPopulated>(`/lessons/${lessonId}`);
 
   if (loading) {
     return (

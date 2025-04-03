@@ -28,28 +28,25 @@ export const CourseDetails: React.FC = () => {
   } = useForm<CourseDetailsFormSchema>({
     resolver: zodResolver(CourseDetailsSchema),
     defaultValues: {
-      title: course.title, // Default value for 'title'
-      price: course.price, // Default value for 'price'
-      category: course.category, // Default value for 'category'
-      description: course.description, // Default value for 'description'
-      thumbnail: course.thumbnail, // Default value for 'thumbnail' URL
+      title: course.title,
+      price: course.price,
+      category: course.category,
+      description: course.description,
+      thumbnail: course.thumbnail,
     },
   });
-  //     // Watch the category field to sync form values dynamically
-  // const watchCategory = watch("category");
 
   const handleCategoryChange = (id: string) => {
-    const category = categories.find((cat) => cat.id === id); // Find category by ID
+    const category = categories.find((cat) => cat.id === id);
     if (category) {
-      setSelectedCategory(category); // Update selectedCategory state
-      console.log("Selected category:", category);
-      setValue("category", category); // Update form state with full category object
+      setSelectedCategory(category);
+      setValue("category", category);
     }
   };
   const onSubmit: SubmitHandler<CourseDetailsFormSchema> = (data) => {
     handleCourseSubmit({
       ...data,
-      category: data.category || undefined, // Ensure valid category data
+      category: data.category || undefined,
     });
   };
 
@@ -65,7 +62,7 @@ export const CourseDetails: React.FC = () => {
         file.name
       );
       if (secureUrl) {
-        setValue("thumbnail", secureUrl); // Set the thumbnail value in the form
+        setValue("thumbnail", secureUrl);
       }
     }
   };
@@ -123,7 +120,7 @@ export const CourseDetails: React.FC = () => {
           }`}
           value={selectedCategory?.id || ""}
           onChange={(e) => {
-            handleCategoryChange(e.target.value); // Pass the selected value (ID) to the handler
+            handleCategoryChange(e.target.value);
           }}
         >
           <option value="" disabled>

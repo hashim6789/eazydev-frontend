@@ -17,6 +17,7 @@ import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseCertificateManagement from "../modules/learner/pages/learnings/LearnerCertificateManagement";
+import loginImage from "../assets/img/wall_paper.jpeg";
 
 export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -39,7 +40,7 @@ export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
         <Navigate to={`/${user}/dashboard`} />
       )
     ) : (
-      <LoginPage role="learner" theme="blue" loginImage="" />
+      <LoginPage role="learner" theme="blue" loginImage={loginImage} />
     ),
   },
   {

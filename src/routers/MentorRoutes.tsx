@@ -18,6 +18,7 @@ import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import Layout from "../modules/layouts/Layout";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseEditing from "../modules/mentor/pages/course/CourseEdit";
+import loginImage from "../assets/img/wall_paper_03.jpg";
 
 export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -25,7 +26,7 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
     element: isAuthenticated ? (
       <Navigate to={`/${user}/dashboard`} />
     ) : (
-      <LoginPage role="mentor" theme="purple" loginImage="" />
+      <LoginPage role="mentor" theme="purple" loginImage={loginImage} />
     ),
   },
   {

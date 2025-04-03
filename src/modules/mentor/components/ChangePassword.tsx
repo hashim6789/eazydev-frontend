@@ -9,6 +9,7 @@ import {
   VerifyPasswordFormData,
   verifyPasswordSchema,
 } from "../../../schemas";
+import { AuthMessages } from "../../../constants";
 
 interface ChangePasswordProps {}
 
@@ -34,9 +35,9 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
 
   const verifyCurrentPassword = async (data: VerifyPasswordFormData) => {
     try {
-      const response = await api.post("/api/users/verify-password", data);
+      const response = await api.post("/users/verify-password", data);
       if (response.status === 200) {
-        showSuccessToast("The current password is verified successfully");
+        showSuccessToast(AuthMessages.PASSWORD_VERIFIED_SUCCESS);
         setIsVerified(true);
       }
     } catch (error: any) {
@@ -47,16 +48,16 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
 
   const changePassword = async (data: ChangePasswordFormData) => {
     try {
-      const response = await api.post("/api/users/change-password", data);
+      const response = await api.post("/users/change-password", data);
       if (response.status === 200) {
-        showSuccessToast("password changed successfully");
+        showSuccessToast(AuthMessages.PASSWORD_CHANGE_SUCCESS);
         setIsVerified(false);
         setValueChangePassword("newPassword", "");
         setValueChangePassword("confirmPassword", "");
       }
     } catch (error: any) {
       showErrorToast(
-        error.response.data.error || "failed to change the password!"
+        error.response.data.error || AuthMessages.PASSWORD_CHANGE_FAILED
       );
       console.error(error);
     }

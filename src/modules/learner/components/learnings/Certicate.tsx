@@ -85,23 +85,6 @@ const Certificate: React.FC<CertificateProps> = ({ certificateData }) => {
             </div>
 
             <div className="space-y-4">
-              {/* <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700"
-                >
-                  Your Full Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border"
-                  placeholder="Enter your name as it should appear on the certificate"
-                />
-              </div> */}
-
               <button
                 onClick={generateCertificate}
                 disabled={isLoading}

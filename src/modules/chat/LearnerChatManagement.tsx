@@ -40,7 +40,6 @@ const useSocket = (socket: Socket) => {
       dispatch(startTyping(typeData.typeName));
     const handleStopTyping = () => dispatch(stopTyping());
     const handleOnlineCount = (data: { onlineCount: number }) => {
-      console.log("online counts", data.onlineCount);
       dispatch(setOnlineUserCount(data.onlineCount));
     };
 
@@ -70,7 +69,7 @@ const MainChatLayout = () => {
     const fetchGroups = async () => {
       dispatch(fetchGroupsStart());
       try {
-        const response = await api.get("/api/chats/groups");
+        const response = await api.get("/chats/groups");
         if (response && response.status === 200) {
           console.log("response", response.data);
           dispatch(fetchGroupsSuccess(response.data));

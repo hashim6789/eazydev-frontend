@@ -21,7 +21,6 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
 
   useEffect(() => {
     const handleMessage = (newMessage: any) => {
-      console.log("message received successfully.");
       dispatch(addMessage(newMessage));
     };
 
@@ -31,8 +30,6 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
       socket.off("receive message", handleMessage);
     };
   }, [dispatch, socket]);
-
-  console.log("messages", messages);
 
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-4">

@@ -11,17 +11,6 @@ import { FC } from "react";
 import { getButtonTheme } from "../../../../utils";
 import useUserBlock from "../../../../hooks/useUserBlock";
 
-//imported child components
-// interface IPopulatedCourse {
-//   _id: string;
-//   title: string;
-//   description: string | null;
-//   thumbnail: string | null;
-//   duration: string | null;
-//   purchaseCount: number | null;
-//   status: string | null;
-// }
-
 interface LearnerDetailsProps {
   role: SubRole;
 }
@@ -43,7 +32,7 @@ const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
     data: user,
     setData,
     loading: userLoading,
-  } = useFetch<Learner>(`/api/users/${userId}?role=${role}`);
+  } = useFetch<Learner>(`/users/${userId}?role=${role}`);
   const { handleBlockUnblock } = useUserBlock();
   console.log("User", user);
 

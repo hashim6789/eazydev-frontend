@@ -45,7 +45,6 @@ const GroupInfoSidebar = ({ onClose }: GroupInfoSidebarProps) => {
                 ) : (
                   <p className="font-medium text-gray-800">You</p>
                 )}
-                {/* <p className="text-sm text-gray-500">{mentor.expertise}</p> */}
               </div>
             </div>
           </div>

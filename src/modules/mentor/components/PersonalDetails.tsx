@@ -9,6 +9,7 @@ import { showErrorToast, showSuccessToast } from "../../../utils";
 import userImage from "../../../assets/img/user_image.avif";
 import { getUserProperty } from "../../../utils/local-user.util";
 import { User } from "../../../types";
+import { UserMessages } from "../../../constants";
 
 // Form Validation Schema
 const schema = z.object({
@@ -19,11 +20,6 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const PersonalDetails: React.FC = () => {
-  // const email = getUserProperty("email");
-  // const role = getUserProperty("role");
-  // const name = `${getUserProperty("firstName")} ${
-  //   getUserProperty("lastName") ?? ""
-  // }`;
   const [profilePicture, setProfilePicture] = useState<string>(
     (getUserProperty("profilePicture") as string) ?? userImage
   );
@@ -36,7 +32,7 @@ const PersonalDetails: React.FC = () => {
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
-        const response = await api.get<User>(`/api/users/personal`);
+        const response = await api.get<User>(`/users/personal`);
         setUserDetails(response.data);
         if (response.data.profilePicture) {
           setProfilePicture(response.data.profilePicture);
@@ -72,11 +68,11 @@ const PersonalDetails: React.FC = () => {
         setProfilePicture(profilePicture);
 
         // Update profile image in backend
-        await api.put("/api/users/profile-img", { profilePicture });
+        await api.put("/users/profile-img", { profilePicture });
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      showErrorToast("Failed to upload image.");
+      showErrorToast(UserMessages.UPLOAD_PROFILE_IMAGE_FAILED);
     }
   };
 
@@ -91,7 +87,7 @@ const PersonalDetails: React.FC = () => {
 
   const onSubmit = async (data: FormData) => {
     try {
-      const response = await api.put("/api/users/personal", data);
+      const response = await api.put("/users/personal", data);
       if (response.status === 200) {
         showSuccessToast("personal data updated successfully");
         setIsEditable(false);

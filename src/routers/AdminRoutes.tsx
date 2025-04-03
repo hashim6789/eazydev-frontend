@@ -3,12 +3,13 @@ import LoginPage from "../modules/auth/pages/Login";
 import { UserRole } from "../types";
 import ProtectedRoute from "./ProtectedRoute";
 import AdminDashboard from "../modules/admin/pages/AdminDashboard";
-import AdminUserDetails from "../modules/admin/pages/learner/AdminLernerDetails";
+import AdminUserDetails from "../modules/admin/pages/users/AdminUserDetails";
 import AdminUserManagement from "../modules/admin/pages/users/AdminUserManagement";
 import AdminCourseManagement from "../modules/admin/pages/course/AdminCourseManagement";
 import AdminCategoryManagement from "../modules/admin/pages/category/AdminCategoryManagement";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 import Layout from "../modules/layouts/Layout";
+import loginImage from "../assets/img/wall_paer_02.jpeg";
 
 export const AdminRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -16,7 +17,12 @@ export const AdminRoutes = (isAuthenticated: boolean, user: UserRole) => [
     element: isAuthenticated ? (
       <Navigate to={`/${user}/dashboard`} />
     ) : (
-      <LoginPage role="admin" theme="green" loginImage="" allowSignup={false} />
+      <LoginPage
+        role="admin"
+        theme="green"
+        loginImage={loginImage}
+        allowSignup={false}
+      />
     ),
   },
   {

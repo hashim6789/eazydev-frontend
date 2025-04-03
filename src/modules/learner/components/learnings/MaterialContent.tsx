@@ -9,6 +9,7 @@ import {
   LoadingState,
   NoContentState,
 } from "../../../shared/Error";
+import { MaterialMessages, ProgressMessages } from "../../../../constants";
 
 interface MaterialContentProps {
   // onNavigate: (direction: "prev" | "next") => void;
@@ -34,17 +35,17 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
         setLoading(true);
         try {
           const response = await api.post(
-            `/api/progresses/${progressId}/get-signed-url`,
+            `/progresses/${progressId}/get-signed-url`,
             { fileKey: material.fileKey, materialType: material.type }
           );
           if (response && response.status === 200) {
             setSignedUrl(response.data);
           } else {
-            throw new Error("Failed to fetch signed URL.");
+            throw new Error(MaterialMessages.SIGNED_URL_FAILED);
           }
         } catch (err) {
           console.error(err);
-          setError("Could not load the material. Please try again.");
+          setError(MaterialMessages.MATERIAL_LOAD_FAILED);
         } finally {
           setLoading(false);
         }
@@ -57,7 +58,7 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
     if (!material) return;
 
     try {
-      const response = await api.put(`/api/progresses/${progressId}`, {
+      const response = await api.put(`/progresses/${progressId}`, {
         materialId: material.id,
       });
       if (response && response.status === 200) {
@@ -66,8 +67,8 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
         );
       }
     } catch (err) {
-      console.error("Failed to mark material as complete:", err);
-      setError("Failed to update progress. Please try again.");
+      console.error(MaterialMessages.MATERIAL_MARK_FAILED, err);
+      setError(ProgressMessages.PROGRESS_UPDATE_FAILED);
     }
   };
 

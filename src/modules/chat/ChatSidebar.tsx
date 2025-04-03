@@ -25,13 +25,11 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
   useEffect(() => {
     if (selectedGroupId) {
       socket.emit("join chat", { groupId: selectedGroupId });
-      console.log("user joined groupid", selectedGroupId);
     }
 
     () => {
       if (selectedGroupId) {
         socket.emit("leave chat", { groupId: selectedGroupId });
-        console.log("user joined groupid", selectedGroupId);
       }
     };
   });
@@ -42,19 +40,14 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
       const response = await api.get(`/api/chats/groups/${groupId}/messages`);
       if (response && response.status === 200) {
         socket.emit("leave chat", { groupId: selectedGroupId });
-        console.log("user joined groupid", selectedGroupId);
         dispatch(selectGroup(groupId));
         dispatch(fetchMessagesSuccess(response.data));
-        // socket.emit("join chat", { groupId });
-        // console.log("user joined groupid", groupId);
       }
     } catch (error: any) {
       dispatch(fetchMessagesFailure(error.response.data.message));
       console.error(error);
     }
   };
-
-  console.log("groups", groups);
 
   return (
     <aside className="w-64 border-r bg-white h-full overflow-y-auto">

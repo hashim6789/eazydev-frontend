@@ -12,17 +12,10 @@ import {
 } from "../../shared/components";
 import { categoryFilterOptions } from "../../shared/values/filter";
 import { LoadingState, NoContentState } from "../../shared/Error";
-
-// Define the schema for validation
-const categorySchema = z.object({
-  newTitle: z
-    .string()
-    .min(3, "Title must be at least 3 characters long")
-    .max(100, "Title must be less than 100 characters"),
-});
-
-// Type for form data
-type FormData = z.infer<typeof categorySchema>;
+import {
+  CategoryFormData,
+  categorySchema,
+} from "../../../schemas/category.schema";
 
 interface CategoryTableProps {}
 
@@ -54,7 +47,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
     formState: { errors },
     setValue,
     reset,
-  } = useForm<FormData>({
+  } = useForm<CategoryFormData>({
     resolver: zodResolver(categorySchema),
   });
 
@@ -67,7 +60,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
     setValue("newTitle", category.title); // Set initial value for the title
   };
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
+  const onSubmit: SubmitHandler<CategoryFormData> = (data) => {
     if (isEditModalOpen) {
       handleSaveTitle(editCategoryId, data.newTitle);
       reset(); // Reset the form after submission

@@ -13,4 +13,7 @@ export enum AuthMessages {
   RESEND_OTP_SUCCESS = "OTP resend successfully.",
   RESEND_OTP_FAILED = "Failed to resend OTP.",
   ENTER_VALID_OTP = "Please enter a valid 6-digit OTP",
+  PASSWORD_VERIFIED_SUCCESS = "The current password is verified successfully",
+  PASSWORD_CHANGE_SUCCESS = "password changed successfully",
+  PASSWORD_CHANGE_FAILED = "failed to change the password!",
 }
