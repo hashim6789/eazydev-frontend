@@ -23,8 +23,6 @@ import { SubRole, User, UserRole } from "../types";
 import { api, config } from "../configs";
 import { AuthMessages } from "../constants";
 
-console.log("api", config.API_BASE_URL);
-
 const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -33,12 +31,13 @@ const useAuth = () => {
     (state: RootState) => state.auth
   );
 
+  console.log("api", config.API_BASE_URL);
   // for login
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
     dispatch(loginStart());
     try {
       const response = await axios.post(
-        `${config.API_BASE_URL}/api/auth/login`,
+        `${config.API_BASE_URL}/auth/login`,
         {
           ...credentials,
           role,
