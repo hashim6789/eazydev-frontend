@@ -23,6 +23,8 @@ import { SubRole, User, UserRole } from "../types";
 import { api, config } from "../configs";
 import { AuthMessages } from "../constants";
 
+console.log("api", config.API_BASE_URL);
+
 const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -30,8 +32,6 @@ const useAuth = () => {
   const { isAuthenticated, user, loading, error } = useSelector(
     (state: RootState) => state.auth
   );
-
-  console.log("api", config.API_BASE_URL);
 
   // for login
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
