@@ -6,6 +6,7 @@ import store from "./store";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { config } from "./configs";
 import { Toaster } from "react-hot-toast";
+console.log("GoogleOAuthProvider", config.GOOGLE_AUTH_CLIENT_ID);
 
 function App() {
   return (
