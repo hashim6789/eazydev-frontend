@@ -24,7 +24,16 @@ jobs:
 
       # Step 4: Build and Push Docker Image
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:latest .
+        run: |
+          docker build \
+            --build-arg VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL }} \
+            --build-arg VITE_CLOUDINARY_API_KEY=${{ vars.VITE_CLOUDINARY_API_KEY }} \
+            --build-arg VITE_CLOUDINARY_API_SECRET=${{ vars.VITE_CLOUDINARY_API_SECRET }} \
+            --build-arg VITE_CLOUDINARY_CLOUD_NAME=${{ vars.VITE_CLOUDINARY_CLOUD_NAME }} \
+            --build-arg VITE_CLOUDINARY_PRESET=${{ vars.VITE_CLOUDINARY_PRESET }} \
+            --build-arg VITE_STRIPE_PK=${{ vars.VITE_STRIPE_PK }} \
+            --build-arg VITE_GOOGLE_AUTH_CLIENT_ID=${{ vars.VITE_GOOGLE_AUTH_CLIENT_ID }} \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:latest .
 
       # Step 5: Push Docker Image
       - name: Push Docker image
