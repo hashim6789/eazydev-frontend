@@ -18,13 +18,13 @@ WORKDIR /app
 
 # Copy package files and install dependencies
 COPY package.json package-lock.json ./
-RUN npm install --frozen-lockfile
+RUN npm install 
 
 # Copy the rest of the app
 COPY . .
 
 # Build the React app
-RUN npm run build && ls -l /app/dist  # <-- Debugging line
+RUN npm run build 
 
 # Step 2: Serve with Nginx
 FROM nginx:alpine
