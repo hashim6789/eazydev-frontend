@@ -31,7 +31,7 @@ const useAuth = () => {
     (state: RootState) => state.auth
   );
 
-  console.log("GoogleOAuthProvider", config.API_BASE_URL);
+  console.log("api", config.API_BASE_URL);
 
   // for login
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
