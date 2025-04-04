@@ -41,7 +41,7 @@ const stripePromise = loadStripe(config.VITE_STRIPE_PK);
 //     data: course,
 //     loading: courseLoading,
 //     error: courseError,
-//   } = useFetch<PopulatedCourse>(`/api/courses/${courseId}`);
+//   } = useFetch<PopulatedCourse>(`/courses/${courseId}`);
 
 //   const [loading, setLoading] = useState<boolean>(false);
 //   const [processingPayment, setProcessingPayment] = useState<boolean>(false);
@@ -67,7 +67,7 @@ const stripePromise = loadStripe(config.VITE_STRIPE_PK);
 //           const response = await api.post<{
 //             clientSecret: string;
 //             paymentIntentId: string;
-//           }>("/api/payment/create-payment-intent", {
+//           }>("/payment/create-payment-intent", {
 //             courseId,
 //             type: "course",
 //           });
@@ -136,7 +136,7 @@ const stripePromise = loadStripe(config.VITE_STRIPE_PK);
 //         console.log("object", cardElement);
 //       } else if (paymentIntent.status === "succeeded") {
 //         // Save purchase details to the backend
-//         const response = await api.post("/api/payment/purchase-history", {
+//         const response = await api.post("/payment/purchase-history", {
 //           userId,
 //           courseId: course.id,
 //           mentorId: course.mentor.id,
@@ -503,9 +503,7 @@ const CheckoutForm = ({}: any) => {
   const email = getUserProperty("email") as string;
   const userId = getUserProperty("id") as string;
 
-  const { data: course } = useFetch<PopulatedCourse>(
-    `/api/courses/${courseId}`
-  );
+  const { data: course } = useFetch<PopulatedCourse>(`/courses/${courseId}`);
 
   useEffect(() => {
     const fetchClientSecret = async () => {
@@ -515,7 +513,7 @@ const CheckoutForm = ({}: any) => {
           const response = await api.post<{
             clientSecret: string;
             paymentIntentId: string;
-          }>("/api/payment/create-payment-intent", {
+          }>("/payment/create-payment-intent", {
             courseId,
             type: "course",
           });
@@ -582,7 +580,7 @@ const CheckoutForm = ({}: any) => {
       } else if (paymentIntent && paymentIntent.status === "succeeded") {
         console.log("Payment succeeded", paymentIntent);
         // Save purchase details to the backend
-        const response = await api.post("/api/purchases", {
+        const response = await api.post("/purchases", {
           learnerId: userId,
           courseId: course.id,
           mentorId: course.mentor.id,

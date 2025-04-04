@@ -23,7 +23,7 @@ const PaymentSuccess = () => {
     const fetchPurchaseDetails = async () => {
       try {
         // Fetch purchase details via API
-        const response = await api.get(`/api/purchases/${purchaseId}`);
+        const response = await api.get(`/purchases/${purchaseId}`);
         setPurchase({
           purchaseId: response.data.purchaseId || "PURCH-123456",
           purchaseDate: response.data.purchaseDate || Date.now(),

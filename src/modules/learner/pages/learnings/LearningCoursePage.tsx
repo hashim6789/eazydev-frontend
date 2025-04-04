@@ -35,7 +35,7 @@ const CourseLearningLayout = () => {
 
   // Fetching lessons and managing state
   const { data, error, loading } = useFetch<PopulatedProgressLearningsDTO>(
-    `/api/progresses/${progressId}`
+    `/progresses/${progressId}`
   );
 
   useEffect(() => {

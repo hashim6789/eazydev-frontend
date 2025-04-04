@@ -21,14 +21,14 @@ const CourseDetails = () => {
     error,
     loading,
   } = useUnAuthorizedFetch<PopulatedCourseDetails>(
-    `/api/no-auth/courses/${courseId}`
+    `/no-auth/courses/${courseId}`
   );
 
   useEffect(() => {
     const fetchPurchaseStatus = async () => {
       try {
         if (isAuthenticated) {
-          const response = await api.get(`/api/purchases`);
+          const response = await api.get(`/purchases`);
           if (response.status === 200) {
             const purchases: IPurchase[] = response.data;
             console.log(purchases);

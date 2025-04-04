@@ -18,7 +18,7 @@ const CourseCertificateManagement: React.FC = () => {
       setLoading(true);
       try {
         const response = await api.get<CertificateData>(
-          `/api/progresses/${progressId}/certificate`
+          `/progresses/${progressId}/certificate`
         );
         if (response.status === 201) {
           setCertificateData(response.data);

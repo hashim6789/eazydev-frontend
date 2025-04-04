@@ -19,9 +19,14 @@ import { api, config } from "../../configs";
 import { getUserProperty } from "../../utils/local-user.util";
 
 // Connect to the Socket.io server
-const socket = io(`${config.API_BASE_URL}/chats`, {
+// const socket = io(`${config.API_BASE_URL}/chats`, {
+//   transports: ["websocket"],
+//   upgrade: false,
+// });
+
+const socket = io("https://www.muhammedhashim.online/chats", {
+  path: "/socket.io/",
   transports: ["websocket"],
-  upgrade: false,
 });
 
 const useSocket = (socket: Socket) => {
