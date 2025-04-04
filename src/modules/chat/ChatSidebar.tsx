@@ -37,7 +37,7 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
   const handleGroupChat = async (groupId: string) => {
     try {
       dispatch(fetchMessagesStart());
-      const response = await api.get(`/api/chats/groups/${groupId}/messages`);
+      const response = await api.get(`/chats/groups/${groupId}/messages`);
       if (response && response.status === 200) {
         socket.emit("leave chat", { groupId: selectedGroupId });
         dispatch(selectGroup(groupId));
