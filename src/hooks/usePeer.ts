@@ -32,19 +32,12 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
       // });
 
       const peer = new Peer({
-        host: "www.muhammedhashim.online",
-        secure: true,
-        port: 443, // HTTPS port
+        host: "www.muhammedhashim.online", // ✅ Change from localhost
+        port: 443, // ✅ Use HTTPS port
         path: "/peerjs",
+        secure: true, // ✅ Use HTTPS
         config: {
-          iceServers: [
-            { urls: "stun:stun.l.google.com:19302" },
-            {
-              urls: "turn:your-turn-server.com",
-              username: "user",
-              credential: "pass",
-            }, // Add a TURN server if needed
-          ],
+          iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
         },
       });
 
