@@ -15,7 +15,6 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
     handleLessonManagement,
     isAddingLesson,
     editingLessonIndex,
-    materials,
     setMaterials,
     setEditingLessonIndex,
     setIsAddingLesson,
