@@ -1,32 +1,35 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState } from "../interfaces";
-import { User } from "../../types";
+import { User, UserRole } from "../../types";
 import { showErrorToast, showSuccessToast } from "../../utils";
 import { AuthMessages } from "../../constants";
 
-import { decodeToken } from "../../utils/decode-token.util";
+// import { decodeToken } from "../../utils/decode-token.util";
 import { getUserProperty } from "../../utils/local-user.util";
 
-const decode = decodeToken("accessToken");
-console.log(decode, "decode");
+// const decode = decodeToken("accessToken");
+// console.log(decode, "decode");
 
 const isBlocked = (getUserProperty("isBlocked") ?? false) as boolean;
-const isVerified = (getUserProperty("isVerified") ?? false) as boolean;
+const isVerified = (getUserProperty("isVerified") ?? "learner") as boolean;
+const role = (getUserProperty("role") ?? false) as UserRole;
+const isAuthenticated = ((!getUserProperty("isBlocked") &&
+  getUserProperty("isVerified")) ??
+  false) as boolean;
+
 const initialState: AuthState = {
-  isAuthenticated: !!decode,
+  isAuthenticated,
   isVerified,
   isBlocked,
-  user: decode ? decode.role : "learner",
+  user: role,
   loading: false,
   error: null,
 };
-
-// Initial state for auth
-// export const initialState: AuthState = {
-//   isAuthenticated: false,
-//   isVerified: false,
-//   isBlocked: false,
-//   user: "learner",
+// const initialState: AuthState = {
+//   isAuthenticated: !!decode,
+//   isVerified,
+//   isBlocked,
+//   user: decode ? decode.role : "learner",
 //   loading: false,
 //   error: null,
 // };

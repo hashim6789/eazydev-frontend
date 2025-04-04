@@ -20,6 +20,7 @@ import {
 } from "../store/slice";
 import { showErrorToast, showSuccessToast } from "../utils";
 import { CourseMessages, LessonMessages, MaterialMessages } from "../constants";
+import { getUserProperty } from "../utils/local-user.util";
 
 export const useMentorCourseManagement = () => {
   // Redux and navigation hooks
@@ -82,7 +83,7 @@ export const useMentorCourseManagement = () => {
       const updatedData = {
         title: data.title,
         description: data.description,
-        mentorId: course.mentor.id,
+        mentorId: getUserProperty("id") as string,
         categoryId: data.category?.id,
         thumbnail: course.thumbnail,
         price: data.price,
@@ -138,7 +139,7 @@ export const useMentorCourseManagement = () => {
         console.log(course.id);
         const response = await api.post<string>("/lessons", {
           ...lesson,
-          mentorId: course.mentor.id,
+          mentorId: getUserProperty("id") as string,
           courseId: course.id,
           materials: materialIds,
         });
@@ -162,7 +163,7 @@ export const useMentorCourseManagement = () => {
       try {
         const response = await api.put<string>(`/lessons/${lesson.id}`, {
           ...lesson,
-          mentorId: course.mentor.id,
+          mentorId: getUserProperty("id") as string,
           courseId: course.id,
           materials: materialIds,
         });
