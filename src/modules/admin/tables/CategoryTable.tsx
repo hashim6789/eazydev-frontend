@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Edit2, Plus } from "lucide-react";
 import { useCategoryTable } from "../../../hooks/useCategoryTable";
