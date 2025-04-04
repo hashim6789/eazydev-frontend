@@ -24,7 +24,7 @@ const LearnerMeetingScheduling: React.FC = () => {
   const fetchSlots = async () => {
     try {
       if (mentor) {
-        const response = await api.get(`/api/slots/mentor/${mentor.id}`);
+        const response = await api.get(`/slots/mentor/${mentor.id}`);
         setSlots(transformSlots(response.data));
       }
     } catch (error) {
@@ -36,7 +36,7 @@ const LearnerMeetingScheduling: React.FC = () => {
   const handleBookSlot = async (slotId: string) => {
     try {
       const learnerId = getUserProperty("id");
-      await api.patch(`/api/slots/${slotId}/book`, { learnerId, progressId });
+      await api.patch(`/slots/${slotId}/book`, { learnerId, progressId });
       alert("Slot booked successfully!");
       fetchSlots();
     } catch (error) {

@@ -55,7 +55,6 @@ export const LessonForm: React.FC<LessonFormProps> = ({
   };
 
   const handleAddMaterial = async (material: Material) => {
-    console.log("add material", material);
     const materialId = await handleMaterialManagement.add(
       editingLessonIndex ?? course.lessons.length,
       material
@@ -65,31 +64,11 @@ export const LessonForm: React.FC<LessonFormProps> = ({
       return;
     }
     setMaterials((prev) => [...prev, { ...material, id: materialId }]);
+    console.log("add material", materials);
     setIsAddingMaterial(false);
-
-    // try {
-    //   const response = await api.post<string>("/api/materials", material);
-    //   if (response.status === 201 && response.data)
-    //     setMaterials((prevMaterials) => [
-    //       ...prevMaterials,
-    //       { ...material, id: response.data },
-    //     ]);
-    //   showSuccessToast("material created successfully");
-    // } catch (error: any) {
-    //   showErrorToast(error.response.data.error || "Failed to create material");
-    // }
   };
 
   const handleUpdateMaterial = async (material: Material) => {
-    // if (editingMaterialIndex !== null) {
-    //   setMaterials((prevMaterials) => {
-    //     const updatedMaterials = [...prevMaterials];
-    //     updatedMaterials[editingMaterialIndex] = material;
-    //     return updatedMaterials;
-    //   });
-    //   setEditingMaterialIndex(null);
-    // }
-
     console.log("update material", material);
     const lessonIndex = editingLessonIndex ?? course.lessons.length;
     const materialIndex =
@@ -103,7 +82,6 @@ export const LessonForm: React.FC<LessonFormProps> = ({
       setIsAddingMaterial(false);
 
       setMaterials((prev) => {
-        // If editingMaterialIndex exists, replace the material at that index
         const updatedMaterials = [...prev];
         updatedMaterials[materialIndex] = material;
         return updatedMaterials;

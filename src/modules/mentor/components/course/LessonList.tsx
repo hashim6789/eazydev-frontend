@@ -33,7 +33,9 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
 
   const handleUpdateLesson = (lesson: Lesson) => {
     if (editingLessonIndex !== null) {
-      const materialIds = materials.map((item) => item.id);
+      console.log("materials", lesson.materials);
+      const materialIds = lesson.materials.map((item) => item.id);
+      console.log("materials", materialIds);
       handleLessonManagement.update(editingLessonIndex, lesson, materialIds);
     }
   };
