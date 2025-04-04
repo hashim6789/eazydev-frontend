@@ -11,11 +11,7 @@ interface Props {
 
 const ScheduledMeetingsTable: React.FC<Props> = ({ role }) => {
   const navigate = useNavigate();
-  const {
-    data: meetings,
-    loading,
-    error,
-  } = useFetch<IMeeting[]>("/api/meetings");
+  const { data: meetings, loading, error } = useFetch<IMeeting[]>("/meetings");
   const [searchTerm, setSearchTerm] = useState("");
 
   if (error) {

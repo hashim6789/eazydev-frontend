@@ -8,6 +8,7 @@ import { transformSlots } from "../../../../utils/transformer.util";
 import { showErrorToast, showSuccessToast } from "../../../../utils";
 import ScheduledMeetingsTable from "../../../shared/components/SheduledMeetingsTable";
 import AvailableSlots from "../../../shared/components/AvailableSlots";
+import { SlotMessages } from "../../../../constants/SlotMessages.contant";
 
 const MentorMeetingManagement: React.FC = () => {
   const [slots, setSlots] = useState<ISlot[]>([]);
@@ -16,14 +17,14 @@ const MentorMeetingManagement: React.FC = () => {
   const fetchSlots = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await api.get("/api/slots");
+      const response = await api.get("/slots");
       const transformedSlots = transformSlots(response.data); // Transforms slot data
       setSlots(transformedSlots);
       setLoading(false);
-    } catch (error) {
+    } catch (error: any) {
       setLoading(false);
-      showErrorToast("Failed to fetch slots. Please try again.");
-      console.error("Error fetching slots:", error);
+      showErrorToast(error.response.data.error || SlotMessages.ERROR.FETCH);
+      console.error(SlotMessages.ERROR.FETCH, error);
     }
   }, []);
 
@@ -40,16 +41,14 @@ const MentorMeetingManagement: React.FC = () => {
         isBooked: false,
       };
 
-      const response = await api.post("/api/slots", newSlot);
+      const response = await api.post("/slots", newSlot);
       if (response.status === 201) {
-        showSuccessToast("The slot was created successfully.");
+        showSuccessToast(SlotMessages.SUCCESS.CREATE);
         fetchSlots();
       }
     } catch (error: any) {
-      showErrorToast(
-        error?.response?.data?.message || "Error adding the slot. Try again."
-      );
-      console.error("Error adding slot:", error);
+      showErrorToast(error.response.data.error || SlotMessages.ERROR.CREATE);
+      console.error(SlotMessages.ERROR.CREATE, error);
     }
   };
 

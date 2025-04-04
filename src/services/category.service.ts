@@ -6,7 +6,7 @@ export const fetchCategoriesAsFilterOptions = async (): Promise<
 > => {
   try {
     // Fetch categories from the API
-    const response = await api.get<Category[]>("/api/categories");
+    const response = await api.get<Category[]>("/categories");
     const categories = response.data;
 
     // Map categories to FilterOption format

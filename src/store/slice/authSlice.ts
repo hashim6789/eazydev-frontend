@@ -49,8 +49,8 @@ const authSlice = createSlice({
       const { user } = action.payload;
       state.isAuthenticated = true;
       state.user = user.role;
-      state.isVerified = user.isVerified;
-      state.isBlocked = user.isBlocked;
+      state.isVerified = true;
+      state.isBlocked = false;
       state.loading = false;
       state.error = null;
 

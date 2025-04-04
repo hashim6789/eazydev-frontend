@@ -45,7 +45,7 @@ const useAuth = () => {
         { withCredentials: true }
       );
       if (response.status === 200) {
-        const user = response.data.user as User;
+        const user = response.data as User;
         dispatch(loginSuccess({ user }));
         if (role === "learner") {
           navigate("/");
@@ -53,9 +53,11 @@ const useAuth = () => {
           navigate(`/${role}/dashboard`);
         }
       }
-    } catch (err) {
-      dispatch(loginFailure(AuthMessages.LOGIN_FAILED));
-      console.error(AuthMessages.LOGIN_FAILED, err);
+    } catch (error: any) {
+      dispatch(
+        loginFailure(error.response.data.error || AuthMessages.LOGIN_FAILED)
+      );
+      console.error(AuthMessages.LOGIN_FAILED, error);
     }
   };
 
@@ -78,14 +80,11 @@ const useAuth = () => {
         console.log(`navigate to /${role}/otp`);
         navigate(`/${role}/otp`);
       }
-    } catch (err: any) {
-      if (err.response.data.error) {
-        dispatch(signupFailure(err.response.data.error));
-      } else {
-        dispatch(signupFailure(AuthMessages.SIGNUP_FAILED));
-      }
-
-      console.error(AuthMessages.SIGNUP_FAILED, err);
+    } catch (error: any) {
+      dispatch(
+        signupFailure(error.response.data.error || AuthMessages.SIGNUP_FAILED)
+      );
+      console.error(AuthMessages.SIGNUP_FAILED, error);
     }
   };
 
@@ -108,13 +107,13 @@ const useAuth = () => {
       } else {
         navigate(`/${role}/dashboard`);
       }
-    } catch (err: any) {
-      if (err.response.data.error) {
-        dispatch(googleSignupFailure(err.response.data.error));
-      } else {
-        dispatch(googleSignupFailure(AuthMessages.GOOGLE_SIGNUP_FAILED));
-      }
-      console.error(AuthMessages.GOOGLE_SIGNUP_FAILED, err);
+    } catch (error: any) {
+      dispatch(
+        googleSignupFailure(
+          error.response.data.error || AuthMessages.GOOGLE_SIGNUP_FAILED
+        )
+      );
+      console.error(AuthMessages.GOOGLE_SIGNUP_FAILED, error);
     }
   };
 
@@ -132,16 +131,16 @@ const useAuth = () => {
           role,
         }
       );
-      if (response.status === 200 && response.data.success) {
+      if (response.status === 200) {
         dispatch(forgotPasswordSuccess());
       }
-    } catch (err: any) {
+    } catch (error: any) {
       dispatch(
         forgotPasswordFailure(
-          err.response.data.error || AuthMessages.FORGOT_PASSWORD_FAILED
+          error.response.data.error || AuthMessages.FORGOT_PASSWORD_FAILED
         )
       );
-      console.error(AuthMessages.FORGOT_PASSWORD_FAILED, err);
+      console.error(AuthMessages.FORGOT_PASSWORD_FAILED, error);
     }
   };
 
@@ -152,8 +151,8 @@ const useAuth = () => {
       if (response.status === 200) {
         dispatch(logout());
       }
-    } catch (error) {
-      showErrorToast(AuthMessages.LOGOUT_FAILED);
+    } catch (error: any) {
+      showErrorToast(error.response.data.error || AuthMessages.LOGOUT_FAILED);
     }
   };
 

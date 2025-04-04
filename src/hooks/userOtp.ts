@@ -78,8 +78,8 @@ const useOtp = (onComplete?: (otp: string) => void) => {
 
   // Resend OTP logic
   const resendOtp = async () => {
-    localStorage.setItem("otpTimer", "20");
-    setTimer(20);
+    localStorage.setItem("otpTimer", "60");
+    setTimer(60);
     setIsActive(true);
     setOtp(new Array(6).fill(""));
     inputRefs.current[0].focus();
