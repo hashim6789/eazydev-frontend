@@ -21,25 +21,25 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
 
   useEffect(() => {
     const initializePeer = async () => {
-      // const peer = new Peer({
-      //   host: "localhost",
-      //   port: 3001,
-      //   path: "/peerjs",
-      //   secure: false,
-      //   config: {
-      //     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      //   },
-      // });
-
       const peer = new Peer({
-        host: "www.muhammedhashim.online", // ✅ Change from localhost
-        port: 443, // ✅ Use HTTPS port
+        host: "localhost",
+        port: 3001,
         path: "/peerjs",
-        secure: true, // ✅ Use HTTPS
+        secure: false,
         config: {
           iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
         },
       });
+
+      // const peer = new Peer({
+      //   host: "www.muhammedhashim.online", // ✅ Change from localhost
+      //   port: 443, // ✅ Use HTTPS port
+      //   path: "/peerjs",
+      //   secure: true, // ✅ Use HTTPS
+      //   config: {
+      //     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      //   },
+      // });
 
       peerInstance.current = peer;
 

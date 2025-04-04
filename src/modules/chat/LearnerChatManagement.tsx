@@ -24,7 +24,7 @@ import { getUserProperty } from "../../utils/local-user.util";
 //   upgrade: false,
 // });
 
-const socket = io("wss://www.muhammedhashim.online/chats", {
+const socket = io("https://www.muhammedhashim.online/chats", {
   path: "/socket.io/",
   transports: ["websocket"],
 });
