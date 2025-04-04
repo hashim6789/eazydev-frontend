@@ -25,7 +25,9 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
 
   // Handlers for Adding, Editing, and Removing Lessons
   const handleAddLesson = async (lesson: Lesson) => {
-    const materialIds = materials.map((item) => item.id);
+    console.log("materials", lesson.materials);
+    const materialIds = lesson.materials.map((item) => item.id);
+    console.log("materials", materialIds);
     handleLessonManagement.add(lesson, materialIds);
   };
 

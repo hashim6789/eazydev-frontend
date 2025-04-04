@@ -11,6 +11,8 @@ import { useCourseTable } from "../../../../hooks/useCourseTable";
 import CourseCard from "../../components/CourseCard";
 import { Pagination } from "../../../shared/components";
 import { CourseStatus } from "../../../../types";
+import { useDispatch } from "react-redux";
+import { removeCourseDetails } from "../../../../store/slice";
 
 const CourseManagement: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +32,9 @@ const CourseManagement: React.FC = () => {
   } = useCourseTable({
     itemsPerPage: 6,
   });
+
+  const dispatch = useDispatch();
+  dispatch(removeCourseDetails());
 
   return (
     <div className={`p-6 min-h-screen  ${styles.textSecondary}`}>
