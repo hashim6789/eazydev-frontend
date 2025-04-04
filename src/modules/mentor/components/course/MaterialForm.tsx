@@ -59,7 +59,7 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
     setUploading(true);
     try {
       const response = await api.post<{ signedUrl: string; fileKey: string }>(
-        "/api/upload/signed-url",
+        "/upload/signed-url",
         {
           fileName: file.name,
           fileType: file.type,
@@ -204,6 +204,9 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
           disabled={isUploading}
           className="block"
         />
+        {errors.fileKey && (
+          <p className="text-sm text-red-600">{errors.fileKey.message}</p>
+        )}
         {isUploading && <p className="text-sm text-gray-500">Uploading...</p>}
         {fileName && (
           <p className="text-sm text-gray-600">Selected file: {fileName}</p>

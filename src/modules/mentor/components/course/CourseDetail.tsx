@@ -124,7 +124,7 @@ export const CourseDetails: React.FC = () => {
           }}
         >
           <option value="" disabled>
-            {selectedCategory
+            {selectedCategory && selectedCategory.title
               ? `Selected: ${selectedCategory.title}`
               : "Select a category"}
           </option>

@@ -442,7 +442,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
           )}
 
           {/* Forgot password link */}
-          {isLogin && !forgotPasswordModal && (
+          {role !== "admin" && isLogin && !forgotPasswordModal && (
             <div className="text-center mt-6">
               <button
                 type="button"

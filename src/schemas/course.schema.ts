@@ -13,8 +13,8 @@ export const CourseDetailsSchema = z.object({
     .min(0, { message: "Price must be positive" })
     .max(10000, { message: "Price must not exceed 10,000" }),
   category: z.object({
-    id: z.string(),
-    title: z.string(),
+    id: z.string().nonempty({ message: "Category is required" }),
+    title: z.string().nonempty("Category is required"),
     isListed: z.boolean(),
   }),
   description: z

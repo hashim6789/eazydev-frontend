@@ -24,24 +24,29 @@ export function useCategoryTable({
   const [categoryData, setCategoryData] = useState<Category[]>([]);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [isCreating, setIsCreating] = useState<boolean>(false);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  console.log(categoryData, "after");
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        setCategoryData([]);
         const response = await api.get(
-          `/categories?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
+          role === "admin"
+            ? `/categories/admin?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
+            : `/categories?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
-        console.log(result);
+        console.log(result.last_page, "nihnjhun");
 
-        setCategoryData(result);
+        setCategoryData(role === "admin" ? result.body : result);
+
         setTotalPages(result.last_page);
-      } catch (error) {
+      } catch (error: any) {
         console.error(CategoryMessages.ERROR.FETCH, error);
-        showErrorToast(CategoryMessages.ERROR.FETCH);
+        showErrorToast(
+          error.response.data.error || CategoryMessages.ERROR.FETCH
+        );
       } finally {
         setIsLoading(false);
       }
@@ -64,13 +69,13 @@ export function useCategoryTable({
     });
   }, [categoryData, filterStatus, searchQuery]);
 
-  const paginatedData = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return filteredData.slice(startIndex, startIndex + itemsPerPage);
-  }, [filteredData, currentPage, itemsPerPage]);
+  // const paginatedData = useMemo(() => {
+  //   const startIndex = (currentPage - 1) * itemsPerPage;
+  //   return filteredData.slice(startIndex, startIndex + itemsPerPage);
+  // }, [filteredData, currentPage, itemsPerPage]);
 
   useEffect(() => {
-    setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
+    // setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
   }, [filteredData, itemsPerPage]);
 
   const handlePageChange = useCallback((page: number) => {
@@ -121,9 +126,11 @@ export function useCategoryTable({
         setCategoryData(updatedData);
         showSuccessToast(CategoryMessages.SUCCESS.TOGGLE);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error(CategoryMessages.ERROR.TOGGLE, error);
-      showErrorToast(CategoryMessages.ERROR.TOGGLE);
+      showErrorToast(
+        error.response.data.error || CategoryMessages.ERROR.TOGGLE
+      );
     } finally {
       setIsLoading(false);
     }
@@ -162,8 +169,13 @@ export function useCategoryTable({
         showSuccessToast(CategoryMessages.SUCCESS.UPDATE);
       }
     } catch (error: any) {
-      console.error(CategoryMessages.ERROR.UPDATE, error);
-      showErrorToast(CategoryMessages.ERROR.UPDATE);
+      console.error(
+        error.response.data.error || CategoryMessages.ERROR.UPDATE,
+        error
+      );
+      showErrorToast(
+        error.response.data.error || CategoryMessages.ERROR.UPDATE
+      );
     }
   };
 
@@ -183,9 +195,14 @@ export function useCategoryTable({
         setIsCreating(false);
         showSuccessToast(CategoryMessages.SUCCESS.CREATE);
       }
-    } catch (error) {
-      console.error(CategoryMessages.ERROR.CREATE, error);
-      showErrorToast(CategoryMessages.ERROR.CREATE);
+    } catch (error: any) {
+      console.error(
+        error.response.data.error || CategoryMessages.ERROR.CREATE,
+        error
+      );
+      showErrorToast(
+        error.response.data.error || CategoryMessages.ERROR.CREATE
+      );
     }
   };
 
@@ -194,7 +211,7 @@ export function useCategoryTable({
     filterStatus,
     currentPage,
     searchQuery,
-    paginatedData,
+    categoryData,
     totalPages,
     isEditModalOpen,
     isCreating,

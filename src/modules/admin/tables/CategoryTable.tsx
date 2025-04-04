@@ -27,7 +27,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
     filterStatus,
     currentPage,
     searchQuery,
-    paginatedData,
+    categoryData,
     totalPages,
     isEditModalOpen,
     handleSaveTitle,
@@ -72,6 +72,8 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
     }
   };
 
+  console.log(totalPages, "total");
+
   return (
     <div className="space-y-6 p-6 bg-white rounded-lg shadow-sm">
       {/* Header Section */}
@@ -102,12 +104,12 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
 
       {/* Loading and Error States */}
       {isLoading && <LoadingState />}
-      {paginatedData && paginatedData.length === 0 && <NoContentState />}
+      {categoryData && categoryData.length === 0 && <NoContentState />}
 
       {/* Table */}
 
       <div className="overflow-x-auto">
-        {paginatedData.length > 0 && (
+        {categoryData.length > 0 && (
           <table className="w-full">
             <thead>
               <tr className="bg-gray-50">
@@ -123,7 +125,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {paginatedData.map((category) => (
+              {categoryData.map((category) => (
                 <tr key={category.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {category.title}

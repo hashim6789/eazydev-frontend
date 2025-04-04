@@ -19,6 +19,7 @@ import {
   addMaterial,
 } from "../store/slice";
 import { showErrorToast, showSuccessToast } from "../utils";
+import { CourseMessages, LessonMessages, MaterialMessages } from "../constants";
 
 export const useMentorCourseManagement = () => {
   // Redux and navigation hooks
@@ -57,7 +58,7 @@ export const useMentorCourseManagement = () => {
       formData.append("upload_preset", config.CLOUDINARY_PRESET);
 
       const response = await axios.post(
-        `https:/.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
 
@@ -65,11 +66,13 @@ export const useMentorCourseManagement = () => {
 
       if (response.status === 200) {
         dispatch(setThumbnail({ thumbnail: secureUrl }));
-        showSuccessToast("Thumbnail uploaded successfully!");
+        showSuccessToast(CourseMessages.SUCCESS.UPLOAD);
       }
       return secureUrl;
-    } catch (error) {
-      showErrorToast("Failed to upload image.");
+    } catch (error: any) {
+      showErrorToast(
+        error.response.data.error || CourseMessages.SUCCESS.UPLOAD
+      );
     }
   };
 
@@ -92,17 +95,17 @@ export const useMentorCourseManagement = () => {
       if (response.status === (isEditing ? 200 : 201)) {
         showSuccessToast(
           isEditing
-            ? "Course updated successfully."
-            : "Course created successfully."
+            ? CourseMessages.SUCCESS.UPDATE
+            : CourseMessages.SUCCESS.CREATE
         );
         dispatch(setCourseDetails({ ...data, id: response.data }));
         dispatch(setCurrentStep(2));
       }
-    } catch (error) {
+    } catch (error: any) {
       showErrorToast(
-        `An error occurred while ${
-          isEditing ? "updating" : "creating"
-        } the course.`
+        error.response.data.error || isEditing
+          ? CourseMessages.ERROR.UPDATE
+          : CourseMessages.ERROR.CREATE
       );
     }
   };
@@ -111,19 +114,12 @@ export const useMentorCourseManagement = () => {
   const handlePublishCourse = async () => {
     try {
       await api.patch(`/courses/${course.id}`, { newStatus: "requested" });
-      navigate("/mentor/courses");
+      navigate(`/mentor/courses/${course.id}`);
       dispatch(setCurrentStep(1));
       dispatch(resetCourse());
-      showSuccessToast(
-        isEditing
-          ? "Course update requested successfully."
-          : "Course requested successfully."
-      );
+      showSuccessToast(CourseMessages.SUCCESS.TOGGLE);
     } catch (error: any) {
-      showErrorToast(
-        error.response.data.error ||
-          "An error occurred while publishing the course."
-      );
+      showErrorToast(error.response.data.error || CourseMessages.ERROR.TOGGLE);
     }
   };
 
@@ -131,8 +127,8 @@ export const useMentorCourseManagement = () => {
   const handleSaveDraft = () => {
     dispatch(setCurrentStep(1));
     dispatch(resetCourse());
-    showSuccessToast("Draft saved successfully.");
-    navigate("/mentor/courses");
+    showSuccessToast(CourseMessages.SUCCESS.SAVED);
+    navigate(`/mentor/courses/${course.id}`);
   };
 
   // Lesson Management Handlers
@@ -149,13 +145,15 @@ export const useMentorCourseManagement = () => {
 
         if (response.status === 201 && response.data) {
           dispatch(addLesson({ ...lesson, id: response.data }));
-          showSuccessToast("Lesson created successfully");
+          showSuccessToast(LessonMessages.SUCCESS.CREATE);
           setIsAddingLesson(false);
           return response.data;
         }
         return null;
       } catch (error: any) {
-        showErrorToast(error.response.data.error || "Failed to create lesson");
+        showErrorToast(
+          error.response.data.error || LessonMessages.ERROR.CREATE
+        );
         return null;
       }
     },
@@ -171,12 +169,14 @@ export const useMentorCourseManagement = () => {
 
         if (response.status === 200) {
           dispatch(updateLesson({ index, lesson }));
-          showSuccessToast("Lesson updated successfully");
+          showSuccessToast(LessonMessages.SUCCESS.UPDATE);
           setEditingLessonIndex(null);
           setIsAddingLesson(false);
         }
       } catch (error: any) {
-        showErrorToast(error.response.data.error || "Failed to update lesson");
+        showErrorToast(
+          error.response.data.error || LessonMessages.ERROR.UPDATE
+        );
       }
     },
 
@@ -189,12 +189,14 @@ export const useMentorCourseManagement = () => {
 
         if (response.status === 200) {
           dispatch(removeLesson(index));
-          showSuccessToast("Lesson deleted successfully");
+          showSuccessToast(LessonMessages.SUCCESS.REMOVE);
           setIsAddingLesson(false);
           setEditingLessonIndex(null);
         }
       } catch (error: any) {
-        showErrorToast(error.response.data.error || "Failed to delete lesson");
+        showErrorToast(
+          error.response.data.error || LessonMessages.ERROR.REMOVE
+        );
       }
     },
   };
@@ -212,12 +214,14 @@ export const useMentorCourseManagement = () => {
             })
           );
           setIsAddingMaterial(false);
-          showSuccessToast("Material created successfully");
+          showSuccessToast(MaterialMessages.SUCCESS.CREATE);
           return response.data;
         }
         return null;
       } catch (error: any) {
-        showErrorToast("Failed to create material");
+        showErrorToast(
+          error.response.data.error || MaterialMessages.ERROR.CREATE
+        );
         return null;
       }
     },
@@ -243,13 +247,13 @@ export const useMentorCourseManagement = () => {
             })
           );
           setEditingMaterialIndex(null);
-          showSuccessToast("Material updated successfully");
+          showSuccessToast(MaterialMessages.SUCCESS.UPDATE);
           return true;
         }
         return false;
       } catch (error: any) {
         showErrorToast(
-          error.response.data.error || "Failed to update material"
+          error.response.data.error || MaterialMessages.ERROR.UPDATE
         );
         return false;
       }
@@ -263,10 +267,12 @@ export const useMentorCourseManagement = () => {
         if (response.status === 200) {
           dispatch(removeMaterial({ lessonIndex, materialIndex }));
           setEditingMaterialIndex(null);
-          showSuccessToast("Material deleted successfully");
+          showSuccessToast(MaterialMessages.SUCCESS.REMOVE);
         }
       } catch (error: any) {
-        showErrorToast("Failed to delete material");
+        showErrorToast(
+          error.response.data.error || MaterialMessages.ERROR.REMOVE
+        );
       }
     },
 

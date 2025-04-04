@@ -183,7 +183,7 @@ const CourseReview: React.FC<CourseReviewProps> = ({
                 onClick={onPublishCourse}
                 className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
               >
-                {isEditing ? "Request Update" : "Publish Course"}
+                {isEditing ? "Request Update" : "Request Publish"}
               </button>
             </>
           ) : (
