@@ -34,7 +34,7 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
 
       setIsLoading(true);
       try {
-        const response = await api.get<Course>(`/api/courses/${courseId}`);
+        const response = await api.get<Course>(`/courses/${courseId}`);
         dispatch(setCourseDetails(response.data));
       } catch (error: any) {
         showErrorToast(
@@ -57,7 +57,7 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
     if (!courseId) return;
 
     try {
-      const response = await api.patch(`/api/courses/${courseId}`, {
+      const response = await api.patch(`/courses/${courseId}`, {
         newStatus,
       });
 

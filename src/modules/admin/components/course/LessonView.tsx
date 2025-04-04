@@ -10,8 +10,9 @@ import {
 import useFetch from "../../../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
 import { useThemeStyles } from "../../../../utils/color-theme.util";
-import { ILessonPopulated } from "../../../../types";
+import { ILessonPopulated, UserRole } from "../../../../types";
 import { MaterialType } from "../../../../types/material";
+import { getUserProperty } from "../../../../utils/local-user.util";
 
 interface LessonViewProps {
   lessonId: string;
@@ -61,12 +62,16 @@ const MaterialList: React.FC<{
 }> = ({ lessonId }) => {
   const navigate = useNavigate();
   const theme = useThemeStyles();
+  const role = getUserProperty("role") as UserRole;
   const {
     data: lesson,
     loading,
     error,
   } = useFetch<ILessonPopulated>(`/lessons/${lessonId}`);
 
+  const handleMaterialNavigation = (materialId: string) => {
+    role === "mentor" && navigate(`/mentor/materials/${materialId}`);
+  };
   if (loading) {
     return (
       <div className={`p-4 flex justify-center ${theme.textPrimary}`}>
@@ -131,7 +136,7 @@ const MaterialList: React.FC<{
       <div className={`border-t ${theme.border}`}>
         {lesson.materials.map((material) => (
           <div
-            onClick={() => navigate(`/mentor/materials/${material.id}`)}
+            onClick={() => handleMaterialNavigation(material.id)}
             key={material.id}
             className={`flex items-center p-4 hover:${theme.lightBg} transition-colors border-b ${theme.border} last:border-b-0 cursor-pointer`}
           >

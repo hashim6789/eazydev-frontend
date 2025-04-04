@@ -43,6 +43,10 @@ export function useCategoryTable({
 
         setTotalPages(result.last_page);
       } catch (error: any) {
+        setCategoryData([]);
+        setCurrentPage(0);
+        setTotalPages(0);
+
         console.error(CategoryMessages.ERROR.FETCH, error);
         showErrorToast(
           error.response.data.error || CategoryMessages.ERROR.FETCH

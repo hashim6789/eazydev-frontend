@@ -10,6 +10,7 @@ import AdminCategoryManagement from "../modules/admin/pages/category/AdminCatego
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 import Layout from "../modules/layouts/Layout";
 import loginImage from "../assets/img/wall_paer_02.jpeg";
+import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 
 export const AdminRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {

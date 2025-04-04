@@ -12,7 +12,7 @@ import { MaterialDetailsContent } from "../../components/MaterialDetailContent";
 
 const MaterialDetails: React.FC = () => {
   const { materialId } = useParams<{ materialId: string }>();
-  const { data } = useFetch<Material>(`/api/materials/${materialId}`);
+  const { data } = useFetch<Material>(`/materials/${materialId}`);
   const dispatch = useDispatch<AppDispatch>();
   const { material, error, loading } = useSelector(
     (state: RootState) => state.material

@@ -8,10 +8,7 @@ import { decodeToken } from "../../utils/decode-token.util";
 import { getUserProperty } from "../../utils/local-user.util";
 
 const decode = decodeToken("accessToken");
-// const storedData = JSON.parse(localStorage.getItem("data") ?? "{}") as {
-//   isBlocked?: boolean;
-//   isVerified?: boolean;
-// };
+console.log(decode, "decode");
 
 const isBlocked = (getUserProperty("isBlocked") ?? false) as boolean;
 const isVerified = (getUserProperty("isVerified") ?? false) as boolean;
