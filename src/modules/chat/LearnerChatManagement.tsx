@@ -15,7 +15,7 @@ import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
 import { io, Socket } from "socket.io-client";
 import ChatMessages from "./ChatMessages";
-import { api, config } from "../../configs";
+import { api } from "../../configs";
 import { getUserProperty } from "../../utils/local-user.util";
 
 // Connect to the Socket.io server
