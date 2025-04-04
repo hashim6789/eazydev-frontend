@@ -24,9 +24,12 @@ import { getUserProperty } from "../../utils/local-user.util";
 //   upgrade: false,
 // });
 
-const socket = io("https://www.muhammedhashim.online/chats", {
+const socket = io("https://www.muhammedhashim.online", {
   path: "/socket.io/",
   transports: ["websocket"],
+  reconnection: true, // Enable automatic reconnection
+  reconnectionAttempts: 5, // Number of retry attempts
+  reconnectionDelay: 3000, // Time before retry
 });
 
 const useSocket = (socket: Socket) => {

@@ -21,13 +21,30 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
 
   useEffect(() => {
     const initializePeer = async () => {
+      // const peer = new Peer({
+      //   host: "localhost",
+      //   port: 3001,
+      //   path: "/peerjs",
+      //   secure: false,
+      //   config: {
+      //     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      //   },
+      // });
+
       const peer = new Peer({
-        host: "localhost",
-        port: 3001,
+        host: "www.muhammedhashim.online",
+        secure: true,
+        port: 443, // HTTPS port
         path: "/peerjs",
-        secure: false,
         config: {
-          iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+          iceServers: [
+            { urls: "stun:stun.l.google.com:19302" },
+            {
+              urls: "turn:your-turn-server.com",
+              username: "user",
+              credential: "pass",
+            }, // Add a TURN server if needed
+          ],
         },
       });
 
