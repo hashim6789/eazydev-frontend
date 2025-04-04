@@ -207,39 +207,39 @@
 
 // export default MaterialCreation;
 
-import React from "react";
-import { useCreateMaterial } from "../../../../hooks/useCreateMaterial";
-import MaterialForm from "../../components/MaterialForm";
+// import React from "react";
+// import { useCreateMaterial } from "../../../../hooks/useCreateMaterial";
+// import MaterialForm from "../../components/MaterialForm";
 
-const MaterialCreation: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    onSubmit,
-    setValue,
-    handleFileUpload,
-    watch,
-    errors,
-    uploading,
-    preview,
-    selectedType,
-  } = useCreateMaterial();
+// const MaterialCreation: React.FC = () => {
+//   const {
+//     register,
+//     handleSubmit,
+//     onSubmit,
+//     setValue,
+//     handleFileUpload,
+//     watch,
+//     errors,
+//     uploading,
+//     preview,
+//     selectedType,
+//   } = useCreateMaterial();
 
-  return (
-    <MaterialForm
-      onSubmit={onSubmit}
-      register={register}
-      handleSubmit={handleSubmit}
-      setValue={setValue}
-      handleFileUpload={handleFileUpload}
-      watch={watch}
-      errors={errors}
-      uploading={uploading}
-      preview={preview}
-      selectedType={selectedType}
-      mode="create"
-    />
-  );
-};
+//   return (
+//     <MaterialForm
+//       onSubmit={onSubmit}
+//       register={register}
+//       handleSubmit={handleSubmit}
+//       setValue={setValue}
+//       handleFileUpload={handleFileUpload}
+//       watch={watch}
+//       errors={errors}
+//       uploading={uploading}
+//       preview={preview}
+//       selectedType={selectedType}
+//       mode="create"
+//     />
+//   );
+// };
 
-export default MaterialCreation;
+// export default MaterialCreation;

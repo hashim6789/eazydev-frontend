@@ -12,5 +12,6 @@ export const MaterialMessages = {
     UPDATE: "Failed to update material.",
     REMOVE: "Failed to remove material.",
     UPLOAD: "Failed to upload material content.",
+    SIGNED_URL: "You can't get the material content!",
   },
 };

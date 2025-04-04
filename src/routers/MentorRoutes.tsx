@@ -8,7 +8,6 @@ import ProfilePage from "../modules/mentor/pages/Profile";
 import CourseManagement from "../modules/mentor/pages/course/CourseManagement";
 import MaterialManagement from "../modules/mentor/pages/material/MaterialManagement";
 import LessonManagement from "../modules/mentor/pages/lesson/LessonManagement";
-import MaterialCreation from "../modules/mentor/pages/material/MaterialCreation";
 import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
@@ -73,7 +72,6 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
                 path: "materials",
                 children: [
                   { path: "", element: <MaterialManagement /> },
-                  { path: "create", element: <MaterialCreation /> },
                   { path: ":materialId", element: <MaterialDetails /> },
                 ],
               },

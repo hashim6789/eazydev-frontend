@@ -41,11 +41,11 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
           if (response && response.status === 200) {
             setSignedUrl(response.data);
           } else {
-            throw new Error(MaterialMessages.SIGNED_URL_FAILED);
+            throw new Error(MaterialMessages.ERROR.SIGNED_URL);
           }
         } catch (err) {
           console.error(err);
-          setError(MaterialMessages.MATERIAL_LOAD_FAILED);
+          setError(MaterialMessages.ERROR.SIGNED_URL);
         } finally {
           setLoading(false);
         }
@@ -67,7 +67,7 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
         );
       }
     } catch (err) {
-      console.error(MaterialMessages.MATERIAL_MARK_FAILED, err);
+      console.error(ProgressMessages.PROGRESS_UPDATE_FAILED, err);
       setError(ProgressMessages.PROGRESS_UPDATE_FAILED);
     }
   };
