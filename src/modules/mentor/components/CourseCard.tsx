@@ -23,7 +23,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, handleDelete }) => {
       {/* Thumbnail */}
       <div className="h-48 overflow-hidden">
         <img
-          src={course.thumbnail || "/api/placeholder/400/240"}
+          src={course.thumbnail || "/placeholder/400/240"}
           alt={course.title}
           className="w-full h-full object-cover"
         />

@@ -23,7 +23,7 @@ const CourseEditing: React.FC = () => {
     const fetchCourseDetails = async () => {
       try {
         setLoading(true);
-        const response = await api.get<Course>(`/api/courses/${courseId}`);
+        const response = await api.get<Course>(`/courses/${courseId}`);
         if (response && response.status === 200) {
           dispatch(setFetchedCourseDetails(response.data));
         }
