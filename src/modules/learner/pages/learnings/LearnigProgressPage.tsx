@@ -10,6 +10,7 @@ import {
   Clock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import userImage from "../../../../assets/img/user_image.avif";
 
 const LearningProgressPage: React.FC = () => {
   const {
@@ -84,6 +85,9 @@ const LearningProgressPage: React.FC = () => {
                   <div className="flex items-center mb-4">
                     <img
                       src={learning.mentor.profilePicture}
+                      onError={(e) => {
+                        e.currentTarget.src = userImage; // Your fallback image path
+                      }}
                       alt={`${learning.mentor.firstName} ${learning.mentor.lastName}`}
                       className="w-6 h-6 rounded-full mr-2"
                     />

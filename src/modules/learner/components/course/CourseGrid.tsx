@@ -10,6 +10,7 @@ import {
 } from "../../../shared/components";
 import { courseSortOptions } from "../../../shared/values";
 import { PopulatedCourse } from "../../../../types";
+import userImage from "../../../../assets/img/user_image.avif";
 
 interface CourseGridProps {}
 
@@ -110,7 +111,10 @@ const CourseGrid: React.FC<CourseGridProps> = () => {
                 <p className="font-medium">Mentor:</p>
                 <div className="flex items-center mt-2 gap-2">
                   <img
-                    src={course.mentor.profilePicture}
+                    src={course.mentor.profilePicture || userImage}
+                    onError={(e) => {
+                      e.currentTarget.src = userImage; // Your fallback image path
+                    }}
                     alt={`${course.mentor.firstName} ${course.mentor.lastName}`}
                     className="w-10 h-10 rounded-full object-cover"
                   />

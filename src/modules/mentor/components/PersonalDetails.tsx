@@ -114,6 +114,9 @@ const PersonalDetails: React.FC = () => {
           <div className="w-24 h-24 rounded-full bg-purple-100 flex items-center justify-center overflow-hidden">
             <img
               src={profilePicture}
+              onError={(e) => {
+                e.currentTarget.src = userImage; // Your fallback image path
+              }}
               alt="Profile"
               className="w-full h-full object-cover"
             />
