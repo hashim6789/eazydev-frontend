@@ -15,45 +15,10 @@ interface MonthlyEarning {
   month: string;
   year: number;
   earnings: number;
-  // sessionsCount: number;
 }
-
-// Sample data for testing the MentorRevenueManagement component
-const sampleMentorRevenueData = {
-  totalEarnings: 15750.5,
-  currentMonthEarnings: 2250.0,
-  totalStudents: 43,
-  monthlyEarnings: [
-    {
-      month: "January",
-      year: 2025,
-      earnings: 1850.75,
-      sessionsCount: 15,
-    },
-    {
-      month: "February",
-      year: 2025,
-      earnings: 2100.25,
-      sessionsCount: 17,
-    },
-    {
-      month: "March",
-      year: 2025,
-      earnings: 1950.5,
-      sessionsCount: 16,
-    },
-    {
-      month: "April",
-      year: 2025,
-      earnings: 2250.0,
-      sessionsCount: 18,
-    },
-  ],
-};
 
 const MentorRevenueManagement: React.FC = () => {
   const { data: revenue } = useFetch<MentorRevenue>("/analysis/mentor/revenue");
-  // const revenue = sampleMentorRevenueData;
 
   if (!revenue) return <ErrorState />;
 
