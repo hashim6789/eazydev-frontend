@@ -31,16 +31,6 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
         },
       });
 
-      // const peer = new Peer({
-      //   host: "www.muhammedhashim.online", // ✅ Change from localhost
-      //   port: 443, // ✅ Use HTTPS port
-      //   path: "/peerjs",
-      //   secure: true, // ✅ Use HTTPS
-      //   config: {
-      //     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
-      //   },
-      // });
-
       peerInstance.current = peer;
 
       peer.on("open", async (id: string) => {
