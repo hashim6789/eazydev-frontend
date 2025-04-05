@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ISlot } from "../../../../types/meeting";
 import { api } from "../../../../configs";
-import { transformSlots } from "../../../../utils/transformer.util";
+import { transformSlots } from "../../../../utils/formater.util";
 import { getUserProperty } from "../../../../utils/local-user.util";
 import ScheduledMeetingsTable from "../../../shared/components/SheduledMeetingsTable";
 import { useSelector } from "react-redux";

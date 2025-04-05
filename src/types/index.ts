@@ -7,3 +7,4 @@ export * from "./progress";
 export * from "./layout";
 export * from "./chart";
 export * from "./certificate";
+export * from "./wallet";

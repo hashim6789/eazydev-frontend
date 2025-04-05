@@ -148,6 +148,7 @@ export const getThemeStyles = (
 // Create a hook to use theme styles from Redux
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import { TransactionStatus, TransactionType } from "../types";
 
 export const useThemeStyles = () => {
   const { mode, color } = useSelector((state: RootState) => state.theme);
@@ -162,4 +163,34 @@ export const generateColor = (key: string) => {
 
   const color = `#${((hash >> 0) & 0xffffff).toString(16).padStart(6, "0")}`;
   return color;
+};
+
+// Get transaction type badge color
+export const getTransactionTypeColor = (type: TransactionType) => {
+  switch (type) {
+    case "purchase":
+      return "bg-green-100 text-green-800";
+    case "platform_fee":
+      return "bg-blue-100 text-blue-800";
+    //   case "purchase":
+    //     return "bg-red-100 text-red-800";
+    case "subscription":
+      return "bg-purple-100 text-purple-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
+};
+
+// Get transaction status badge color
+export const getTransactionStatusColor = (status: TransactionStatus) => {
+  switch (status) {
+    case "completed":
+      return "bg-green-100 text-green-800";
+    case "pending":
+      return "bg-yellow-100 text-yellow-800";
+    case "failed":
+      return "bg-red-100 text-red-800";
+    default:
+      return "bg-gray-100 text-gray-800";
+  }
 };

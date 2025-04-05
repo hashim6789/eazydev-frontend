@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../store";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Socket } from "socket.io-client";
 import userImage from "../../assets/img/user_image.avif";
 import { addMessage } from "../../store/slice";
@@ -18,8 +18,10 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
   );
 
   const dispatch = useDispatch<AppDispatch>();
+  const messagesEndRef = useRef<HTMLDivElement>(null); // Reference for the bottom of the messages list
 
   useEffect(() => {
+    // Handle new messages and update state
     const handleMessage = (newMessage: any) => {
       dispatch(addMessage(newMessage));
     };
@@ -30,6 +32,11 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
       socket.off("receive message", handleMessage);
     };
   }, [dispatch, socket]);
+
+  useEffect(() => {
+    // Automatically scroll to the bottom when messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
     <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -62,7 +69,8 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
                   <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
                     <img
                       src={message.sender.profilePicture || userImage}
-                      alt=""
+                      alt="User Avatar"
+                      className="rounded-full object-cover"
                     />
                   </div>
                 </div>
@@ -95,6 +103,8 @@ const ChatMessages = ({ socket }: ChatMessagesProps) => {
             </div>
           </div>
         ))}
+      {/* Reference element for automatic scrolling */}
+      <div ref={messagesEndRef} />
     </div>
   );
 };

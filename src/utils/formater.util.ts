@@ -17,3 +17,11 @@ export function transformSlots(slots: any[]): ISlot[] {
   });
   return res;
 }
+
+// Format currency
+export const formatCurrency = (amount: number) => {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(amount / 100);
+};

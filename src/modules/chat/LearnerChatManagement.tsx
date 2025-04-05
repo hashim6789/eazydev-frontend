@@ -17,6 +17,7 @@ import { io, Socket } from "socket.io-client";
 import ChatMessages from "./ChatMessages";
 import { api } from "../../configs";
 import { getUserProperty } from "../../utils/local-user.util";
+import { GroupChatMessages, HttpStatusCode } from "../../constants";
 
 // Connect to the Socket.io server
 // const socket = io(`${config.API_BASE_URL}/chats`, {
@@ -75,11 +76,11 @@ const MainChatLayout = () => {
       dispatch(fetchGroupsStart());
       try {
         const response = await api.get("/chats/groups");
-        if (response && response.status === 200) {
+        if (response && response.status === HttpStatusCode.OK) {
           console.log("response", response.data);
           dispatch(fetchGroupsSuccess(response.data));
         } else {
-          dispatch(fetchGroupsFailure("Failed to fetch groups"));
+          dispatch(fetchGroupsFailure(GroupChatMessages.ERROR.FETCH));
         }
       } catch (error: any) {
         dispatch(fetchGroupsFailure(error.response.data.message));
@@ -90,28 +91,47 @@ const MainChatLayout = () => {
   }, [dispatch]);
 
   return (
-    <div className="h-[600px] w-full max-w-6xl mx-auto bg-white rounded-lg shadow-lg flex overflow-hidden">
-      {/* Main chat area */}
-      <div className={`md:block ${showSidebar ? "hidden" : "block"} md:w-64`}>
-        <ChatSidebar socket={socket} />
-      </div>
+    <div className="flex flex-col h-full w-full bg-white rounded-lg shadow-lg">
+      {/* Main chat area with responsive sidebar */}
+      <div className="flex h-full">
+        {/* Sidebar (visible on medium screens and larger) */}
+        <div
+          className={`md:block ${
+            showSidebar ? "hidden" : "block"
+          } w-full md:w-64 bg-gray-100 border-r`}
+        >
+          <ChatSidebar socket={socket} />
+        </div>
 
-      {/* Chat content */}
-      <div className="flex-1 flex flex-col">
-        <ChatHeader
-          onMenuClick={() => setShowSidebar(!showSidebar)}
-          onInfoClick={() => setShowInfo(!showInfo)}
-        />
-        <div className="flex-1 flex overflow-hidden">
-          <div
-            className={`flex-1 flex flex-col ${
-              showInfo ? "hidden md:flex" : "flex"
-            }`}
-          >
-            <ChatMessages socket={socket} />
-            <MessageInput socket={socket} />
+        {/* Chat content area */}
+        <div className="flex flex-1 flex-col h-full">
+          {/* Chat Header */}
+          <ChatHeader
+            onMenuClick={() => setShowSidebar(!showSidebar)}
+            onInfoClick={() => setShowInfo(!showInfo)}
+          />
+
+          {/* Main Chat Area and Input */}
+          <div className="flex flex-1 overflow-hidden">
+            <div
+              className={`flex-1 flex flex-col ${
+                showInfo ? "hidden md:flex" : "flex"
+              }`}
+            >
+              {/* Chat Messages */}
+              <ChatMessages socket={socket} />
+
+              {/* Message Input */}
+              <MessageInput socket={socket} />
+            </div>
+
+            {/* Group Info Sidebar (visible when toggled) */}
+            {showInfo && (
+              <div className="w-full md:w-64 bg-gray-100 border-l">
+                <GroupInfoSidebar onClose={() => setShowInfo(false)} />
+              </div>
+            )}
           </div>
-          {showInfo && <GroupInfoSidebar onClose={() => setShowInfo(false)} />}
         </div>
       </div>
     </div>

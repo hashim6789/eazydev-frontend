@@ -4,7 +4,7 @@ import { api } from "../../../../configs";
 import { SlotFormData } from "../../../../schemas";
 import { getUserProperty } from "../../../../utils/local-user.util";
 import SlotForm from "../../components/meetings/SlotForm";
-import { transformSlots } from "../../../../utils/transformer.util";
+import { transformSlots } from "../../../../utils/formater.util";
 import { showErrorToast, showSuccessToast } from "../../../../utils";
 import ScheduledMeetingsTable from "../../../shared/components/SheduledMeetingsTable";
 import AvailableSlots from "../../../shared/components/AvailableSlots";
