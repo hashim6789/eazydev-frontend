@@ -10,6 +10,7 @@ import AdminCategoryManagement from "../modules/admin/pages/category/AdminCatego
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 import Layout from "../modules/layouts/Layout";
 import loginImage from "../assets/img/wall_paer_02.jpeg";
+import AdminRevenueManagement from "../modules/admin/pages/revenue/AdminReveneManagement";
 
 export const AdminRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -62,6 +63,10 @@ export const AdminRoutes = (isAuthenticated: boolean, user: UserRole) => [
               {
                 path: "categories",
                 element: <AdminCategoryManagement />,
+              },
+              {
+                path: "revenue",
+                element: <AdminRevenueManagement />,
               },
             ],
           },

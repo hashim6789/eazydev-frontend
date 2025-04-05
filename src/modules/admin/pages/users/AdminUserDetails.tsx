@@ -6,10 +6,11 @@ import { useParams } from "react-router-dom";
 
 //imported custom hooks
 import useFetch from "../../../../hooks/useFetch";
-import { Course, SubRole } from "../../../../types";
+import { SubRole } from "../../../../types";
 import { FC } from "react";
 import { getButtonTheme } from "../../../../utils";
 import useUserBlock from "../../../../hooks/useUserBlock";
+import userImage from "../../../../assets/img/logo.png";
 
 interface LearnerDetailsProps {
   role: SubRole;
@@ -20,19 +21,19 @@ interface Learner {
   lastName: string | null;
   email: string;
   profilePicture: string | null;
-  courses: Course[];
+  courses: { title: string; thumbnail: string; price: string }[];
   isBlocked: boolean | null;
 }
 
 const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
   const { learnerId, mentorId } = useParams();
   const userId = learnerId || mentorId;
-  console.log("userId", userId, learnerId, mentorId);
   const {
     data: user,
     setData,
     loading: userLoading,
-  } = useFetch<Learner>(`/users/${userId}?role=${role}`);
+  } = useFetch<Learner>(`/users/${userId}?userRole=${role}`);
+  console.log("user", user);
   const { handleBlockUnblock } = useUserBlock();
   console.log("User", user);
 
@@ -52,6 +53,8 @@ const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
       }
     }
   };
+
+  const content = role === "learner" ? "Purchased" : "Created";
 
   //loading handling
   if (userLoading) {
@@ -75,7 +78,6 @@ const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
     return (
       <div className="container mx-auto p-6 max-w-7xl h-[80vh] flex items-center justify-center">
         <div className="text-center">
-          {/* <div className="animate-spin h-12 w-12 mb-4 border-4 border-blue-600 border-t-transparent rounded-full mx-auto"></div> */}
           <h2 className="text-xl font-bold text-red-800">
             error fetch user details...
           </h2>
@@ -94,7 +96,7 @@ const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
           <div className="relative w-24 h-24 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
             {user.profilePicture ? (
               <img
-                src={user.profilePicture}
+                src={user.profilePicture || userImage}
                 alt={`${user.firstName}'s profile`}
                 className="w-full h-full object-cover"
               />
@@ -120,15 +122,24 @@ const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
             <p className="text-gray-500">{user.email}</p>
           </div>
 
+          {userId && user.isBlocked !== null && (
+            <button
+              onClick={() => handleBlock(userId)}
+              className={`text-sm px-4 py-2 rounded-md mr-2 ${getButtonTheme(
+                user.isBlocked as boolean
+              )}`}
+            >
+              {user.isBlocked ? "Unblock" : "Block"}
+            </button>
+          )}
+
           {/* Stats */}
-          {/* <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4">
             <div className="text-center">
-              <p className="text-2xl font-bold">
-                {user.purchasedCourses.length}
-              </p>
+              <p className="text-2xl font-bold">{user.courses.length}</p>
               <p className="text-sm text-gray-500">Courses</p>
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
 
@@ -137,16 +148,16 @@ const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
         <div className="p-6 border-b">
           <h2 className="text-xl font-semibold flex items-center gap-2">
             <BookOpen className="h-5 w-5" />
-            Purchased Courses
+            {content} Courses
           </h2>
         </div>
 
         <div className="p-6">
           <div className="h-[600px] overflow-y-auto pr-4">
-            {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {user.purchasedCourses.map((course) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {user.courses.map((course, index) => (
                 <div
-                  key={course._id}
+                  key={index}
                   className="bg-white rounded-lg shadow-md overflow-hidden"
                 >
                   {course.thumbnail && (
@@ -160,51 +171,11 @@ const AdminUserDetails: FC<LearnerDetailsProps> = ({ role }) => {
                   )}
                   <div className="p-4">
                     <h3 className="font-semibold mb-2">{course.title}</h3>
-                    {course.description && (
-                      <p className="text-sm text-gray-500 mb-3 line-clamp-2">
-                        {course.description}
-                      </p>
-                    )}
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
-                      {course.duration && (
-                        <div className="flex items-center gap-1">
-                          <Clock className="h-4 w-4" />
-                          {course.duration}
-                        </div>
-                      )}
-                      {course.purchaseCount && (
-                        <div className="flex items-center gap-1">
-                          <Users className="h-4 w-4" />
-                          {course.purchaseCount} enrolled
-                        </div>
-                      )}
-                    </div>
-                    {course.status && (
-                      <span
-                        className={`inline-block mt-3 px-2 py-1 text-sm font-medium rounded-md
-                        ${
-                          course.status === "published"
-                            ? "bg-blue-100 text-blue-800"
-                            : "bg-gray-100 text-gray-800"
-                        }`}
-                      >
-                        {course.status}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-4 text-sm text-gray-500"></div>
                   </div>
                 </div>
               ))}
-            </div> */}
-            {userId && user.isBlocked !== null && (
-              <button
-                onClick={() => handleBlock(userId)}
-                className={`text-sm px-4 py-2 rounded-md mr-2 ${getButtonTheme(
-                  user.isBlocked as boolean
-                )}`}
-              >
-                {user.isBlocked ? "Unblock" : "Block"}
-              </button>
-            )}
+            </div>
           </div>
         </div>
       </div>

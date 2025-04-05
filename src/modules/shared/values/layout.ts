@@ -36,4 +36,9 @@ export const AdminSidebarItems: SidebarContent[] = [
     name: "Category",
     icon: Bookmark,
   },
+  {
+    path: "/admin/revenue",
+    name: "Revenue Report",
+    icon: Bookmark,
+  },
 ];

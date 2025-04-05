@@ -8,3 +8,4 @@ export * from "./layout";
 export * from "./chart";
 export * from "./certificate";
 export * from "./wallet";
+export * from "./revenue";
