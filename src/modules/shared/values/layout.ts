@@ -7,7 +7,7 @@ export const mentorSidebarItems: SidebarContent[] = [
   { path: "/mentor/courses", name: "Courses", icon: Users },
   { path: "/mentor/meetings", name: "Meetings", icon: Calendar },
   { path: "/mentor/chats", name: "Chat Groups", icon: MessageSquare },
-  { path: "/mentor/analytics", name: "Analytics", icon: BarChart },
+  { path: "/mentor/earnings", name: "Earnings", icon: BarChart },
 ];
 
 export const AdminSidebarItems: SidebarContent[] = [
@@ -39,6 +39,6 @@ export const AdminSidebarItems: SidebarContent[] = [
   {
     path: "/admin/revenue",
     name: "Revenue Report",
-    icon: Bookmark,
+    icon: BarChart,
   },
 ];
