@@ -7,7 +7,7 @@ const PurchaseHistory: React.FC = () => {
     data: histories,
     loading,
     error,
-  } = useFetch<IPurchase[]>("/api/purchases");
+  } = useFetch<IPurchase[]>("/purchases");
 
   if (loading) return <LoadingState />;
   if (error) return <ErrorState />;

@@ -47,7 +47,7 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
             element: <Layout role="mentor" />,
             children: [
               { path: "dashboard", element: <MentorDashboard /> },
-              { path: "profile", element: <ProfilePage /> },
+              { path: "profile", element: <ProfilePage role="mentor" /> },
               {
                 path: "courses",
                 children: [

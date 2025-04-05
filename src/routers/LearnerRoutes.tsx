@@ -72,7 +72,7 @@ export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
                 element: <LearnerLayout />,
                 children: [
                   { path: "dashboard", element: <LandingPage /> },
-                  { path: "profile", element: <ProfilePage /> },
+                  { path: "profile", element: <ProfilePage role="learner" /> },
                   {
                     path: "checkout/:courseId",
                     element: <WrappedCourseCheckout />,
