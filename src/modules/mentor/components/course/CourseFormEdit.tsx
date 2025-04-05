@@ -15,6 +15,7 @@ export const CourseFormA: React.FC<CourseFormProps> = ({}) => {
     isEditing,
     handlePublishCourse,
     handleSaveDraft,
+    handleDraftForRejectedCourse,
     setStep,
   } = useMentorCourseManagement();
 
@@ -42,6 +43,7 @@ export const CourseFormA: React.FC<CourseFormProps> = ({}) => {
             <CourseReview
               isEditing={isEditing}
               onSaveDraft={handleSaveDraft}
+              onSaveDraftForRejectedCourse={handleDraftForRejectedCourse}
               onPublishCourse={handlePublishCourse}
             />
           )}

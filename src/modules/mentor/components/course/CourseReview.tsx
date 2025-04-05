@@ -10,6 +10,7 @@ interface CourseReviewProps {
   //   course: Course;
   isEditing?: boolean;
   onSaveDraft: () => void;
+  onSaveDraftForRejectedCourse: () => void;
   onPublishCourse: () => void;
 }
 
@@ -17,6 +18,7 @@ const CourseReview: React.FC<CourseReviewProps> = ({
   //   course,
   isEditing = false,
   onSaveDraft,
+  onSaveDraftForRejectedCourse,
   onPublishCourse,
 }) => {
   const [activeLesson, setActiveLesson] = useState<string | null>(null);
@@ -187,12 +189,22 @@ const CourseReview: React.FC<CourseReviewProps> = ({
               </button>
             </>
           ) : (
-            <button
-              onClick={handleGotoCourse}
-              className="px-6 py-2 border rounded-md bg-white hover:bg-gray-50"
-            >
-              Go to courses
-            </button>
+            <>
+              <button
+                onClick={handleGotoCourse}
+                className="px-6 py-2 border rounded-md bg-white hover:bg-gray-50"
+              >
+                Go to courses
+              </button>
+              {course.status === "rejected" && (
+                <button
+                  onClick={onSaveDraftForRejectedCourse}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                >
+                  Save as Draft
+                </button>
+              )}
+            </>
           )}
         </div>
       </div>

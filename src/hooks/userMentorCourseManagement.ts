@@ -123,6 +123,17 @@ export const useMentorCourseManagement = () => {
       showErrorToast(error.response.data.error || CourseMessages.ERROR.TOGGLE);
     }
   };
+  const handleDraftForRejectedCourse = async () => {
+    try {
+      await api.patch(`/courses/${course.id}`, { newStatus: "draft" });
+      navigate(`/mentor/courses/${course.id}`);
+      dispatch(setCurrentStep(1));
+      dispatch(resetCourse());
+      showSuccessToast(CourseMessages.SUCCESS.TOGGLE);
+    } catch (error: any) {
+      showErrorToast(error.response.data.error || CourseMessages.ERROR.TOGGLE);
+    }
+  };
 
   // Save Draft Handler
   const handleSaveDraft = () => {
@@ -295,6 +306,7 @@ export const useMentorCourseManagement = () => {
     handleCourseSubmit,
     handlePublishCourse,
     handleSaveDraft,
+    handleDraftForRejectedCourse,
     isAddingLesson,
     setIsAddingLesson,
     setEditingLessonIndex,

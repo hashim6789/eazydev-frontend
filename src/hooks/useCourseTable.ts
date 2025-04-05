@@ -62,6 +62,9 @@ export function useCourseTable({
         setTotalPages(result.last_page);
       } catch (error) {
         console.error("Error fetching courses:", error);
+        setData([]);
+        setTotalPages(0);
+        setCurrentPage(0);
       } finally {
         setLoading(false);
       }
