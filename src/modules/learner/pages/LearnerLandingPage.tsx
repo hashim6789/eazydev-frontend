@@ -1,5 +1,10 @@
 import { Users, BookOpen, Award, BarChart3 } from "lucide-react";
 import userImage from "../../../assets/img/user_image.avif";
+import teacher1 from "../../../assets/img/teacher_01.jpg";
+import teacher2 from "../../../assets/img/teacher_02.jpg";
+import teacher3 from "../../../assets/img/teacher_03.jpg";
+import teacher4 from "../../../assets/img/teacher_04.jpg";
+import teacher5 from "../../../assets/img/teacher_05.jpg";
 
 const LandingPage = () => {
   return (
@@ -20,20 +25,22 @@ const LandingPage = () => {
         <div className="grid md:grid-cols-2 gap-12 items-center mb-24">
           <div className="space-y-8">
             <div className="flex flex-wrap gap-4">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <div key={i} className="relative">
-                  <img
-                    src={userImage}
-                    alt={`User ${i}`}
-                    className="w-24 h-24 rounded-lg object-cover"
-                  />
-                  {/* {i === 1 && (
+              {[teacher1, teacher2, teacher3, teacher4, teacher5].map(
+                (image, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={image}
+                      alt={`Teacher ${index}`}
+                      className="w-24 h-24 rounded-lg object-cover"
+                    />
+                    {/* {i === 1 && (
                     <span className="absolute bottom-0 left-0 bg-blue-500 text-white px-3 py-1 rounded-br-lg rounded-tl-lg text-sm">
                       Online
                     </span>
                   )} */}
-                </div>
-              ))}
+                  </div>
+                )
+              )}
             </div>
 
             <div className="bg-white rounded-xl shadow-lg p-6">
@@ -68,7 +75,7 @@ const LandingPage = () => {
           <div className="relative">
             <div className="absolute -top-8 -left-8 w-20 h-20 bg-cyan-200 rounded-full opacity-50" />
             <img
-              src={userImage}
+              src={teacher1}
               alt="Teacher"
               className="relative z-10 rounded-2xl"
             />
@@ -92,7 +99,7 @@ const LandingPage = () => {
           </div>
           <div className="relative">
             <img
-              src={userImage}
+              src={teacher2}
               alt="Student with books"
               className="rounded-2xl"
             />
@@ -111,7 +118,7 @@ const LandingPage = () => {
               <h3 className="text-lg font-semibold mb-2">
                 True or false? This play takes place in Italy
               </h3>
-              <img src={userImage} alt="Venice" className="rounded-lg mb-4" />
+              <img src={teacher3} alt="Venice" className="rounded-lg mb-4" />
               <div className="flex justify-end">
                 <span className="bg-green-100 text-green-600 px-3 py-1 rounded-full text-sm">
                   Your answer was correct!
@@ -150,26 +157,28 @@ const LandingPage = () => {
 
           <div className="bg-white rounded-xl shadow-lg p-6">
             <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="flex items-center gap-4">
+              {[teacher1, teacher2, teacher3].map((image, index) => (
+                <div key={index} className="flex items-center gap-4">
                   <img
-                    src={`/api/placeholder/40/40`}
-                    alt={`Student ${i}`}
+                    src={image}
+                    alt={`Student ${index}`}
                     className="w-10 h-10 rounded-full"
                   />
                   <div className="flex-1">
                     <div
                       className={`h-2 rounded-full ${
-                        i === 1
+                        index === 1
                           ? "bg-blue-500"
-                          : i === 2
+                          : index === 2
                           ? "bg-green-500"
                           : "bg-purple-500"
                       }`}
-                      style={{ width: `${(4 - i) * 25}%` }}
+                      style={{ width: `${(4 - index) * 25}%` }}
                     />
                   </div>
-                  <span className="text-sm text-gray-600">{90 - i * 10}%</span>
+                  <span className="text-sm text-gray-600">
+                    {90 - index * 10}%
+                  </span>
                 </div>
               ))}
             </div>

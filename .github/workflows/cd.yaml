@@ -1,24 +1,30 @@
-# name: CD Pipeline
+name: CD Pipeline
 
-# on:
-#   workflow_run:
-#     workflows: ["CI Pipeline"]
-#     types:
-#       - completed
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
 
-# jobs:
-#   deploy:
-#     runs-on: self-hosted
+jobs:
+  deploy:
+    runs-on: self-hosted
 
-#     steps:
-#       # Step 1: Pull Docker image
-#       - name: Pull Docker Image
-#         run: docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-backend:latest
+    steps:
+      # Step 1: Stop and remove existing containers
+      - name: Stop and remove existing containers
+        run: |
+          cd /home/ubuntu
+          sudo docker-compose down
 
-#       # Step 2: Delete Old Docker images
-#       - name: Delete old Docker Images
-#         run: sudo docker system prune -af
+      # Step 2: Remove associated volumes
+      - name: Remove volumes
+        run: sudo docker-compose down -v
 
-#       # Step 3: Change to Project Directory & Deploy with Docker Compose
-#       - name: Change to Project Directory & Deploy with Docker Compose
-#         run: cd /home/ubuntu/eazydev-backend && sudo docker-compose up -d
+      # Step 3: Remove old Docker image
+      - name: Remove old frontend image
+        run: sudo docker rmi hashim6789/eazydev-frontend:latest || true
+
+      # Step 5: Rebuild and run containers
+      - name: Build and start containers
+        run: sudo docker-compose up -d --build

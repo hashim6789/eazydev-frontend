@@ -95,7 +95,7 @@ const PurchaseHistory: React.FC = () => {
                   </span>
                 </div>
               </div>
-              <div className="border-t border-gray-100 pt-3 mt-2 flex justify-end">
+              {/* <div className="border-t border-gray-100 pt-3 mt-2 flex justify-end">
                 <button
                   // onClick={() => onViewReceipt(purchase.purchaseId)}
                   className="flex items-center text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-md px-3 py-1"
@@ -116,7 +116,7 @@ const PurchaseHistory: React.FC = () => {
                   </svg>
                   View Receipt
                 </button>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>
