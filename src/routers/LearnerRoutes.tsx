@@ -17,7 +17,7 @@ import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingMa
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseCertificateManagement from "../modules/learner/pages/learnings/LearnerCertificateManagement";
-import loginImage from "../assets/img/wall_paper.jpeg";
+import loginImage from "../assets/img/wall_paper_03.jpg";
 
 export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {

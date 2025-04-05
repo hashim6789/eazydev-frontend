@@ -15,19 +15,19 @@ import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
 import { io, Socket } from "socket.io-client";
 import ChatMessages from "./ChatMessages";
-import { api, config } from "../../configs";
+import { api } from "../../configs";
 import { getUserProperty } from "../../utils/local-user.util";
 
 // Connect to the Socket.io server
-const socket = io(`${config.API_BASE_URL}/chats`, {
-  transports: ["websocket"],
-  upgrade: false,
-});
-
-// const socket = io("https://www.muhammedhashim.online/chats", {
-//   path: "/socket.io/",
+// const socket = io(`${config.API_BASE_URL}/chats`, {
 //   transports: ["websocket"],
+//   upgrade: false,
 // });
+
+const socket = io("https://www.muhammedhashim.online/chats", {
+  path: "/socket.io/",
+  transports: ["websocket"],
+});
 
 const useSocket = (socket: Socket) => {
   const dispatch = useDispatch<AppDispatch>();
