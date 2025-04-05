@@ -12,7 +12,7 @@ import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 import MentorMeetingManagement from "../modules/mentor/pages/meetings/MentorMeetingManagement";
-import MeetingRoom from "../modules/ call/VideoCallManagement";
+// import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import Layout from "../modules/layouts/Layout";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
@@ -64,7 +64,7 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
 
               {
                 path: "call/:meetId",
-                element: <MeetingRoom role="mentor" />,
+                // element: <MeetingRoom role="mentor" />,
               },
 
               { path: "lessons", element: <LessonManagement /> },

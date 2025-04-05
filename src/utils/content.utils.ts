@@ -6,8 +6,8 @@ export const getRoleContentForErrorPages = (role: UserRole) => {
     case "admin":
       return {
         title: "Admin Dashboard",
-        description404:
-          "The requested administrative resource could not be found.",
+        // description404:
+        //   "The requested administrative resource could not be found.",
         description500:
           "Our systems encountered an error while processing your administrative request.",
         descriptionMaintenance:
@@ -18,7 +18,7 @@ export const getRoleContentForErrorPages = (role: UserRole) => {
     case "learner":
       return {
         title: "Learning Portal",
-        description404: `The learning material you're looking for isn't here.`,
+        // description404: `The learning material you're looking for isn't here.`,
         description500:
           "We encountered a problem while loading your learning resources.",
         descriptionMaintenance:
@@ -29,7 +29,7 @@ export const getRoleContentForErrorPages = (role: UserRole) => {
     case "mentor":
       return {
         title: "Mentor Workspace",
-        description404: `The mentoring resource you requested doesn't exist.`,
+        // description404: `The mentoring resource you requested doesn't exist.`,
         description500:
           "We ran into an issue while processing your mentoring tools.",
         descriptionMaintenance:
