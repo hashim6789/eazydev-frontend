@@ -19,7 +19,12 @@ import {
   addMaterial,
 } from "../store/slice";
 import { showErrorToast, showSuccessToast } from "../utils";
-import { CourseMessages, LessonMessages, MaterialMessages } from "../constants";
+import {
+  CourseMessages,
+  HttpStatusCode,
+  LessonMessages,
+  MaterialMessages,
+} from "../constants";
 import { getUserProperty } from "../utils/local-user.util";
 
 export const useMentorCourseManagement = () => {
@@ -65,7 +70,7 @@ export const useMentorCourseManagement = () => {
 
       const secureUrl = response.data.secure_url;
 
-      if (response.status === 200) {
+      if (response.status === HttpStatusCode.OK) {
         dispatch(setThumbnail({ thumbnail: secureUrl }));
         showSuccessToast(CourseMessages.SUCCESS.UPLOAD);
       }
@@ -93,7 +98,10 @@ export const useMentorCourseManagement = () => {
         ? await api.put(`/courses/${course.id}`, updatedData)
         : await api.post<string>("/courses", updatedData);
 
-      if (response.status === (isEditing ? 200 : 201)) {
+      if (
+        response.status ===
+        (isEditing ? HttpStatusCode.OK : HttpStatusCode.Created)
+      ) {
         showSuccessToast(
           isEditing
             ? CourseMessages.SUCCESS.UPDATE
@@ -155,7 +163,7 @@ export const useMentorCourseManagement = () => {
           materials: materialIds,
         });
 
-        if (response.status === 201 && response.data) {
+        if (response.status === HttpStatusCode.Created && response.data) {
           dispatch(addLesson({ ...lesson, id: response.data }));
           showSuccessToast(LessonMessages.SUCCESS.CREATE);
           setIsAddingLesson(false);
@@ -179,7 +187,7 @@ export const useMentorCourseManagement = () => {
           materials: materialIds,
         });
 
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           dispatch(updateLesson({ index, lesson }));
           showSuccessToast(LessonMessages.SUCCESS.UPDATE);
           setEditingLessonIndex(null);
@@ -199,7 +207,7 @@ export const useMentorCourseManagement = () => {
           `/lessons/${lesson.id}/courses/${course.id}`
         );
 
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           dispatch(removeLesson(index));
           showSuccessToast(LessonMessages.SUCCESS.REMOVE);
           setIsAddingLesson(false);
@@ -218,7 +226,7 @@ export const useMentorCourseManagement = () => {
       try {
         const response = await api.post<string>("/materials", material);
 
-        if (response.status === 201) {
+        if (response.status === HttpStatusCode.Created) {
           dispatch(
             addMaterial({
               lessonIndex,
@@ -250,7 +258,7 @@ export const useMentorCourseManagement = () => {
           material
         );
 
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           dispatch(
             updateMaterial({
               lessonIndex,
@@ -276,7 +284,7 @@ export const useMentorCourseManagement = () => {
         const material = course.lessons[lessonIndex].materials[materialIndex];
         const response = await api.delete(`/materials/${material.id}`);
 
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           dispatch(removeMaterial({ lessonIndex, materialIndex }));
           setEditingMaterialIndex(null);
           showSuccessToast(MaterialMessages.SUCCESS.REMOVE);

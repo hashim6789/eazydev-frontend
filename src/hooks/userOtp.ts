@@ -10,7 +10,7 @@ import {
   verifyOtpFailure,
 } from "../store/slice";
 import { showSuccessToast, showErrorToast, showInfoToast } from "../utils";
-import { AuthMessages } from "../constants";
+import { AuthMessages, HttpStatusCode } from "../constants";
 
 const useOtp = (onComplete?: (otp: string) => void) => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
@@ -86,7 +86,7 @@ const useOtp = (onComplete?: (otp: string) => void) => {
 
     try {
       const response = await api.post(`/auth/otp-resend`);
-      if (response.status === 201) {
+      if (response.status === HttpStatusCode.Created) {
         showSuccessToast(AuthMessages.RESEND_OTP_SUCCESS);
       }
     } catch (error) {
@@ -132,7 +132,7 @@ const useOtp = (onComplete?: (otp: string) => void) => {
           otp: otpString,
           userId,
         });
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           const user = response.data as User;
           console.log("user", user);
           dispatch(verifyOtpSuccess({ user }));

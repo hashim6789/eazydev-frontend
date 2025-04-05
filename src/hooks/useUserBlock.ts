@@ -6,7 +6,7 @@ import { api } from "../configs";
 import { showErrorToast, showInfoToast, showSuccessToast } from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
 import { UserMessages } from "../constants/user.constant";
-import { ResponseErrorMessages } from "../constants";
+import { HttpStatusCode, ResponseErrorMessages } from "../constants";
 
 interface UseBlockUnblockResponse {
   isLoading: boolean;
@@ -43,7 +43,7 @@ const useUserBlock = (): UseBlockUnblockResponse => {
         const response = await api.patch(endpoint, { change });
         console.log(response.data, response.data);
 
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           if (response.data) {
             showSuccessToast(UserMessages.USER_BLOCK_SUCCESS);
           } else {

@@ -3,6 +3,7 @@ import { useState, useCallback } from "react";
 import { api, config } from "../configs";
 import { Category, MentorCourse } from "../types";
 import { showErrorToast, showInfoToast, showSuccessToast } from "../utils";
+import { HttpStatusCode } from "../constants";
 
 const baseUrl = config.API_BASE_URL;
 
@@ -107,7 +108,7 @@ const useCourseManagement = () => {
 
       if (result.isConfirmed) {
         const response = await api.delete(`/courses/${courseId}`);
-        if (response && response.status === 200) {
+        if (response && response.status === HttpStatusCode.OK) {
           showSuccessToast("Course deleted successfully!");
           return true;
         }

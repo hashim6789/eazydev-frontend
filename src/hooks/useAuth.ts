@@ -21,7 +21,7 @@ import { showErrorToast } from "../utils";
 import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
 import { SubRole, User, UserRole } from "../types";
 import { api, config } from "../configs";
-import { AuthMessages } from "../constants";
+import { AuthMessages, HttpStatusCode } from "../constants";
 
 const useAuth = () => {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const useAuth = () => {
         },
         { withCredentials: true }
       );
-      if (response.status === 200) {
+      if (response.status === HttpStatusCode.OK) {
         const user = response.data as User;
         dispatch(loginSuccess({ user }));
         if (role === "learner") {
@@ -74,7 +74,7 @@ const useAuth = () => {
         { withCredentials: true }
       );
 
-      if (response.status === 201) {
+      if (response.status === HttpStatusCode.Created) {
         const user = response.data;
         dispatch(signupSuccess({ user }));
         console.log(`navigate to /${role}/otp`);
@@ -131,7 +131,7 @@ const useAuth = () => {
           role,
         }
       );
-      if (response.status === 200) {
+      if (response.status === HttpStatusCode.OK) {
         dispatch(forgotPasswordSuccess());
       }
     } catch (error: any) {
@@ -148,7 +148,7 @@ const useAuth = () => {
   const handleLogout = async (role: UserRole, userId: string) => {
     try {
       const response = await api.post("/auth/logout", { role, userId });
-      if (response.status === 200) {
+      if (response.status === HttpStatusCode.OK) {
         dispatch(logout());
       }
     } catch (error: any) {

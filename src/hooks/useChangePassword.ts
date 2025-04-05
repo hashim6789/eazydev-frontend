@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../configs";
 import { showErrorToast, showSuccessToast } from "../utils";
 import { SubRole } from "../types";
+import { HttpStatusCode } from "../constants";
 
 const useChangePassword = (userRole: SubRole) => {
   const [isValid, setValid] = useState<boolean>(false);
@@ -19,7 +20,7 @@ const useChangePassword = (userRole: SubRole) => {
         const response = await api.get<{ success: boolean }>(
           `/auth/${token}/reset-password?role=${userRole}`
         );
-        if (response.status === 200 && response.data.success) {
+        if (response.status === HttpStatusCode.OK && response.data.success) {
           setValid(true);
         }
       } catch (err: any) {
@@ -45,7 +46,7 @@ const useChangePassword = (userRole: SubRole) => {
         }
       );
 
-      if (response.status === 200 && response.data.success) {
+      if (response.status === HttpStatusCode.OK && response.data.success) {
         showSuccessToast("Password reset successfully");
         navigate(`/${userRole}/login`);
       }

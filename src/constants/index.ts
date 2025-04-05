@@ -7,3 +7,4 @@ export * from "./material.constant";
 export * from "./course.constant";
 export * from "./lesson.constant";
 export * from "./material.constant";
+export * from "./status-code.constant";

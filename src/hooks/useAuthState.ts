@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { api, config } from "../configs";
+import { HttpStatusCode } from "../constants";
 
 export const useAuthState = () => {
   const [authState, setAuthState] = useState({
@@ -18,7 +19,7 @@ export const useAuthState = () => {
           withCredentials: true,
         });
 
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           setAuthState({
             ...response.data,
             loading: false,

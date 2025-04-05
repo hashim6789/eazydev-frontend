@@ -7,6 +7,7 @@ import {
 } from "../types/chart";
 import { api } from "../configs";
 import { generateColor } from "../utils/color-theme.util";
+import { HttpStatusCode } from "../constants";
 
 interface MentorDashboardData {
   courseStatusChartData: {
@@ -66,7 +67,7 @@ const useMentorDashboardData = (): MentorDashboardData => {
           revenueData: RevenueRate[];
         }>(`/analysis/mentors`);
 
-        if (response.status === 200) {
+        if (response.status === HttpStatusCode.OK) {
           setCourseStatuses(response.data.courseStatusData);
           setEnrollmentData(response.data.enrollmentData);
           setCompletionRateData(response.data.completionRateData);

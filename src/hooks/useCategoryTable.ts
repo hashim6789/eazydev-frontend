@@ -5,6 +5,7 @@ import { showErrorToast, showSuccessToast } from "../utils";
 import { CategoryMessages } from "../constants/category.constant";
 import { getUserProperty } from "../utils/local-user.util";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
+import { HttpStatusCode } from "../constants";
 
 interface TableFunctionalityOptions {
   itemsPerPage: number;
@@ -118,7 +119,7 @@ export function useCategoryTable({
         }
       );
 
-      if (response && response.status === 200) {
+      if (response && response.status === HttpStatusCode.OK) {
         const updatedData = categoryData.map((item) =>
           item.id === itemId
             ? {
@@ -161,7 +162,7 @@ export function useCategoryTable({
         }
       );
 
-      if (response && response.status === 200) {
+      if (response && response.status === HttpStatusCode.OK) {
         const updatedItem: Category = response.data.category;
 
         const updatedData = categoryData.map<Category>((item) =>

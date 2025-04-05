@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Peer, { MediaConnection } from "peerjs";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../types";
+import { HttpStatusCode } from "../constants";
 
 export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
   const [peerId, setPeerId] = useState<string>("");
@@ -41,7 +42,10 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
           const response = await api.post(`/meetings/${meetId}/join`, {
             peerId: id,
           });
-          if (response.status === 200 && response.data.otherPeerId) {
+          if (
+            response.status === HttpStatusCode.OK &&
+            response.data.otherPeerId
+          ) {
             console.log(response.data.otherPeerId);
             setOtherPeerId(response.data.otherPeerId);
           }
