@@ -1,5 +1,4 @@
 import { Users, BookOpen, Award, BarChart3 } from "lucide-react";
-import userImage from "../../../assets/img/user_image.avif";
 import teacher1 from "../../../assets/img/teacher_01.jpg";
 import teacher2 from "../../../assets/img/teacher_02.jpg";
 import teacher3 from "../../../assets/img/teacher_03.jpg";
