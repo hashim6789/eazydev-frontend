@@ -12,7 +12,7 @@ import { getUserProperty } from "../../utils/local-user.util";
 
 const isBlocked = (getUserProperty("isBlocked") ?? false) as boolean;
 const isVerified = (getUserProperty("isVerified") ?? "learner") as boolean;
-const role = (getUserProperty("role") ?? false) as UserRole;
+const role = (getUserProperty("role") ?? "learner") as UserRole;
 const isAuthenticated = ((!getUserProperty("isBlocked") &&
   getUserProperty("isVerified")) ??
   false) as boolean;
