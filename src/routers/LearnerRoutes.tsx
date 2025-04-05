@@ -13,7 +13,7 @@ import ProfilePage from "../modules/mentor/pages/Profile";
 import LearningProgressPage from "../modules/learner/pages/learnings/LearnigProgressPage";
 import CourseLearningLayout from "../modules/learner/pages/learnings/LearningCoursePage";
 import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingManagement";
-// import MeetingRoom from "../modules/ call/VideoCallManagement";
+import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseCertificateManagement from "../modules/learner/pages/learnings/LearnerCertificateManagement";
@@ -101,7 +101,7 @@ export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
 
                   {
                     path: "call/:meetId",
-                    // element: <MeetingRoom role="learner" />,
+                    element: <MeetingRoom role="learner" />,
                   },
                 ],
               },
