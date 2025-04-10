@@ -17,7 +17,7 @@ import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseCertificateManagement from "../modules/learner/pages/learnings/LearnerCertificateManagement";
-import loginImage from "../assets/img/wall_paper_03.jpg";
+import loginImage from "../assets/img/wall_paer_02.jpeg";
 
 export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {

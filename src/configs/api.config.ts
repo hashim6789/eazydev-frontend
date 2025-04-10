@@ -10,8 +10,6 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-const API_BASE_URL = config.API_BASE_URL;
-
 const getCookie = (name: string): string | null => {
   const match = document.cookie.match(new RegExp(`(^| )${name}=([^;]+)`));
   return match ? match[2] : null;
@@ -19,7 +17,7 @@ const getCookie = (name: string): string | null => {
 
 // Create an Axios instance
 export const api: AxiosInstance = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: `${config.API_BASE_URL}/api`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -47,13 +45,14 @@ api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
+    console.log("🚀 ~ originalRequest:", originalRequest);
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
         const refreshResponse = await axios.post(
-          `${API_BASE_URL}/refresh`,
+          `${config.API_BASE_URL}/api/refresh`,
           {},
           { withCredentials: true }
         );
@@ -68,20 +67,18 @@ api.interceptors.response.use(
       } catch (refreshError) {
         console.error("Token refresh failed:", refreshError);
 
-        document.cookie =
-          "Authorization=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        document.cookie =
-          "refreshToken=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
-        console.log("error found: Login required");
-        const user = JSON.parse(localStorage.getItem("user") || "null");
-
-        if (!["mentor", "admin"].includes(user)) {
-          window.location.href = `/login`;
-        } else {
-          window.location.href = `/${user}/login`;
-        }
+        // If refresh fails, reject the error to propagate it
+        return Promise.reject(error);
       }
-    } else if (error.response?.status === 403) {
+    }
+
+    if (error.response?.status === 401) {
+      // Explicitly reject error for unhandled 401
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 403) {
+      // Handle 403 status code
       document.cookie =
         "Authorization=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
       document.cookie =
@@ -96,6 +93,7 @@ api.interceptors.response.use(
       }
     }
 
+    // Ensure all other errors are passed back
     return Promise.reject(error);
   }
 );
