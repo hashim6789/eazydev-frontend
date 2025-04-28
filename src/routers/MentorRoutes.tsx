@@ -11,7 +11,7 @@ import LessonManagement from "../modules/mentor/pages/lesson/LessonManagement";
 import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
-import MentorMeetingManagement from "../modules/mentor/pages/meetings/MentorMeetingManagement";
+// import MentorMeetingManagement from "../modules/mentor/pages/meetings/MentorMeetingManagement";
 import MeetingRoom from "../modules/ call/VideoCallManagement";
 import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import Layout from "../modules/layouts/Layout";
@@ -19,6 +19,7 @@ import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseEditing from "../modules/mentor/pages/course/CourseEdit";
 import loginImage from "../assets/img/wall_paper_03.jpg";
 import MentorRevenueManagement from "../modules/mentor/pages/revenue/MentorRevenueManagement";
+import MentorCalendlyIntegration from "../modules/mentor/pages/meetings/MentorCalendifyConnet";
 
 export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -60,7 +61,8 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
                   },
                 ],
               },
-              { path: "meetings", element: <MentorMeetingManagement /> },
+              { path: "meetings", element: <MentorCalendlyIntegration /> },
+              // { path: "meetings", element: <MentorMeetingManagement /> },
               { path: "chats", element: <MainChatLayout /> },
 
               {

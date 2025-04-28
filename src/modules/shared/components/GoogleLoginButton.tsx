@@ -15,6 +15,8 @@ const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ user }) => {
     try {
       const { credential } = response;
 
+      localStorage.setItem("authToken", credential);
+
       handleGoogleSignup(credential, user);
     } catch (error) {
       console.log("Google login failed:", error);

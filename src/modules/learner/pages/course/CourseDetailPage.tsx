@@ -3,7 +3,6 @@ import { Clock, Award, Monitor, Share2, Tag, BookOpen } from "lucide-react";
 import userImage from "../../../../assets/img/user_image.avif";
 import { useParams, useNavigate } from "react-router-dom";
 
-import useUnAuthorizedFetch from "../../../../hooks/useUnAuthorizedFetch";
 import BackComponent from "../../components/BackComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -20,19 +19,20 @@ const CourseDetails = () => {
   const [isPurchased, setPurchased] = useState<boolean>(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login"); // Redirect to the login page if not authenticated
+    }
+  }, [isAuthenticated, navigate]); // Run effect when `isAuthenticated` changes
+
   const {
     data: course,
     error,
     loading,
-  } = isAuthenticated
-    ? useFetch<PopulatedCourseDetails>(`/courses/${courseId}`)
-    : useUnAuthorizedFetch<PopulatedCourseDetails>(
-        `/no-auth/courses/${courseId}`
-      );
+  } = useFetch<PopulatedCourseDetails>(`/courses/${courseId}`);
 
-  const { data: purchaseData } = isAuthenticated
-    ? useFetch<IPurchase[]>("/purchases")
-    : { data: [] };
+  const { data: purchaseData } = useFetch<IPurchase[]>("/purchases");
 
   useEffect(() => {
     if (purchaseData) {

@@ -8,4 +8,5 @@ export const config = {
   CLOUDINARY_PRESET: import.meta.env.VITE_CLOUDINARY_PRESET,
   VITE_STRIPE_PK: import.meta.env.VITE_STRIPE_PK,
   GOOGLE_AUTH_CLIENT_ID: import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID,
+  CALENDLY_CLINT_ID: import.meta.env.VITE_CALENDLY_CLINT_ID,
 };
