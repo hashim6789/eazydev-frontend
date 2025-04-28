@@ -7,20 +7,22 @@ import PersonalDetails from "../components/PersonalDetails";
 import ChangePassword from "../components/ChangePassword";
 import PurchaseHistory from "../components/PurchaseHistory";
 import { SubRole } from "../../../types";
+import CertificatesList from "../components/CertifilcateList";
 
 type NavState =
   | "personal"
   | "password"
   | "notifications"
   | "preferences"
-  | "purchases";
+  | "purchases"
+  | "certificates";
 
 interface ProfilePageProps {
   role: SubRole;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
-  const { mode, color } = useSelector((state: RootState) => state.theme);
+  const { color } = useSelector((state: RootState) => state.theme);
   const styles = useThemeStyles();
   const [navState, setNavState] = useState<NavState>("personal");
 
@@ -29,32 +31,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
       ? `border-${color}-600 ${styles.text}`
       : `border-transparent ${styles.textSecondary} hover:${styles.text}`;
   };
-
-  // useEffect(() => {
-  //     const fetchPurchaseDetails = async () => {
-  //       try {
-  //         // Fetch purchase details via API
-  //         const response = await api.get(`/api/purchases/${purchaseId}`);
-  //         setPurchase({
-  //           purchaseId: response.data.purchaseId || "PURCH-123456",
-  //           purchaseDate: response.data.purchaseDate || Date.now(),
-  //           amount: response.data.amount || 9900,
-  //           status: response.data.status || "completed",
-  //         });
-  //       } catch (error) {
-  //         console.error("Error fetching purchase details:", error);
-  //       } finally {
-  //         setLoading(false);
-
-  //         // Trigger animations after data is loaded
-  //         setTimeout(() => setIsLoaded(true), 100);
-  //       }
-  //     };
-
-  //     if (purchaseId) {
-  //       fetchPurchaseDetails();
-  //     }
-  //   }, [purchaseId]);
 
   return (
     <div
@@ -101,13 +77,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
             <span className="hidden sm:inline">Purchases</span>
           </button>
           <button
-            onClick={() => setNavState("preferences")}
+            onClick={() => setNavState("certificates")}
             className={`flex items-center justify-center sm:justify-start gap-2 p-3 border-b-2 transition-colors ${getActiveStyle(
               "preferences"
             )}`}
           >
             <Settings className="h-4 w-4" />
-            <span className="hidden sm:inline">Preferences</span>
+            <span className="hidden sm:inline">Certificates</span>
           </button>
         </div>
 
@@ -120,80 +96,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
           {navState === "purchases" && role === "learner" && (
             <PurchaseHistory />
           )}
+          {navState === "certificates" && role === "learner" && (
+            <CertificatesList />
+          )}
 
-          {/* {navState === "notifications" && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium">Notification Settings</h3>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">Email Notifications</h4>
-                    <p className={`text-sm ${styles.textSecondary}`}>
-                      Receive email about student activity
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      defaultChecked
-                    />
-                    <div
-                      className={`w-11 h-6 ${styles.lightBg} rounded-full peer peer-checked:${styles.primary} peer-focus:ring-4 peer-focus:${styles.focusRing}`}
-                    ></div>
-                    <span className="ml-3 text-sm font-medium"></span>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">SMS Notifications</h4>
-                    <p className={`text-sm ${styles.textSecondary}`}>
-                      Receive text messages for urgent updates
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" />
-                    <div
-                      className={`w-11 h-6 ${styles.lightBg} rounded-full peer peer-checked:${styles.primary} peer-focus:ring-4 peer-focus:${styles.focusRing}`}
-                    ></div>
-                    <span className="ml-3 text-sm font-medium"></span>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">Push Notifications</h4>
-                    <p className={`text-sm ${styles.textSecondary}`}>
-                      Receive push notifications in your browser
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      defaultChecked
-                    />
-                    <div
-                      className={`w-11 h-6 ${styles.lightBg} rounded-full peer peer-checked:${styles.primary} peer-focus:ring-4 peer-focus:${styles.focusRing}`}
-                    ></div>
-                    <span className="ml-3 text-sm font-medium"></span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="flex justify-end mt-6">
-                <button
-                  className={`${styles.primary} px-4 py-2 rounded-md ${styles.buttonText}`}
-                >
-                  Save Preferences
-                </button>
-              </div>
-            </div>
-          )} */}
-
-          {navState === "preferences" && (
+          {/* {navState === "preferences" && (
             <div className="space-y-6">
               <h3 className="text-lg font-medium">Theme Preferences</h3>
 
@@ -245,7 +152,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
                 </button>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
