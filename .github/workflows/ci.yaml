@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - dev
 
 jobs:
-  build:
+  build-main:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
 
     steps:
@@ -38,3 +40,36 @@ jobs:
       # Step 5: Push Docker Image
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:latest
+  build-dev:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Docker
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Login to Docker Hub
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+      # Step 4: Build and Push Docker Image
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg VITE_API_BASE_URL=${{ vars.VITE_API_BASE_URL }} \
+            --build-arg VITE_CLOUDINARY_API_KEY=${{ vars.VITE_CLOUDINARY_API_KEY }} \
+            --build-arg VITE_CLOUDINARY_API_SECRET=${{ vars.VITE_CLOUDINARY_API_SECRET }} \
+            --build-arg VITE_CLOUDINARY_CLOUD_NAME=${{ vars.VITE_CLOUDINARY_CLOUD_NAME }} \
+            --build-arg VITE_CLOUDINARY_PRESET=${{ vars.VITE_CLOUDINARY_PRESET }} \
+            --build-arg VITE_STRIPE_PK=${{ vars.VITE_STRIPE_PK }} \
+            --build-arg VITE_GOOGLE_AUTH_CLIENT_ID=${{ vars.VITE_GOOGLE_AUTH_CLIENT_ID }} \
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:dev .
+
+      # Step 5: Push Docker Image
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:dev
