@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api, config } from "../configs";
 import { HttpStatusCode } from "../constants";
+import { getAxiosErrorMessage } from "../utils";
 
 export const useAuthState = () => {
   const [authState, setAuthState] = useState({
@@ -26,14 +27,14 @@ export const useAuthState = () => {
             error: null,
           });
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         setAuthState({
           isAuthenticated: false,
           isVerified: false,
           isBlocked: false,
           user: null,
           loading: false,
-          error: error.response?.data?.message || "Failed to fetch auth state",
+          error: getAxiosErrorMessage(error, "Failed to fetch auth state"),
         });
       }
     };
@@ -43,24 +44,3 @@ export const useAuthState = () => {
 
   return authState;
 };
-
-// const App = () => {
-//   const authState = useAuthState();
-
-//   if (authState.loading) {
-//     return <p>Loading...</p>;
-//   }
-
-//   if (!authState.isAuthenticated) {
-//     return <p>You are not logged in. Please log in to continue.</p>;
-//   }
-
-//   return (
-//     <div>
-//       <h1>Welcome, {authState.user}</h1>
-//       {authState.isVerified ? <p>Your account is verified.</p> : <p>Please verify your account.</p>}
-//     </div>
-//   );
-// };
-
-// export default App;

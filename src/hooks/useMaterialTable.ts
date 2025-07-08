@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 import { Material, MaterialType } from "../types/material";
 import { api } from "../configs";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import { showDeletionConfirmationBox } from "../utils/confirm-box.utils";
+import { MaterialMessages } from "../constants";
 
 interface UseMaterialTableFunctionalityOptions {
   itemsPerPage: number;
@@ -63,7 +68,7 @@ UseMaterialTableFunctionalityOptions) {
     if (isConfirmed) {
       try {
         await api.delete(`/materials/${materialId}`);
-        showSuccessToast("The lesson was deleted successfully!");
+        showSuccessToast(MaterialMessages.SUCCESS.REMOVE);
         setData((prevMaterials) =>
           prevMaterials.filter((material) => material.id !== materialId)
         );
@@ -72,8 +77,10 @@ UseMaterialTableFunctionalityOptions) {
         if (data.length === 1 && currentPage > 1) {
           handlePageChange(currentPage - 1);
         }
-      } catch (error: any) {
-        showErrorToast(error.message);
+      } catch (error: unknown) {
+        showErrorToast(
+          getAxiosErrorMessage(error, MaterialMessages.ERROR.REMOVE)
+        );
       }
     }
   };

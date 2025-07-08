@@ -1,7 +1,11 @@
 import { useState, useMemo, useCallback, useEffect } from "react";
 import { Category, UserRole } from "../types";
 import { api } from "../configs";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import { CategoryMessages } from "../constants/category.constant";
 import { getUserProperty } from "../utils/local-user.util";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
@@ -38,19 +42,18 @@ export function useCategoryTable({
             : `/categories?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
-        console.log(result.last_page, "nihnjhun");
 
         setCategoryData(role === "admin" ? result.body : result);
 
         setTotalPages(result.last_page);
-      } catch (error: any) {
+      } catch (error: unknown) {
         setCategoryData([]);
         setCurrentPage(0);
         setTotalPages(0);
 
         console.error(CategoryMessages.ERROR.FETCH, error);
         showErrorToast(
-          error.response.data.error || CategoryMessages.ERROR.FETCH
+          getAxiosErrorMessage(error, CategoryMessages.ERROR.FETCH)
         );
       } finally {
         setIsLoading(false);
@@ -131,10 +134,10 @@ export function useCategoryTable({
         setCategoryData(updatedData);
         showSuccessToast(CategoryMessages.SUCCESS.TOGGLE);
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(CategoryMessages.ERROR.TOGGLE, error);
       showErrorToast(
-        error.response.data.error || CategoryMessages.ERROR.TOGGLE
+        getAxiosErrorMessage(error, CategoryMessages.ERROR.TOGGLE)
       );
     } finally {
       setIsLoading(false);
@@ -173,13 +176,9 @@ export function useCategoryTable({
         setIsEditModalOpen(false);
         showSuccessToast(CategoryMessages.SUCCESS.UPDATE);
       }
-    } catch (error: any) {
-      console.error(
-        error.response.data.error || CategoryMessages.ERROR.UPDATE,
-        error
-      );
+    } catch (error: unknown) {
       showErrorToast(
-        error.response.data.error || CategoryMessages.ERROR.UPDATE
+        getAxiosErrorMessage(error, CategoryMessages.ERROR.UPDATE)
       );
     }
   };
@@ -200,13 +199,9 @@ export function useCategoryTable({
         setIsCreating(false);
         showSuccessToast(CategoryMessages.SUCCESS.CREATE);
       }
-    } catch (error: any) {
-      console.error(
-        error.response.data.error || CategoryMessages.ERROR.CREATE,
-        error
-      );
+    } catch (error: unknown) {
       showErrorToast(
-        error.response.data.error || CategoryMessages.ERROR.CREATE
+        getAxiosErrorMessage(error, CategoryMessages.ERROR.CREATE)
       );
     }
   };

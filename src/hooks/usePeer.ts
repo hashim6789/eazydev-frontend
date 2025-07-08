@@ -3,8 +3,13 @@ import Peer, { MediaConnection } from "peerjs";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../types";
 import { HttpStatusCode } from "../constants";
+import { AxiosInstance } from "axios";
 
-export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
+export const usePeerConnection = (
+  meetId: string,
+  api: AxiosInstance,
+  role: UserRole
+) => {
   const [peerId, setPeerId] = useState<string>("");
   const [otherPeerId, setOtherPeerId] = useState<string | null>(null);
   const peerInstance = useRef<Peer | null>(null);

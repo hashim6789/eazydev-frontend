@@ -1,19 +1,28 @@
-export enum AuthMessages {
-  RESET_LINK_SEND_SUCCESS = "Password reset link sent successfully.",
-  FORGOT_PASSWORD_FAILED = "Forgot password failed!",
-  LOGIN_FAILED = "Login failed. Please try again.",
-  SIGNUP_FAILED = "Signup failed. Please try again.",
-  SIGNUP_SUCCESS = "Successfully signup",
-  GOOGLE_SIGNUP_FAILED = "Signup failed. Please try again.",
-  LOGIN_SUCCESS = "Successfully login",
-  LOGOUT_SUCCESS = "Successfully logout",
-  LOGOUT_FAILED = "Logout failed. Please try again.",
-  VERIFY_OTP_SUCCESS = "Otp verification success.",
-  VERIFY_OTP_FAILED = "The OTP verification failed!",
-  RESEND_OTP_SUCCESS = "OTP resend successfully.",
-  RESEND_OTP_FAILED = "Failed to resend OTP.",
-  ENTER_VALID_OTP = "Please enter a valid 6-digit OTP",
-  PASSWORD_VERIFIED_SUCCESS = "The current password is verified successfully",
-  PASSWORD_CHANGE_SUCCESS = "password changed successfully",
-  PASSWORD_CHANGE_FAILED = "failed to change the password!",
-}
+export const AuthMessages = {
+  SUCCESS: {
+    RESET_LINK_SEND: "Password reset link sent successfully.",
+    SIGNUP: "Successfully signup",
+    LOGIN: "Successfully login",
+    LOGOUT: "Successfully logout",
+    VERIFY_OTP: "Otp verification success.",
+    RESEND_OTP: "OTP resend successfully.",
+    PASSWORD_VERIFIED: "The current password is verified successfully",
+    PASSWORD_CHANGE: "Password changed successfully",
+    RESET_PASSWORD: "Password reset successfully",
+  },
+  ERROR: {
+    RESET_LINK_EXPIRED:
+      "Invalid or expired password reset link. Please try again.",
+    RESET_PASSWORD: "Reset password failed!",
+    FORGOT_PASSWORD: "Forgot password failed!",
+    LOGIN: "Login failed. Please try again.",
+    SIGNUP: "Signup failed. Please try again.",
+    LOGOUT: "Logout failed. Please try again.",
+    VERIFY_OTP: "The OTP verification failed!",
+    RESEND_OTP: "Failed to resend OTP.",
+    PASSWORD_CHANGE: "Failed to change the password!",
+  },
+  VALIDATION: {
+    ENTER_VALID_OTP: "Please enter a valid 6-digit OTP",
+  },
+};

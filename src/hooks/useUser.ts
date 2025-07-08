@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../configs";
 import { SubRole, User, UserStatus } from "../types";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
 import { ResponseErrorMessages, UserMessages } from "../constants";
 
@@ -34,7 +38,7 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
         setData(result.body);
         setTotalPages(result.last_page);
       } catch (error) {
-        console.error(ResponseErrorMessages.ERROR_OCCURRED, error);
+        console.error(ResponseErrorMessages.ERROR.UNEXPECTED, error);
       } finally {
         setLoading(false);
       }
@@ -69,8 +73,10 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
         if (data.length === 1 && currentPage > 1) {
           handlePageChange(currentPage - 1);
         }
-      } catch (error: any) {
-        showErrorToast(error.response.data.error);
+      } catch (error: unknown) {
+        showErrorToast(
+          getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.WENT_WRONG)
+        );
       }
     }
   };

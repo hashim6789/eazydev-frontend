@@ -1,9 +1,13 @@
 import { useState } from "react";
-import axios from "axios";
 
 import { SubRole } from "../types";
 import { api } from "../configs";
-import { showErrorToast, showInfoToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
 import { UserMessages } from "../constants/user.constant";
 import { HttpStatusCode, ResponseErrorMessages } from "../constants";
@@ -56,16 +60,14 @@ const useUserBlock = (): UseBlockUnblockResponse => {
         showInfoToast(UserMessages.ACTION_CANCELLED);
       }
       return false;
-    } catch (err: any) {
-      if (axios.isAxiosError(err)) {
-        const errorMessage =
-          err.response?.data?.message || ResponseErrorMessages.ERROR_OCCURRED;
-        setError(errorMessage);
-        showErrorToast(errorMessage);
-      } else {
-        setError(ResponseErrorMessages.UNEXPECTED_ERROR);
-        showErrorToast(ResponseErrorMessages.UNEXPECTED_ERROR);
-      }
+    } catch (error: unknown) {
+      showErrorToast(
+        getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.UNEXPECTED)
+      );
+      setError(
+        getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.UNEXPECTED)
+      );
+
       return false;
     } finally {
       setIsLoading(false);

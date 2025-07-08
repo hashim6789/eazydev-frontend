@@ -2,8 +2,14 @@ import Swal from "sweetalert2";
 import { useState, useCallback } from "react";
 import { api, config } from "../configs";
 import { Category, MentorCourse } from "../types";
-import { showErrorToast, showInfoToast, showSuccessToast } from "../utils";
-import { HttpStatusCode } from "../constants";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "../utils";
+import { CourseMessages, HttpStatusCode } from "../constants";
+import { CategoryMessages } from "../constants/category.constant";
 
 const baseUrl = config.API_BASE_URL;
 
@@ -27,8 +33,8 @@ const useCourseManagement = () => {
       const result = response.data;
       console.log(result);
       setCategories(result.data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch categories");
+    } catch (error: unknown) {
+      setError(getAxiosErrorMessage(error, CategoryMessages.ERROR.FETCH));
     } finally {
       setLoading(false);
     }
@@ -62,9 +68,9 @@ const useCourseManagement = () => {
       }
 
       return false;
-    } catch (err: any) {
-      showErrorToast(err.response.data.message || "Failed to add course");
-      setError(err.response.data.message || "Failed to add course");
+    } catch (error: unknown) {
+      showErrorToast(getAxiosErrorMessage(error, CourseMessages.ERROR.CREATE));
+      setError(getAxiosErrorMessage(error, CourseMessages.ERROR.CREATE));
       return false;
     } finally {
       setLoading(false);
@@ -83,9 +89,9 @@ const useCourseManagement = () => {
       if (response && response.data) {
         showSuccessToast("Course updated successfully!");
       }
-    } catch (err: any) {
-      showErrorToast("Failed to update course");
-      setError(err.response?.data?.message || "Failed to update course");
+    } catch (error: unknown) {
+      showErrorToast(getAxiosErrorMessage(error, CourseMessages.ERROR.UPDATE));
+      setError(getAxiosErrorMessage(error, CourseMessages.ERROR.UPDATE));
     } finally {
       setLoading(false);
     }
@@ -117,9 +123,10 @@ const useCourseManagement = () => {
         showInfoToast("Deletion canceled.");
       }
       return false;
-    } catch (err: any) {
-      showErrorToast("Failed to delete course");
-      setError(err.response?.data?.message || "Failed to delete course");
+    } catch (error: unknown) {
+      showErrorToast(getAxiosErrorMessage(error, CourseMessages.ERROR.DELETE));
+      setError(getAxiosErrorMessage(error, CourseMessages.ERROR.DELETE));
+
       return false;
     } finally {
       setLoading(false);

@@ -5,6 +5,8 @@ import { RootState } from "../store";
 import { api } from "../configs";
 import { FilterOption, PopulatedCourse, Sort } from "../types";
 import { fetchCategoriesAsFilterOptions } from "../services/category.service";
+import { getAxiosErrorMessage } from "../utils";
+import { CategoryMessages } from "../constants/category.constant";
 
 interface UseCourseTableFunctionalityOptions {
   itemsPerPage: number;
@@ -36,8 +38,8 @@ export function useCourseTable({
         const options = await fetchCategoriesAsFilterOptions();
         setFilterOptions(options);
         setError(null); // Reset error on success
-      } catch (err) {
-        setError("Failed to fetch categories");
+      } catch (error: unknown) {
+        setError(getAxiosErrorMessage(error, CategoryMessages.ERROR.FETCH));
       } finally {
         setLoading(false);
       }
@@ -60,8 +62,7 @@ export function useCourseTable({
         setData(result.body);
         console.log(result);
         setTotalPages(result.last_page);
-      } catch (error) {
-        console.error("Error fetching courses:", error);
+      } catch {
         setData([]);
         setTotalPages(0);
         setCurrentPage(0);

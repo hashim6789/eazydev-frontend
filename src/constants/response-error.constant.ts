@@ -1,4 +1,6 @@
-export enum ResponseErrorMessages {
-  UNEXPECTED_ERROR = "An unexpected error occurred!",
-  ERROR_OCCURRED = "An error occurred!",
-}
+export const ResponseErrorMessages = {
+  ERROR: {
+    UNEXPECTED: "An unexpected error occurred!",
+    WENT_WRONG: "Something went wrong!",
+  },
+};

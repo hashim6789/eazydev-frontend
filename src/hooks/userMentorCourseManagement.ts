@@ -18,7 +18,11 @@ import {
   updateMaterial,
   addMaterial,
 } from "../store/slice";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import {
   CourseMessages,
   HttpStatusCode,
@@ -75,9 +79,9 @@ export const useMentorCourseManagement = () => {
         showSuccessToast(CourseMessages.SUCCESS.UPLOAD);
       }
       return secureUrl;
-    } catch (error: any) {
+    } catch (error: unknown) {
       showErrorToast(
-        error.response.data.error || CourseMessages.SUCCESS.UPLOAD
+        getAxiosErrorMessage(error, CourseMessages.SUCCESS.UPLOAD)
       );
     }
   };
@@ -110,11 +114,12 @@ export const useMentorCourseManagement = () => {
         dispatch(setCourseDetails({ ...data, id: response.data }));
         dispatch(setCurrentStep(2));
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       showErrorToast(
-        error.response.data.error || isEditing
-          ? CourseMessages.ERROR.UPDATE
-          : CourseMessages.ERROR.CREATE
+        getAxiosErrorMessage(
+          error,
+          isEditing ? CourseMessages.ERROR.UPDATE : CourseMessages.ERROR.CREATE
+        )
       );
     }
   };
@@ -127,8 +132,8 @@ export const useMentorCourseManagement = () => {
       dispatch(setCurrentStep(1));
       dispatch(resetCourse());
       showSuccessToast(CourseMessages.SUCCESS.TOGGLE);
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || CourseMessages.ERROR.TOGGLE);
+    } catch (error: unknown) {
+      showErrorToast(getAxiosErrorMessage(error, CourseMessages.ERROR.TOGGLE));
     }
   };
   const handleDraftForRejectedCourse = async () => {
@@ -138,8 +143,8 @@ export const useMentorCourseManagement = () => {
       dispatch(setCurrentStep(1));
       dispatch(resetCourse());
       showSuccessToast(CourseMessages.SUCCESS.TOGGLE);
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || CourseMessages.ERROR.TOGGLE);
+    } catch (error: unknown) {
+      showErrorToast(getAxiosErrorMessage(error, CourseMessages.ERROR.TOGGLE));
     }
   };
 
@@ -170,10 +175,11 @@ export const useMentorCourseManagement = () => {
           return response.data;
         }
         return null;
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast(
-          error.response.data.error || LessonMessages.ERROR.CREATE
+          getAxiosErrorMessage(error, CourseMessages.ERROR.CREATE)
         );
+
         return null;
       }
     },
@@ -193,9 +199,9 @@ export const useMentorCourseManagement = () => {
           setEditingLessonIndex(null);
           setIsAddingLesson(false);
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast(
-          error.response.data.error || LessonMessages.ERROR.UPDATE
+          getAxiosErrorMessage(error, CourseMessages.ERROR.UPDATE)
         );
       }
     },
@@ -213,9 +219,9 @@ export const useMentorCourseManagement = () => {
           setIsAddingLesson(false);
           setEditingLessonIndex(null);
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast(
-          error.response.data.error || LessonMessages.ERROR.REMOVE
+          getAxiosErrorMessage(error, CourseMessages.ERROR.DELETE)
         );
       }
     },
@@ -238,10 +244,11 @@ export const useMentorCourseManagement = () => {
           return response.data;
         }
         return null;
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast(
-          error.response.data.error || MaterialMessages.ERROR.CREATE
+          getAxiosErrorMessage(error, CourseMessages.ERROR.CREATE)
         );
+
         return null;
       }
     },
@@ -271,10 +278,11 @@ export const useMentorCourseManagement = () => {
           return true;
         }
         return false;
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast(
-          error.response.data.error || MaterialMessages.ERROR.UPDATE
+          getAxiosErrorMessage(error, CourseMessages.ERROR.UPDATE)
         );
+
         return false;
       }
     },
@@ -289,9 +297,9 @@ export const useMentorCourseManagement = () => {
           setEditingMaterialIndex(null);
           showSuccessToast(MaterialMessages.SUCCESS.REMOVE);
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         showErrorToast(
-          error.response.data.error || MaterialMessages.ERROR.REMOVE
+          getAxiosErrorMessage(error, CourseMessages.ERROR.DELETE)
         );
       }
     },

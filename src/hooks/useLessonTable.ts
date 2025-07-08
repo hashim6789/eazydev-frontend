@@ -1,8 +1,13 @@
 import { useState, useEffect } from "react";
 import { Lesson } from "../types/lesson";
 import { api } from "../configs";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import { showDeletionConfirmationBox } from "../utils/confirm-box.utils";
+import { LessonMessages } from "../constants";
 
 interface UseLessonTableFunctionalityOptions {
   itemsPerPage: number;
@@ -56,7 +61,7 @@ export function useLessonTable({
     if (isConfirmed) {
       try {
         await api.delete(`/lessons/${lessonId}`);
-        showSuccessToast("The lesson was deleted successfully!");
+        showSuccessToast(LessonMessages.SUCCESS.REMOVE);
 
         // Remove the deleted lesson from the state
         setData((prevLessons) =>
@@ -67,8 +72,10 @@ export function useLessonTable({
         if (data.length === 1 && currentPage > 1) {
           handlePageChange(currentPage - 1);
         }
-      } catch (error: any) {
-        showErrorToast(error.message);
+      } catch (error: unknown) {
+        showErrorToast(
+          getAxiosErrorMessage(error, LessonMessages.ERROR.REMOVE)
+        );
       }
     }
   };

@@ -7,7 +7,8 @@ import {
 } from "../types/chart";
 import { api } from "../configs";
 import { generateColor } from "../utils/color-theme.util";
-import { HttpStatusCode } from "../constants";
+import { HttpStatusCode, MentorMessages } from "../constants";
+import { getAxiosErrorMessage } from "../utils";
 
 interface MentorDashboardData {
   courseStatusChartData: {
@@ -74,11 +75,10 @@ const useMentorDashboardData = (): MentorDashboardData => {
           setRevenueData(response.data.revenueData);
           setError(null);
         } else {
-          setError("Failed to fetch mentor data.");
+          setError(MentorMessages.ERROR.FETCH);
         }
-      } catch (err) {
-        console.error("Error fetching mentor data:", err);
-        setError("Failed to fetch mentor data.");
+      } catch (error: unknown) {
+        setError(getAxiosErrorMessage(error, MentorMessages.ERROR.FETCH));
       } finally {
         setLoading(false);
       }

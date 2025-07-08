@@ -9,7 +9,12 @@ import {
   verifyOtpSuccess,
   verifyOtpFailure,
 } from "../store/slice";
-import { showSuccessToast, showErrorToast, showInfoToast } from "../utils";
+import {
+  showSuccessToast,
+  showErrorToast,
+  showInfoToast,
+  getAxiosErrorMessage,
+} from "../utils";
 import { AuthMessages, HttpStatusCode } from "../constants";
 
 const useOtp = (onComplete?: (otp: string) => void) => {
@@ -87,11 +92,12 @@ const useOtp = (onComplete?: (otp: string) => void) => {
     try {
       const response = await api.post(`/auth/otp-resend`);
       if (response.status === HttpStatusCode.Created) {
-        showSuccessToast(AuthMessages.RESEND_OTP_SUCCESS);
+        showSuccessToast(AuthMessages.SUCCESS.RESEND_OTP);
       }
-    } catch (error) {
-      showErrorToast(AuthMessages.RESEND_OTP_FAILED);
-      console.error(error);
+    } catch (error: unknown) {
+      showErrorToast(
+        getAxiosErrorMessage(error, AuthMessages.ERROR.RESEND_OTP)
+      );
     }
   };
 
@@ -143,16 +149,15 @@ const useOtp = (onComplete?: (otp: string) => void) => {
             navigate(`/${user.role}/dashboard`);
           }
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         dispatch(
           verifyOtpFailure(
-            error.response.data.error || AuthMessages.VERIFY_OTP_FAILED
+            getAxiosErrorMessage(error, AuthMessages.ERROR.VERIFY_OTP)
           )
         );
-        console.error(AuthMessages.VERIFY_OTP_FAILED, error);
       }
     } else {
-      showInfoToast(AuthMessages.ENTER_VALID_OTP);
+      showInfoToast(AuthMessages.VALIDATION.ENTER_VALID_OTP);
     }
   };
 

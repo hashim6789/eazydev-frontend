@@ -59,10 +59,10 @@ const useAuth = () => {
         const typedError = error as ErrorType;
         dispatch(
           loginFailure(
-            typedError.response.data.error || AuthMessages.LOGIN_FAILED
+            typedError.response.data.error || AuthMessages.ERROR.LOGIN
           )
         );
-        console.error(AuthMessages.LOGIN_FAILED, error);
+        console.error(AuthMessages.ERROR.LOGIN, error);
       } else {
         console.error("An unknown error occurred:", error);
       }
@@ -97,10 +97,10 @@ const useAuth = () => {
         const typedError = error as ErrorType;
         dispatch(
           signupFailure(
-            typedError.response.data.error || AuthMessages.SIGNUP_FAILED
+            typedError.response.data.error || AuthMessages.ERROR.SIGNUP
           )
         );
-        console.error(AuthMessages.SIGNUP_FAILED, error);
+        console.error(AuthMessages.ERROR.SIGNUP, error);
       }
     }
   };
@@ -129,10 +129,10 @@ const useAuth = () => {
         const typedError = error as ErrorType;
         dispatch(
           googleSignupFailure(
-            typedError.response.data.error || AuthMessages.GOOGLE_SIGNUP_FAILED
+            typedError.response.data.error || AuthMessages.ERROR.SIGNUP
           )
         );
-        console.error(AuthMessages.GOOGLE_SIGNUP_FAILED, error);
+        console.error(AuthMessages.ERROR.SIGNUP, error);
       }
     }
   };
@@ -159,11 +159,10 @@ const useAuth = () => {
         const typedError = error as ErrorType;
         dispatch(
           forgotPasswordFailure(
-            typedError.response.data.error ||
-              AuthMessages.FORGOT_PASSWORD_FAILED
+            typedError.response.data.error || AuthMessages.ERROR.FORGOT_PASSWORD
           )
         );
-        console.error(AuthMessages.FORGOT_PASSWORD_FAILED, error);
+        console.error(AuthMessages.ERROR.FORGOT_PASSWORD, error);
       }
     }
   };
@@ -179,7 +178,7 @@ const useAuth = () => {
       if (error && typeof error === "object" && "response" in error) {
         const typedError = error as ErrorType;
         showErrorToast(
-          typedError.response.data.error || AuthMessages.LOGOUT_FAILED
+          typedError.response.data.error || AuthMessages.ERROR.LOGOUT
         );
       }
     }

@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { config } from "../configs";
+import { getAxiosErrorMessage } from "../utils";
+import { ResponseErrorMessages } from "../constants";
 
 const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
-  if (!url) {
-    return { data: null, loading: false, error: null };
-  }
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null); // Error message
@@ -16,6 +15,9 @@ const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
       setError(null);
 
       try {
+        if (!url) {
+          return { data: null, loading: false, error: null };
+        }
         const response = await axios.get<T>(`${config.API_BASE_URL + url}`);
 
         if (!response.data) {
@@ -25,8 +27,10 @@ const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
         const jsonData = response.data;
         console.log("data:", jsonData);
         setData(jsonData);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong!");
+      } catch (error: unknown) {
+        setError(
+          getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.WENT_WRONG)
+        );
       } finally {
         setLoading(false);
       }

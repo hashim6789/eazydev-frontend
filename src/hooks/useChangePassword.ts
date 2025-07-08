@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../configs";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import { SubRole } from "../types";
-import { HttpStatusCode } from "../constants";
+import { AuthMessages, HttpStatusCode } from "../constants";
 
 const useChangePassword = (userRole: SubRole) => {
   const [isValid, setValid] = useState<boolean>(false);
@@ -23,11 +27,10 @@ const useChangePassword = (userRole: SubRole) => {
         if (response.status === HttpStatusCode.OK && response.data.success) {
           setValid(true);
         }
-      } catch (err: any) {
+      } catch (error: unknown) {
         setValid(false);
         setErrorMessage(
-          err.response.data.error ||
-            "Invalid or expired password reset link. Please try again."
+          getAxiosErrorMessage(error, AuthMessages.ERROR.RESET_LINK_EXPIRED)
         );
       }
     };
@@ -47,11 +50,13 @@ const useChangePassword = (userRole: SubRole) => {
       );
 
       if (response.status === HttpStatusCode.OK && response.data.success) {
-        showSuccessToast("Password reset successfully");
+        showSuccessToast(AuthMessages.SUCCESS.RESET_PASSWORD);
         navigate(`/${userRole}/login`);
       }
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || "Failed to reset password");
+    } catch (error: unknown) {
+      showErrorToast(
+        getAxiosErrorMessage(error, AuthMessages.ERROR.RESET_PASSWORD)
+      );
     } finally {
       setLoading(false);
     }
