@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
-import { api } from "../configs";
+import { api, config } from "../configs";
 import { Notification } from "../types";
 
-const socket = io("https://www.muhammedhashim.online", {
+const socket = io(`${config.DOMAIN_NAME}`, {
   transports: ["websocket"],
   upgrade: false,
 });
