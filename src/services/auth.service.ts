@@ -1,6 +1,6 @@
-import { AxiosError } from "axios";
 import { api } from "../configs";
-import { showErrorToast } from "../utils";
+import { getAxiosErrorMessage, showErrorToast } from "../utils";
+import { AuthMessages } from "../constants";
 
 interface LoginData {
   email: string;
@@ -31,11 +31,8 @@ export const AuthService = {
       );
       return response.data;
     } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      showErrorToast(
-        err.response?.data?.error || "Login failed. Please try again."
-      );
-      throw new Error(err.response?.data?.error || "Login failed.");
+      showErrorToast(getAxiosErrorMessage(error, AuthMessages.ERROR.LOGIN));
+      throw new Error(getAxiosErrorMessage(error, AuthMessages.ERROR.LOGIN));
     }
   },
 
@@ -49,10 +46,8 @@ export const AuthService = {
       );
       return response.data;
     } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error || "Registration failed. Please try again.";
-      throw new Error(errorMessage);
+      showErrorToast(getAxiosErrorMessage(error, AuthMessages.ERROR.SIGNUP));
+      throw new Error(getAxiosErrorMessage(error, AuthMessages.ERROR.SIGNUP));
     }
   },
 
@@ -66,11 +61,8 @@ export const AuthService = {
       );
       return response.data;
     } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error ||
-        "Google authentication failed. Please try again.";
-      throw new Error(errorMessage);
+      showErrorToast(getAxiosErrorMessage(error, AuthMessages.ERROR.SIGNUP));
+      throw new Error(getAxiosErrorMessage(error, AuthMessages.ERROR.SIGNUP));
     }
   },
 
@@ -84,10 +76,12 @@ export const AuthService = {
       );
       return response.data;
     } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error || "OTP validation failed. Please try again.";
-      throw new Error(errorMessage);
+      showErrorToast(
+        getAxiosErrorMessage(error, AuthMessages.ERROR.VERIFY_OTP)
+      );
+      throw new Error(
+        getAxiosErrorMessage(error, AuthMessages.ERROR.VERIFY_OTP)
+      );
     }
   },
   forgetPasswordService: async (
@@ -100,11 +94,12 @@ export const AuthService = {
       );
       return response.data;
     } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error ||
-        "ForgetPassword Service failed. Please try again.";
-      throw new Error(errorMessage);
+      showErrorToast(
+        getAxiosErrorMessage(error, AuthMessages.ERROR.FORGOT_PASSWORD)
+      );
+      throw new Error(
+        getAxiosErrorMessage(error, AuthMessages.ERROR.FORGOT_PASSWORD)
+      );
     }
   },
 };

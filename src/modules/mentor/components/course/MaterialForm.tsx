@@ -4,8 +4,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import { Material } from "../../../../types";
 import { api } from "../../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../../../../utils";
 import { MaterialFormSchema, MaterialSchema } from "../../../../schemas";
+import { MaterialMessages } from "../../../../constants";
 
 interface MaterialFormProps {
   initialData?: Material;
@@ -77,9 +82,10 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
       if (materialType === "reading" || materialType === "video") {
         setPreview(URL.createObjectURL(file));
       }
-    } catch (error: any) {
-      console.error("File upload failed:", error);
-      showErrorToast(error.response.data.error || "Failed to upload the file.");
+    } catch (error: unknown) {
+      showErrorToast(
+        getAxiosErrorMessage(error, MaterialMessages.ERROR.UPLOAD)
+      );
     } finally {
       setUploading(false);
     }

@@ -67,7 +67,7 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
     if (isConfirmed) {
       try {
         await api.delete(`/users/${userId}`);
-        showSuccessToast(UserMessages.USER_DELETE_SUCCESS);
+        showSuccessToast(UserMessages.SUCCESS.USER_DELETE);
         setData((prevUsers) => prevUsers.filter((user) => user.id !== userId));
 
         if (data.length === 1 && currentPage > 1) {

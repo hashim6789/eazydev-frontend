@@ -18,6 +18,7 @@ import ChatMessages from "./ChatMessages";
 import { api, config } from "../../configs";
 import { getUserProperty } from "../../utils/local-user.util";
 import { GroupChatMessages, HttpStatusCode } from "../../constants";
+import { getAxiosErrorMessage } from "../../utils";
 
 // Connect to the Socket.io server
 // const socket = io(`${config.API_BASE_URL}/chats`, {
@@ -82,8 +83,12 @@ const MainChatLayout = () => {
         } else {
           dispatch(fetchGroupsFailure(GroupChatMessages.ERROR.FETCH));
         }
-      } catch (error: any) {
-        dispatch(fetchGroupsFailure(error.response.data.message));
+      } catch (error: unknown) {
+        dispatch(
+          fetchGroupsFailure(
+            getAxiosErrorMessage(error, GroupChatMessages.ERROR.FETCH_GROUP)
+          )
+        );
       }
     };
 

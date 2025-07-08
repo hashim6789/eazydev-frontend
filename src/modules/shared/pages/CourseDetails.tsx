@@ -6,6 +6,7 @@ import type { AppDispatch, RootState } from "../../../store";
 import { Course, CourseStatus, UserRole } from "../../../types";
 import { api } from "../../../configs";
 import {
+  getAxiosErrorMessage,
   getCourseStatusColor,
   showErrorToast,
   showSuccessToast,
@@ -14,6 +15,7 @@ import LessonView from "../../admin/components/course/LessonView";
 import { setCourseDetails, updateCourseStatus } from "../../../store/slice";
 import { getCourseStatusIcon } from "../../../utils/icon.util";
 import { useThemeStyles } from "../../../utils/color-theme.util";
+import { CourseMessages } from "../../../constants";
 interface CourseDetailsPageProps {
   role: UserRole;
 }
@@ -36,10 +38,8 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
       try {
         const response = await api.get<Course>(`/courses/${courseId}`);
         dispatch(setCourseDetails(response.data));
-      } catch (error: any) {
-        showErrorToast(
-          error.response?.data?.message || "Failed to fetch course details"
-        );
+      } catch (error: unknown) {
+        showErrorToast(getAxiosErrorMessage(error, CourseMessages.ERROR.FETCH));
       } finally {
         setIsLoading(false);
       }
@@ -64,12 +64,12 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
       if (response.status === 200) {
         dispatch(updateCourseStatus({ newStatus }));
         showSuccessToast(
-          response.data.message || "Status updated successfully"
+          response.data.message || CourseMessages.SUCCESS.UPDATE_STATUS
         );
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       showErrorToast(
-        error.response?.data?.message || "Failed to update status"
+        getAxiosErrorMessage(error, CourseMessages.ERROR.UPDATE_STATUS)
       );
     } finally {
       setIsModalOpen(false);

@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../../../utils";
 import {
   ChangePasswordFormData,
   changePasswordSchema,
@@ -11,9 +15,7 @@ import {
 } from "../../../schemas";
 import { AuthMessages } from "../../../constants";
 
-interface ChangePasswordProps {}
-
-const ChangePassword: React.FC<ChangePasswordProps> = () => {
+const ChangePassword: React.FC = () => {
   const [isVerified, setIsVerified] = useState(false);
 
   const {
@@ -37,11 +39,13 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
     try {
       const response = await api.post("/users/verify-password", data);
       if (response.status === 200) {
-        showSuccessToast(AuthMessages.PASSWORD_VERIFIED_SUCCESS);
+        showSuccessToast(AuthMessages.SUCCESS.VERIFY_OTP);
         setIsVerified(true);
       }
-    } catch (error: any) {
-      showErrorToast(error.response.data.error);
+    } catch (error: unknown) {
+      showErrorToast(
+        getAxiosErrorMessage(error, AuthMessages.ERROR.VERIFY_OTP)
+      );
       console.error(error);
     }
   };
@@ -50,15 +54,16 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
     try {
       const response = await api.post("/users/change-password", data);
       if (response.status === 200) {
-        showSuccessToast(AuthMessages.PASSWORD_CHANGE_SUCCESS);
+        showSuccessToast(AuthMessages.SUCCESS.PASSWORD_CHANGE);
         setIsVerified(false);
         setValueChangePassword("newPassword", "");
         setValueChangePassword("confirmPassword", "");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       showErrorToast(
-        error.response.data.error || AuthMessages.PASSWORD_CHANGE_FAILED
+        getAxiosErrorMessage(error, AuthMessages.ERROR.PASSWORD_CHANGE)
       );
+
       console.error(error);
     }
   };

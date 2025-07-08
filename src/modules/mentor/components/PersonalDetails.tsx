@@ -5,7 +5,11 @@ import { z } from "zod";
 import { Edit2 } from "lucide-react";
 import axios from "axios";
 import { api, config } from "../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../../../utils";
 import userImage from "../../../assets/img/user_image.avif";
 import { getUserProperty } from "../../../utils/local-user.util";
 import { User } from "../../../types";
@@ -37,8 +41,10 @@ const PersonalDetails: React.FC = () => {
         if (response.data.profilePicture) {
           setProfilePicture(response.data.profilePicture);
         }
-      } catch (err) {
-        setError("Failed to fetch user details");
+      } catch (error: unknown) {
+        setError(
+          getAxiosErrorMessage(error, UserMessages.ERROR.PERSONAL_DATA_FETCH)
+        );
       } finally {
         setLoading(false);
       }
@@ -70,9 +76,10 @@ const PersonalDetails: React.FC = () => {
         // Update profile image in backend
         await api.put("/users/profile-img", { profilePicture });
       }
-    } catch (error) {
-      console.error("Error uploading image:", error);
-      showErrorToast(UserMessages.UPLOAD_PROFILE_IMAGE_FAILED);
+    } catch (error: unknown) {
+      showErrorToast(
+        getAxiosErrorMessage(error, UserMessages.ERROR.UPLOAD_PROFILE_IMAGE)
+      );
     }
   };
 
@@ -89,11 +96,13 @@ const PersonalDetails: React.FC = () => {
     try {
       const response = await api.put("/users/personal", data);
       if (response.status === 200) {
-        showSuccessToast("personal data updated successfully");
+        showSuccessToast(UserMessages.SUCCESS.PERSONAL_DATA);
         setIsEditable(false);
       }
-    } catch (error: any) {
-      showErrorToast("Failed to upload image.");
+    } catch (error: unknown) {
+      showErrorToast(
+        getAxiosErrorMessage(error, UserMessages.ERROR.PERSONAL_DATA)
+      );
     }
   };
 
