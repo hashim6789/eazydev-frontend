@@ -1,5 +1,5 @@
 import React from "react";
-import { PlusIcon, PencilIcon, TrashIcon } from "lucide-react";
+import { PlusIcon, PencilIcon } from "lucide-react";
 import { LessonForm } from "./LessonForm";
 import { Lesson } from "../../../../types";
 import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
@@ -85,7 +85,7 @@ export const LessonsList: React.FC<LessonsListProps> = ({ onNext }) => {
                     onClick={() => handleRemoveLesson(index)}
                     className="p-1.5 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded"
                   >
-                    <TrashIcon className="w-5 h-5" />
+                    {/* <TrashIcon className="w-5 h-5" /> */}
                   </button>
                 </div>
               </div>

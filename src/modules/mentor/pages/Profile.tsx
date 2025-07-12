@@ -67,24 +67,28 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
             <span className="hidden sm:inline">Password</span>
           </button>
 
-          <button
-            onClick={() => setNavState("purchases")}
-            className={`flex items-center justify-center sm:justify-start gap-2 p-3 border-b-2 transition-colors ${getActiveStyle(
-              "notifications"
-            )}`}
-          >
-            <Bell className="h-4 w-4" />
-            <span className="hidden sm:inline">Purchases</span>
-          </button>
-          <button
-            onClick={() => setNavState("certificates")}
-            className={`flex items-center justify-center sm:justify-start gap-2 p-3 border-b-2 transition-colors ${getActiveStyle(
-              "preferences"
-            )}`}
-          >
-            <Settings className="h-4 w-4" />
-            <span className="hidden sm:inline">Certificates</span>
-          </button>
+          {role === "learner" && (
+            <>
+              <button
+                onClick={() => setNavState("purchases")}
+                className={`flex items-center justify-center sm:justify-start gap-2 p-3 border-b-2 transition-colors ${getActiveStyle(
+                  "notifications"
+                )}`}
+              >
+                <Bell className="h-4 w-4" />
+                <span className="hidden sm:inline">Purchases</span>
+              </button>
+              <button
+                onClick={() => setNavState("certificates")}
+                className={`flex items-center justify-center sm:justify-start gap-2 p-3 border-b-2 transition-colors ${getActiveStyle(
+                  "preferences"
+                )}`}
+              >
+                <Settings className="h-4 w-4" />
+                <span className="hidden sm:inline">Certificates</span>
+              </button>
+            </>
+          )}
         </div>
 
         {/* Content Sections */}
