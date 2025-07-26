@@ -36,14 +36,10 @@ const useAuth = () => {
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
     dispatch(loginStart());
     try {
-      const response = await axios.post(
-        `${config.API_BASE_URL}/auth/login`,
-        {
-          ...credentials,
-          role,
-        },
-        { withCredentials: true }
-      );
+      const response = await api.post(`/auth/login`, {
+        ...credentials,
+        role,
+      });
       if (response.status === HttpStatusCode.OK) {
         const user = response.data as User;
         dispatch(loginSuccess({ user }));
@@ -65,14 +61,10 @@ const useAuth = () => {
   const handleSignup = async (credentials: SignupSchema, role: SubRole) => {
     dispatch(signupStart());
     try {
-      const response = await axios.post<User>(
-        `${config.API_BASE_URL}/auth/signup`,
-        {
-          ...credentials,
-          role,
-        },
-        { withCredentials: true }
-      );
+      const response = await api.post<User>(`/auth/signup`, {
+        ...credentials,
+        role,
+      });
 
       if (response.status === HttpStatusCode.Created) {
         const user = response.data;
@@ -92,14 +84,10 @@ const useAuth = () => {
   const handleGoogleSignup = async (googleToken: string, role: SubRole) => {
     dispatch(googleSignupStart());
     try {
-      const response = await axios.post(
-        `${config.API_BASE_URL}/auth/google`,
-        {
-          googleToken,
-          role,
-        },
-        { withCredentials: true }
-      );
+      const response = await api.post(`/auth/google`, {
+        googleToken,
+        role,
+      });
       const user = response.data.user as User;
       dispatch(googleSignupSuccess({ user }));
       if (role === "learner") {
@@ -125,7 +113,7 @@ const useAuth = () => {
     dispatch(forgotPasswordStart());
     try {
       const response = await axios.post<{ success: boolean }>(
-        `${config.API_BASE_URL}/auth/forgot-password`,
+        `/auth/forgot-password`,
         {
           email: data.email,
           role,
