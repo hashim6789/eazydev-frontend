@@ -7,12 +7,13 @@ import LoginPage from "../modules/auth/pages/Login";
 import { AdminRoutes } from "./AdminRoutes";
 import { LearnerRoutes } from "./LearnerRoutes";
 import { MentorRoutes } from "./MentorRoutes";
+import loginImage from "../assets/img/login image 03.jpg";
 
 const AppRoutes: React.FC = () => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
-  const {} = useSelector((state: RootState) => state.theme);
+  // const {} = useSelector((state: RootState) => state.theme);
 
   const routes = [
     ...AdminRoutes(isAuthenticated, user),
@@ -20,7 +21,9 @@ const AppRoutes: React.FC = () => {
     ...LearnerRoutes(isAuthenticated, user),
     {
       path: "/login",
-      element: <LoginPage role="learner" theme="blue" loginImage="" />,
+      element: (
+        <LoginPage role="learner" theme="blue" loginImage={loginImage} />
+      ),
     },
     {
       path: "/500",
