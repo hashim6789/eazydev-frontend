@@ -1,110 +1,62 @@
-import { AxiosError } from "axios";
 import { api } from "../configs";
-import { showErrorToast } from "../utils";
+import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
+import { SubRole, User, UserRole } from "../types";
+import { HttpStatusCode } from "../constants";
 
-interface LoginData {
-  email: string;
-  password: string;
-}
+// Login
+export const login = async (
+  credentials: LoginSchema,
+  role: UserRole
+): Promise<User> => {
+  const response = await api.post(`/auth/login`, { ...credentials, role });
+  if (response.status === HttpStatusCode.OK) {
+    return response.data;
+  }
+  throw new Error("Login failed");
+};
 
-interface RegisterData extends LoginData {
-  name: string;
-}
+// Signup
+export const signup = async (
+  credentials: SignupSchema,
+  role: SubRole
+): Promise<User> => {
+  const response = await api.post(`/auth/signup`, { ...credentials, role });
+  if (response.status === HttpStatusCode.Created) {
+    return response.data;
+  }
+  throw new Error("Signup failed");
+};
 
-interface OtpData {
-  email: string;
-  otp: string;
-}
+// Google Signup
+export const googleSignup = async (
+  googleToken: string,
+  role: SubRole
+): Promise<User> => {
+  const response = await api.post(`/auth/google`, { googleToken, role });
+  if (response.status === HttpStatusCode.OK) {
+    return response.data.user;
+  }
+  throw new Error("Google signup failed");
+};
 
-interface forgetPasswordData {
-  email: string;
-}
+// Forgot Password
+export const forgotPassword = async (
+  data: ForgotPasswordSchema,
+  role: SubRole
+): Promise<void> => {
+  const response = await api.post(`/auth/forgot-password`, {
+    email: data.email,
+    role,
+  });
+  if (response.status !== HttpStatusCode.OK) {
+    throw new Error("Forgot password failed");
+  }
+};
 
-export const AuthService = {
-  loginService: async (
-    data: LoginData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/login",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      showErrorToast(
-        err.response?.data?.error || "Login failed. Please try again."
-      );
-      throw new Error(err.response?.data?.error || "Login failed.");
-    }
-  },
-
-  registerService: async (
-    data: RegisterData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/register",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error || "Registration failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
-
-  googleAuth: async (
-    data: Omit<RegisterData, "password">
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/google-auth",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error ||
-        "Google authentication failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
-
-  otpVerificationService: async (
-    data: OtpData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/otp",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error || "OTP validation failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
-  forgetPasswordService: async (
-    data: forgetPasswordData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/forgot-password",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error ||
-        "ForgetPassword Service failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
+// Logout
+export const logout = async (role: UserRole, userId: string): Promise<void> => {
+  const response = await api.post(`/auth/logout`, { role, userId });
+  if (response.status !== HttpStatusCode.OK) {
+    throw new Error("Logout failed");
+  }
 };
