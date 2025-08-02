@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { RootState } from "../store";
 import {
   loginStart,
@@ -112,7 +111,7 @@ const useAuth = () => {
   ) => {
     dispatch(forgotPasswordStart());
     try {
-      const response = await axios.post<{ success: boolean }>(
+      const response = await api.post<{ success: boolean }>(
         `/auth/forgot-password`,
         {
           email: data.email,

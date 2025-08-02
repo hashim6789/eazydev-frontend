@@ -38,3 +38,37 @@ export interface RevenueRate {
   name: string;
   value: number;
 }
+
+export interface AdminAnalyzeResponseType {
+  mentorStatusData: UserStatusData[];
+  learnerStatusData: UserStatusData[];
+  coursePerformanceData: CoursePerformanceData[];
+  monthlyRevenueData: MonthlyRevenueData[];
+}
+
+export interface AdminDashboardData {
+  learnerStatusChartData: {
+    labels: string[];
+    datasets: { label: string; data: number[]; backgroundColor: string[] }[];
+  };
+  mentorStatusChartData: {
+    labels: string[];
+    datasets: { label: string; data: number[]; backgroundColor: string[] }[];
+  };
+  coursePerformanceChartData: {
+    labels: string[];
+    datasets: { label: string; data: number[]; backgroundColor: string }[];
+  };
+  monthlyRevenueChartData: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      borderColor: string;
+      borderWidth: number;
+      fill: boolean;
+    }[];
+  };
+  error: string | null;
+  loading: boolean;
+}
