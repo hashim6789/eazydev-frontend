@@ -60,3 +60,27 @@ export const logout = async (role: UserRole, userId: string): Promise<void> => {
     throw new Error("Logout failed");
   }
 };
+
+export const validateResetToken = async (token: string, role: SubRole) => {
+  const response = await api.get<{ success: boolean }>(
+    `/auth/${token}/reset-password?role=${role}`
+  );
+  if (response.status === HttpStatusCode.OK && response.data.success) {
+    return response.data;
+  }
+  throw new Error("Token validation failed");
+};
+
+export const resetPassword = async (password: string, role: SubRole) => {
+  const response = await api.patch<{ success: boolean }>(
+    `/auth/reset-password`,
+    {
+      password,
+      role,
+    }
+  );
+  if (response.status === HttpStatusCode.OK && response.data.success) {
+    return response.data;
+  }
+  throw new Error("Password Reset failed");
+};
