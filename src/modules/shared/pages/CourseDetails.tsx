@@ -6,6 +6,7 @@ import type { AppDispatch, RootState } from "../../../store";
 import { Course, CourseStatus, UserRole } from "../../../types";
 import { api } from "../../../configs";
 import {
+  getAxiosErrorMessage,
   getCourseStatusColor,
   showErrorToast,
   showSuccessToast,
@@ -36,10 +37,12 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
       try {
         const response = await api.get<Course>(`/courses/${courseId}`);
         dispatch(setCourseDetails(response.data));
-      } catch (error: any) {
-        showErrorToast(
-          error.response?.data?.message || "Failed to fetch course details"
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          "Failed to fetch course details"
         );
+        showErrorToast(message);
       } finally {
         setIsLoading(false);
       }
@@ -67,10 +70,9 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
           response.data.message || "Status updated successfully"
         );
       }
-    } catch (error: any) {
-      showErrorToast(
-        error.response?.data?.message || "Failed to update status"
-      );
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, "Failed to update status");
+      showErrorToast(message);
     } finally {
       setIsModalOpen(false);
     }

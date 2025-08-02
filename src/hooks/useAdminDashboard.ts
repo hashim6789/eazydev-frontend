@@ -6,6 +6,8 @@ import {
   UserStatusData,
 } from "../types/chart";
 import { fetchAdminDashboardData } from "../services";
+import { getAxiosErrorMessage } from "../utils";
+import { AnalyzeMessages } from "../constants";
 
 const useAdminDashboardData = (): AdminDashboardData => {
   const [mentorStatuses, setMentorStatuses] = useState<UserStatusData[]>([]);
@@ -40,9 +42,12 @@ const useAdminDashboardData = (): AdminDashboardData => {
         setCoursePerformanceData(coursePerformanceData);
         setMonthlyRevenueData(monthlyRevenueData);
         setError(null);
-      } catch (err) {
-        console.error("Error fetching admin data:", err);
-        setError("Failed to fetch admin data.");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(
+          err,
+          AnalyzeMessages.ERROR.FETCH_ADMIN_DATA
+        );
+        setError(message);
       } finally {
         setLoading(false);
       }

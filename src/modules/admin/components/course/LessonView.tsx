@@ -70,7 +70,7 @@ const MaterialList: React.FC<{
   } = useFetch<ILessonPopulated>(`/lessons/${lessonId}`);
 
   const handleMaterialNavigation = (materialId: string) => {
-    role === "mentor" && navigate(`/mentor/materials/${materialId}`);
+    if (role === "mentor") navigate(`/mentor/materials/${materialId}`);
   };
   if (loading) {
     return (

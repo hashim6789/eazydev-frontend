@@ -5,7 +5,11 @@ import { SlotFormData } from "../../../../schemas";
 import { getUserProperty } from "../../../../utils/local-user.util";
 import SlotForm from "../../components/meetings/SlotForm";
 import { transformSlots } from "../../../../utils/formater.util";
-import { showErrorToast, showSuccessToast } from "../../../../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../../../../utils";
 import ScheduledMeetingsTable from "../../../shared/components/SheduledMeetingsTable";
 import AvailableSlots from "../../../shared/components/AvailableSlots";
 import { SlotMessages } from "../../../../constants/SlotMessages.contant";
@@ -18,12 +22,13 @@ const MentorMeetingManagement: React.FC = () => {
     setLoading(true);
     try {
       const response = await api.get("/slots");
-      const transformedSlots = transformSlots(response.data); // Transforms slot data
+      const transformedSlots = transformSlots(response.data);
       setSlots(transformedSlots);
       setLoading(false);
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, SlotMessages.ERROR.FETCH);
       setLoading(false);
-      showErrorToast(error.response.data.error || SlotMessages.ERROR.FETCH);
+      showErrorToast(message);
       console.error(SlotMessages.ERROR.FETCH, error);
     }
   }, []);
@@ -46,8 +51,9 @@ const MentorMeetingManagement: React.FC = () => {
         showSuccessToast(SlotMessages.SUCCESS.CREATE);
         fetchSlots();
       }
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || SlotMessages.ERROR.CREATE);
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, SlotMessages.ERROR.CREATE);
+      showErrorToast(message);
       console.error(SlotMessages.ERROR.CREATE, error);
     }
   };

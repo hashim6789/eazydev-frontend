@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { api } from "../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../../../utils";
 import {
   ChangePasswordFormData,
   changePasswordSchema,
@@ -11,9 +15,7 @@ import {
 } from "../../../schemas";
 import { AuthMessages } from "../../../constants";
 
-interface ChangePasswordProps {}
-
-const ChangePassword: React.FC<ChangePasswordProps> = () => {
+const ChangePassword: React.FC = () => {
   const [isVerified, setIsVerified] = useState(false);
 
   const {
@@ -37,12 +39,12 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
     try {
       const response = await api.post("/users/verify-password", data);
       if (response.status === 200) {
-        showSuccessToast(AuthMessages.PASSWORD_VERIFIED_SUCCESS);
+        showSuccessToast(AuthMessages.SUCCESS.PASSWORD_VERIFIED);
         setIsVerified(true);
       }
-    } catch (error: any) {
-      showErrorToast(error.response.data.error);
-      console.error(error);
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error);
+      showErrorToast(message);
     }
   };
 
@@ -50,16 +52,17 @@ const ChangePassword: React.FC<ChangePasswordProps> = () => {
     try {
       const response = await api.post("/users/change-password", data);
       if (response.status === 200) {
-        showSuccessToast(AuthMessages.PASSWORD_CHANGE_SUCCESS);
+        showSuccessToast(AuthMessages.SUCCESS.PASSWORD_CHANGE);
         setIsVerified(false);
         setValueChangePassword("newPassword", "");
         setValueChangePassword("confirmPassword", "");
       }
-    } catch (error: any) {
-      showErrorToast(
-        error.response.data.error || AuthMessages.PASSWORD_CHANGE_FAILED
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(
+        error,
+        AuthMessages.ERROR.PASSWORD_CHANGE
       );
-      console.error(error);
+      showErrorToast(message);
     }
   };
 

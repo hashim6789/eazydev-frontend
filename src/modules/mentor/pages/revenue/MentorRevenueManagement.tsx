@@ -2,20 +2,7 @@ import { DollarSign, Users, Calendar } from "lucide-react";
 import useFetch from "../../../../hooks/useFetch";
 import { formatCurrency } from "../../../../utils/formater.util";
 import { ErrorState } from "../../../shared/Error";
-
-// Define TypeScript interfaces for the mentor revenue data
-interface MentorRevenue {
-  totalEarnings: number;
-  currentMonthEarnings: number;
-  totalStudents: number;
-  monthlyEarnings: MonthlyEarning[];
-}
-
-interface MonthlyEarning {
-  month: string;
-  year: number;
-  earnings: number;
-}
+import { MentorRevenue, MonthlyEarning } from "../../../../types";
 
 const MentorRevenueManagement: React.FC = () => {
   const { data: revenue } = useFetch<MentorRevenue>("/analysis/mentor/revenue");

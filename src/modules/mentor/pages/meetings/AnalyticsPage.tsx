@@ -13,18 +13,6 @@ import {
 
 const MentorEarningsPage: React.FC = () => {
   const { data: wallet } = useFetch<Wallet>("/wallets");
-  // Sample data - this would come from your API in a real app
-
-  // const [selectedFilter, setSelectedFilter] = useState<TransactionType | "ALL">(
-  //   "ALL"
-  // );
-
-  // // Filter transactions based on selected type
-  // const filteredTransactions = wallet
-  //   ? selectedFilter === "ALL"
-  //     ? wallet.transactions
-  //     : wallet.transactions.filter((t) => t.type === selectedFilter)
-  //   : [];
 
   if (!wallet) return <ErrorState />;
 
@@ -85,13 +73,6 @@ const MentorEarningsPage: React.FC = () => {
                 </div>
               </div>
             </div>
-            {/* <div className="bg-gray-50 px-4 py-4 sm:px-6">
-              <div className="text-sm">
-              <button className="font-medium text-blue-600 hover:text-blue-500">
-              Withdraw funds →
-              </button>
-              </div>
-              </div> */}
           </div>
 
           <div className="bg-white overflow-hidden shadow rounded-lg">
@@ -122,77 +103,8 @@ const MentorEarningsPage: React.FC = () => {
 
         {/* Transaction History */}
         <div className="mt-8">
-          {/* <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-900">
-              Transaction History
-            </h2>
-            <div className="flex items-center space-x-4">
-              <div className="relative">
-                <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  Date Range
-                </button>
-              </div>
-              <button className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                <Download className="h-4 w-4 mr-2" />
-                Export CSV
-              </button>
-            </div>
-          </div> */}
-
           {/* Filter Pills */}
-          <div className="mb-6 flex space-x-2">
-            {/* <button
-              onClick={() => setSelectedFilter("ALL")}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                selectedFilter === "ALL"
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-800 hover:bg-gray-200"
-              }`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => setSelectedFilter("purchase")}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                selectedFilter === "purchase"
-                  ? "bg-green-600 text-white"
-                  : "bg-green-100 text-green-800 hover:bg-green-200"
-              }`}
-            >
-              Purchases
-            </button>
-            <button
-              onClick={() => setSelectedFilter("platform_fee")}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                selectedFilter === "platform_fee"
-                  ? "bg-blue-600 text-white"
-                  : "bg-blue-100 text-blue-800 hover:bg-blue-200"
-              }`}
-            >
-              Platform Fees
-            </button> */}
-            {/* <button
-              onClick={() => setSelectedFilter("purchase")}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                selectedFilter === "purchase"
-                  ? "bg-red-600 text-white"
-                  : "bg-red-100 text-red-800 hover:bg-red-200"
-              }`}
-            >
-              Refunds
-            </button>
-            <button
-              onClick={() => setSelectedFilter("subscription")}
-              className={`px-4 py-2 rounded-full text-sm font-medium ${
-                selectedFilter === "subscription"
-                  ? "bg-purple-600 text-white"
-                  : "bg-purple-100 text-purple-800 hover:bg-purple-200"
-              }`}
-            >
-              Bonuses
-            </button> */}
-          </div>
+          <div className="mb-6 flex space-x-2"></div>
 
           {/* Transactions Table */}
           <div className="bg-white shadow overflow-hidden sm:rounded-lg">

@@ -8,7 +8,7 @@ import {
   showSuccessToast,
 } from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
-import { ResponseErrorMessages, UserMessages } from "../constants";
+import { ResponseMessages, UserMessages } from "../constants";
 import { fetchUsers } from "../services";
 
 interface UseTableFunctionalityOptions {
@@ -42,7 +42,7 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
         setData(users);
         setTotalPages(totalPages);
       } catch (error) {
-        console.error(ResponseErrorMessages.ERROR_OCCURRED, error);
+        console.error(ResponseMessages.ERROR.ERROR_OCCURRED, error);
       } finally {
         setLoading(false);
       }
@@ -71,14 +71,14 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
     if (isConfirmed) {
       try {
         await api.delete(`/users/${userId}`);
-        showSuccessToast(UserMessages.USER_DELETE_SUCCESS);
+        showSuccessToast(UserMessages.SUCCESS.USER_DELETE);
         setData((prevUsers) => prevUsers.filter((user) => user.id !== userId));
 
         if (data.length === 1 && currentPage > 1) {
           handlePageChange(currentPage - 1);
         }
       } catch (error: unknown) {
-        const message = getAxiosErrorMessage(error, "Failed to fetch users");
+        const message = getAxiosErrorMessage(error, UserMessages.ERROR.FETCH);
         showErrorToast(message);
       }
     }

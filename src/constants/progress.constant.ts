@@ -1,3 +1,6 @@
-export enum ProgressMessages {
-  PROGRESS_UPDATE_FAILED = "Failed to update progress. Please try again.",
-}
+export const ProgressMessages = {
+  ERROR: {
+    PROGRESS_UPDATE: "Failed to update progress. Please try again.",
+    FETCH: "Failed to fetch progress list.",
+  },
+};

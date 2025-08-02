@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { config } from "../configs";
+import { getAxiosErrorMessage } from "../utils";
 
 const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
   if (!url) {
@@ -25,15 +26,16 @@ const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
         const jsonData = response.data;
         console.log("data:", jsonData);
         setData(jsonData);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong!");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err);
+        setError(message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [url, options]); // Dependencies for re-fetching when `url` or `options` change
+  }, [url, options]);
 
   return { data, loading, error };
 };

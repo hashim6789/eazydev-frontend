@@ -16,16 +16,9 @@ const Certificate: React.FC<CertificateProps> = ({ certificateData }) => {
   const certificateRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
-    // content: () => certificateRef.current, // Provide the certificate reference
-    documentTitle: `${certificateData.course.title} Certificate - ${name}`, // Set the document title
-    // onBeforeGetContent: () => {
-    //   return new Promise<void>((resolve) => {
-    //     setIsLoading(true); // Set loading state before printing
-    //     resolve();
-    //   });
-    // },
+    documentTitle: `${certificateData.course.title} Certificate - ${name}`,
     onAfterPrint: () => {
-      setIsLoading(false); // Reset loading state after printing
+      setIsLoading(false);
     },
   });
 

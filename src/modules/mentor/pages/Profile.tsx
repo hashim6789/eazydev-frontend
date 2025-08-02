@@ -30,32 +30,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
       : `border-transparent ${styles.textSecondary} hover:${styles.text}`;
   };
 
-  // useEffect(() => {
-  //     const fetchPurchaseDetails = async () => {
-  //       try {
-  //         // Fetch purchase details via API
-  //         const response = await api.get(`/api/purchases/${purchaseId}`);
-  //         setPurchase({
-  //           purchaseId: response.data.purchaseId || "PURCH-123456",
-  //           purchaseDate: response.data.purchaseDate || Date.now(),
-  //           amount: response.data.amount || 9900,
-  //           status: response.data.status || "completed",
-  //         });
-  //       } catch (error) {
-  //         console.error("Error fetching purchase details:", error);
-  //       } finally {
-  //         setLoading(false);
-
-  //         // Trigger animations after data is loaded
-  //         setTimeout(() => setIsLoaded(true), 100);
-  //       }
-  //     };
-
-  //     if (purchaseId) {
-  //       fetchPurchaseDetails();
-  //     }
-  //   }, [purchaseId]);
-
   return (
     <div
       className={`w-full max-w-4xl mx-auto p-4 space-y-6 ${styles.textPrimary}`}
@@ -120,78 +94,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ role }) => {
           {navState === "purchases" && role === "learner" && (
             <PurchaseHistory />
           )}
-
-          {/* {navState === "notifications" && (
-            <div className="space-y-6">
-              <h3 className="text-lg font-medium">Notification Settings</h3>
-
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">Email Notifications</h4>
-                    <p className={`text-sm ${styles.textSecondary}`}>
-                      Receive email about student activity
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      defaultChecked
-                    />
-                    <div
-                      className={`w-11 h-6 ${styles.lightBg} rounded-full peer peer-checked:${styles.primary} peer-focus:ring-4 peer-focus:${styles.focusRing}`}
-                    ></div>
-                    <span className="ml-3 text-sm font-medium"></span>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">SMS Notifications</h4>
-                    <p className={`text-sm ${styles.textSecondary}`}>
-                      Receive text messages for urgent updates
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" className="sr-only peer" />
-                    <div
-                      className={`w-11 h-6 ${styles.lightBg} rounded-full peer peer-checked:${styles.primary} peer-focus:ring-4 peer-focus:${styles.focusRing}`}
-                    ></div>
-                    <span className="ml-3 text-sm font-medium"></span>
-                  </label>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-medium">Push Notifications</h4>
-                    <p className={`text-sm ${styles.textSecondary}`}>
-                      Receive push notifications in your browser
-                    </p>
-                  </div>
-                  <label className="relative inline-flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      className="sr-only peer"
-                      defaultChecked
-                    />
-                    <div
-                      className={`w-11 h-6 ${styles.lightBg} rounded-full peer peer-checked:${styles.primary} peer-focus:ring-4 peer-focus:${styles.focusRing}`}
-                    ></div>
-                    <span className="ml-3 text-sm font-medium"></span>
-                  </label>
-                </div>
-              </div>
-
-              <div className="flex justify-end mt-6">
-                <button
-                  className={`${styles.primary} px-4 py-2 rounded-md ${styles.buttonText}`}
-                >
-                  Save Preferences
-                </button>
-              </div>
-            </div>
-          )} */}
 
           {navState === "preferences" && (
             <div className="space-y-6">

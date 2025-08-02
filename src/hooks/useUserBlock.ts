@@ -9,7 +9,7 @@ import {
 } from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
 import { UserMessages } from "../constants/user.constant";
-import { ResponseErrorMessages } from "../constants";
+import { ResponseMessages } from "../constants";
 import { toggleUserBlockStatus } from "../services";
 
 interface UseBlockUnblockResponse {
@@ -44,20 +44,20 @@ const useUserBlock = (): UseBlockUnblockResponse => {
         const result = await toggleUserBlockStatus(id, change);
 
         if (result === "blocked") {
-          showSuccessToast(UserMessages.USER_BLOCK_SUCCESS);
+          showSuccessToast(UserMessages.SUCCESS.USER_BLOCK);
         } else if (result === "unblocked") {
-          showSuccessToast(UserMessages.USER_UNBLOCK_SUCCESS);
+          showSuccessToast(UserMessages.SUCCESS.USER_UNBLOCK);
         }
 
         return true;
       } else {
-        showInfoToast(UserMessages.ACTION_CANCELLED);
+        showInfoToast(UserMessages.ERROR.ACTION_CANCELLED);
         return false;
       }
     } catch (err: unknown) {
       const message = getAxiosErrorMessage(
         err,
-        ResponseErrorMessages.ERROR_OCCURRED
+        ResponseMessages.ERROR.ERROR_OCCURRED
       );
 
       setError(message);

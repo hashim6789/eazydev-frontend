@@ -28,12 +28,12 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ role }) => {
 
   // Handle call initiation
   const handleInitiateCall = () => {
-    initiateCall(); // Call the function to start the call
+    initiateCall();
   };
 
   // Handle call end
   const handleEndCall = () => {
-    endCall(); // Call the function to end the call
+    endCall();
   };
 
   const preventBackNavigation = () => {
@@ -41,14 +41,11 @@ const MeetingRoom: React.FC<MeetingRoomProps> = ({ role }) => {
   };
 
   useEffect(() => {
-    // Add a fake entry to the browser history
     window.history.pushState(null, "", window.location.href);
 
-    // Add event listener to intercept the back button
     window.addEventListener("popstate", preventBackNavigation);
 
     return () => {
-      // Cleanup event listener when component unmounts
       window.removeEventListener("popstate", preventBackNavigation);
     };
   }, []);

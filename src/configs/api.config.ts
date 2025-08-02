@@ -10,25 +10,21 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-// Create an Axios instance
 export const api: AxiosInstance = axios.create({
   baseURL: `${config.API_BASE_URL}/api`,
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // ensures cookies are sent with requests
+  withCredentials: true,
 });
 
-// Request Interceptor (optional - no need to set headers manually)
 api.interceptors.request.use(
   (config: CustomAxiosRequestConfig): CustomAxiosRequestConfig => {
-    // You don't need to attach tokens manually if server uses HttpOnly cookies
     return config;
   },
   (error: AxiosError) => Promise.reject(error)
 );
 
-// Response Interceptor for automatic retry on 401
 api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
@@ -38,7 +34,7 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        await api.get("/auth/refresh"); // server sets new cookie on success
+        await api.get("/auth/refresh");
         return api(originalRequest);
       } catch (refreshError) {
         console.error("🔒 Refresh token failed:", refreshError);

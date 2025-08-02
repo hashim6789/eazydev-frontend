@@ -60,7 +60,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+      showSuccessToast(AuthMessages.ERROR.LOGIN);
     },
     loginFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -80,7 +80,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to delete tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.LOGOUT_SUCCESS);
+      showSuccessToast(AuthMessages.ERROR.LOGOUT);
     },
     signupStart(state) {
       state.loading = true;
@@ -100,7 +100,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.SIGNUP_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.SIGNUP);
     },
     signupFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -126,7 +126,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.VERIFY_OTP_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.VERIFY_OTP);
     },
     verifyOtpFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -153,7 +153,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+      showSuccessToast(AuthMessages.ERROR.LOGIN);
     },
     googleSignupFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -170,7 +170,7 @@ const authSlice = createSlice({
     forgotPasswordSuccess(state) {
       state.loading = false;
       state.error = null;
-      showSuccessToast(AuthMessages.RESET_LINK_SEND_SUCCESS);
+      showSuccessToast(AuthMessages.ERROR.RESET_LINK_SEND);
     },
     forgotPasswordFailure(state, action: PayloadAction<string>) {
       state.loading = false;

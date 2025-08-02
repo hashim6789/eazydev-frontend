@@ -7,10 +7,11 @@ import {
 } from "../../../../store/slice";
 import { Course } from "../../../../types";
 import { api } from "../../../../configs";
-import { showErrorToast } from "../../../../utils";
+import { getAxiosErrorMessage, showErrorToast } from "../../../../utils";
 import { useNavigate, useParams } from "react-router-dom";
 import { CourseFormA } from "../../components/course/CourseFormEdit";
 import { LoadingState } from "../../../shared/Error";
+import { CourseMessages } from "../../../../constants";
 
 const CourseEditing: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -27,9 +28,10 @@ const CourseEditing: React.FC = () => {
         if (response && response.status === 200) {
           dispatch(setFetchedCourseDetails(response.data));
         }
-      } catch (error) {
-        showErrorToast("Failed to fetch course details.");
-        navigate("/mentor/courses"); // Redirect if fetching fails
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(error, CourseMessages.ERROR.FETCH);
+        showErrorToast(message);
+        navigate("/mentor/courses");
       } finally {
         setLoading(false);
       }

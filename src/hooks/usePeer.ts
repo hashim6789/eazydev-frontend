@@ -3,8 +3,16 @@ import Peer, { MediaConnection } from "peerjs";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../types";
 import { joinMeeting } from "../services/meeting.service";
+import { config } from "../configs";
+import { getAxiosErrorMessage, showErrorToast } from "../utils";
+import { MeetingMessages } from "../constants";
+import { AxiosInstance } from "axios";
 
-export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
+export const usePeerConnection = (
+  meetId: string,
+  api: AxiosInstance,
+  role: UserRole
+) => {
   const [peerId, setPeerId] = useState<string>("");
   const [otherPeerId, setOtherPeerId] = useState<string | null>(null);
   const peerInstance = useRef<Peer | null>(null);
@@ -23,7 +31,7 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
   useEffect(() => {
     const initializePeer = async () => {
       const peer = new Peer({
-        host: "www.muhammedhashim.online",
+        host: config.DOMAIN_NAME,
         port: 443,
         path: "/peerjs",
         secure: true,
@@ -43,8 +51,12 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
           if (data && data.otherPeerId) {
             setOtherPeerId(data.otherPeerId);
           }
-        } catch (error) {
-          console.error("Error joining meeting:", error);
+        } catch (error: unknown) {
+          const message = getAxiosErrorMessage(
+            error,
+            MeetingMessages.ERROR.JOIN
+          );
+          showErrorToast(message);
         }
       });
 
@@ -71,8 +83,12 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
               setIsCallStarted(true);
             }
           });
-        } catch (error) {
-          console.error("Media devices error:", error);
+        } catch (error: unknown) {
+          const message = getAxiosErrorMessage(
+            error,
+            MeetingMessages.ERROR.MEDIA
+          );
+          showErrorToast(message);
         }
       });
     };
@@ -125,7 +141,13 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
           }
         });
       })
-      .catch((error) => console.error("Media devices error:", error));
+      .catch((error: unknown) => {
+        const message = getAxiosErrorMessage(
+          error,
+          MeetingMessages.ERROR.MEDIA
+        );
+        showErrorToast(message);
+      });
 
     if (!otherPeerId) {
       setIsWaitingForOpponent(true);

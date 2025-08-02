@@ -12,9 +12,7 @@ import { courseSortOptions } from "../../../shared/values";
 import { PopulatedCourse } from "../../../../types";
 import userImage from "../../../../assets/img/user_image.avif";
 
-interface CourseGridProps {}
-
-const CourseGrid: React.FC<CourseGridProps> = () => {
+const CourseGrid: React.FC = () => {
   const {
     currentPage,
     searchQuery,

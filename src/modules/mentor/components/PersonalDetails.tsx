@@ -5,7 +5,11 @@ import { z } from "zod";
 import { Edit2 } from "lucide-react";
 import axios from "axios";
 import { api, config } from "../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../../../utils";
 import userImage from "../../../assets/img/user_image.avif";
 import { getUserProperty } from "../../../utils/local-user.util";
 import { User } from "../../../types";
@@ -37,8 +41,9 @@ const PersonalDetails: React.FC = () => {
         if (response.data.profilePicture) {
           setProfilePicture(response.data.profilePicture);
         }
-      } catch (err) {
-        setError("Failed to fetch user details");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err, UserMessages.ERROR.FETCH);
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -72,7 +77,7 @@ const PersonalDetails: React.FC = () => {
       }
     } catch (error) {
       console.error("Error uploading image:", error);
-      showErrorToast(UserMessages.UPLOAD_PROFILE_IMAGE_FAILED);
+      showErrorToast(UserMessages.ERROR.UPLOAD_PROFILE_IMAGE);
     }
   };
 
@@ -89,11 +94,12 @@ const PersonalDetails: React.FC = () => {
     try {
       const response = await api.put("/users/personal", data);
       if (response.status === 200) {
-        showSuccessToast("personal data updated successfully");
+        showSuccessToast(UserMessages.SUCCESS.PERSONAL_UPDATE);
         setIsEditable(false);
       }
-    } catch (error: any) {
-      showErrorToast("Failed to upload image.");
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, "Failed to upload image.");
+      showErrorToast(message);
     }
   };
 
@@ -199,19 +205,6 @@ const PersonalDetails: React.FC = () => {
               disabled
             />
           </div>
-
-          {/* Phone */}
-          {/* <div>
-            <label className={`block text-sm font-medium text-gray-700 mb-1`}>
-              Status
-            </label>
-            <input
-              type="tel"
-              // defaultValue={userDetails.isBlocked}
-              className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 outline-none bg-transparent"
-              disabled={!isEditable}
-            />
-          </div> */}
         </div>
 
         <div className="flex justify-end mt-6">

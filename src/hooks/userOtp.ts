@@ -91,12 +91,12 @@ const useOtp = (onComplete?: (otp: string) => void) => {
     try {
       const success = await resendOtpService();
       if (success) {
-        showSuccessToast(AuthMessages.RESEND_OTP_SUCCESS);
+        showSuccessToast(AuthMessages.ERROR.RESEND_OTP);
       }
     } catch (error: unknown) {
       const message = getAxiosErrorMessage(
         error,
-        AuthMessages.RESEND_OTP_FAILED
+        AuthMessages.ERROR.RESEND_OTP
       );
       showErrorToast(message);
     }
@@ -146,12 +146,12 @@ const useOtp = (onComplete?: (otp: string) => void) => {
       } catch (error: unknown) {
         const message = getAxiosErrorMessage(
           error,
-          AuthMessages.VERIFY_OTP_FAILED
+          AuthMessages.ERROR.VERIFY_OTP
         );
         dispatch(verifyOtpFailure(message));
       }
     } else {
-      showInfoToast(AuthMessages.ENTER_VALID_OTP);
+      showInfoToast(AuthMessages.ERROR.INVALID_OTP);
     }
   };
 

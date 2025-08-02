@@ -35,6 +35,8 @@ const useAuth = () => {
     (state: RootState) => state.auth
   );
 
+  const { ERROR } = AuthMessages;
+
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
     dispatch(loginStart());
     try {
@@ -42,7 +44,7 @@ const useAuth = () => {
       dispatch(loginSuccess({ user }));
       navigate(role === "learner" ? "/" : `/${role}/dashboard`);
     } catch (error: unknown) {
-      const message = getAxiosErrorMessage(error, AuthMessages.LOGIN_FAILED);
+      const message = getAxiosErrorMessage(error, ERROR.LOGIN);
       dispatch(loginFailure(message));
     }
   };
@@ -54,7 +56,7 @@ const useAuth = () => {
       dispatch(signupSuccess({ user }));
       navigate(`/${role}/otp`);
     } catch (error: unknown) {
-      const message = getAxiosErrorMessage(error, AuthMessages.SIGNUP_FAILED);
+      const message = getAxiosErrorMessage(error, ERROR.SIGNUP);
       dispatch(signupFailure(message));
     }
   };
@@ -66,11 +68,7 @@ const useAuth = () => {
       dispatch(googleSignupSuccess({ user }));
       navigate(role === "learner" ? "/" : `/${role}/dashboard`);
     } catch (error: unknown) {
-      const message = getAxiosErrorMessage(
-        error,
-        AuthMessages.GOOGLE_SIGNUP_FAILED
-      );
-
+      const message = getAxiosErrorMessage(error, ERROR.GOOGLE_SIGNUP);
       dispatch(googleSignupFailure(message));
     }
   };
@@ -84,10 +82,8 @@ const useAuth = () => {
       await forgotPasswordService(data, role);
       dispatch(forgotPasswordSuccess());
     } catch (error: unknown) {
-      const message = getAxiosErrorMessage(
-        error,
-        AuthMessages.FORGOT_PASSWORD_FAILED
-      );
+      const message = getAxiosErrorMessage(error, ERROR.RESET_LINK_SEND);
+
       dispatch(forgotPasswordFailure(message));
     }
   };
@@ -97,7 +93,7 @@ const useAuth = () => {
       await logoutService(role, userId);
       dispatch(logoutAction());
     } catch (error: unknown) {
-      const message = getAxiosErrorMessage(error, AuthMessages.LOGOUT_FAILED);
+      const message = getAxiosErrorMessage(error, ERROR.LOGOUT);
       showErrorToast(message);
     }
   };

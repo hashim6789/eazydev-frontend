@@ -9,9 +9,14 @@ import { ProgressBar } from "./ProgressBar";
 import { CourseDetails } from "./CourseDetail";
 import { LessonsList } from "./LessonList";
 import { api } from "../../../../configs";
-import { showErrorToast, showSuccessToast } from "../../../../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../../../../utils";
 import { useNavigate } from "react-router-dom";
 import { getUserProperty } from "../../../../utils/local-user.util";
+import { CourseMessages } from "../../../../constants";
 
 export const CourseForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -30,61 +35,8 @@ export const CourseForm: React.FC = () => {
     { id: 3, name: "Review & Publish" },
   ];
 
-  // const handleCourseDetailsSubmit = async (data: Partial<Course>) => {
-  //   try {
-  //     const createData = {
-  //       title: data.title,
-  //       description: data.description,
-  //       mentorId: course.mentor.id,
-  //       categoryId: data.category?.id,
-  //       thumbnail: course.thumbnail,
-  //       price: data.price,
-  //     };
-  //     const response = await api.post<{ course: Course }>(
-  //       "/api/courses",
-  //       createData
-  //     );
-  //     if (response && response.status === 201) {
-  //       showSuccessToast("Course created successfully.");
-  //       dispatch(setCourseDetails(response.data.course));
-  //       dispatch(setCurrentStep(2)); // Move to the next step
-  //     }
-  //   } catch (error: any) {
-  //     showErrorToast("An error occurred while creating the course.");
-  //   }
-  // };
-
-  // const handleAddLesson = async (lesson: Lesson) => {
-  //   try {
-  //     const createData = {
-  //       title: lesson.title,
-  //       description: lesson.description,
-  //       mentorId: lesson.mentorId,
-  //       courseId: course.id,
-  //     };
-  //     const response = await api.post("/api/lessons", createData);
-  //     if (response && response.status === 201) {
-  //       showSuccessToast("Lesson created successfully.");
-  //       dispatch(addLesson(lesson));
-  //     }
-  //   } catch (error: any) {
-  //     showErrorToast("An error occurred while creating the lesson.");
-  //   }
-  // };
-
-  // const handleUpdateLesson = (index: number, lesson: Lesson) => {
-  //   dispatch(updateLesson({ index, lesson }));
-  // };
-
-  // const handleRemoveLesson = (index: number) => {
-  //   dispatch(removeLesson(index));
-  // };
-
   const handlePublishCourse = async () => {
     try {
-      console.log("Publishing course:", course);
-      // API call to publish the course
-      // Example:
       await api.patch(`/api/courses/${course.id}`, {
         newStatus: "requested",
         mentorId: getUserProperty("id"),
@@ -92,11 +44,9 @@ export const CourseForm: React.FC = () => {
       navigate("/mentor/courses");
       dispatch(resetCourse());
       showSuccessToast("Course requested successfully.");
-    } catch (error: any) {
-      showErrorToast(
-        error.response.data.error ||
-          "An error occurred while publishing the course."
-      );
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, CourseMessages.ERROR.TOGGLE);
+      showErrorToast(message);
     }
   };
 
@@ -120,11 +70,6 @@ export const CourseForm: React.FC = () => {
 
           {currentStep === 2 && (
             <LessonsList
-              // lessons={course.lessons}
-              // mentorId={course.mentorId}
-              // onAddLesson={handleAddLesson}
-              // onUpdateLesson={handleUpdateLesson}
-              // onRemoveLesson={handleRemoveLesson}
               onBack={() => dispatch(setCurrentStep(1))}
               onNext={() => dispatch(setCurrentStep(3))}
             />
@@ -180,14 +125,6 @@ export const CourseForm: React.FC = () => {
               </div>
 
               <div className="flex justify-between pt-4">
-                {/* <button
-                  type="button"
-                  onClick={() => dispatch(setCurrentStep(2))}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
-                >
-                  Back to Lessons
-                </button> */}
-
                 <div className="space-x-3">
                   <button
                     type="button"

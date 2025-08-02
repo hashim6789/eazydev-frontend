@@ -9,6 +9,7 @@ import {
 import { generateColor } from "../utils/color-theme.util";
 import { fetchMentorDashboardData } from "../services";
 import { getAxiosErrorMessage } from "../utils";
+import { AnalyzeMessages } from "../constants";
 
 const useMentorDashboardData = (): MentorDashboardData => {
   const [courseStatuses, setCourseStatuses] = useState<CourseStatusData[]>([]);
@@ -34,7 +35,7 @@ const useMentorDashboardData = (): MentorDashboardData => {
       } catch (err: unknown) {
         const message = getAxiosErrorMessage(
           err,
-          "Failed to fetch mentor data."
+          AnalyzeMessages.ERROR.FETCH_MENTOR_DATA
         );
         setError(message);
       } finally {

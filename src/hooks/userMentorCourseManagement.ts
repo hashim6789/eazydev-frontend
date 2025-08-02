@@ -101,8 +101,6 @@ export const useMentorCourseManagement = () => {
   // Course Submission Handler
   const handleCourseSubmit = async (data: Partial<Course>) => {
     try {
-      console.log("category", data.category);
-
       const response = await submitCourse(
         data,
         isEditing,
@@ -223,9 +221,6 @@ export const useMentorCourseManagement = () => {
         const lesson = course.lessons[index];
 
         const response = await removeLessonService(lesson.id, course.id);
-        // const response = await api.delete(
-        //   `/lessons/${lesson.id}/courses/${course.id}`
-        // );
 
         if (response.status === HttpStatusCode.OK) {
           dispatch(removeLesson(index));

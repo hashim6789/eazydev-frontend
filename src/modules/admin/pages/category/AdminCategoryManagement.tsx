@@ -5,9 +5,7 @@ import CategoryTable from "../../tables/CategoryTable";
 import { Breadcrumb, TitleSection } from "../../../shared/components";
 import { Group } from "lucide-react";
 
-interface AdminCategoryProps {}
-
-const AdminCategoryManagement: React.FC<AdminCategoryProps> = ({}) => {
+const AdminCategoryManagement: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}

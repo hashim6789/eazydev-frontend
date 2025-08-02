@@ -1,4 +1,5 @@
 export const config = {
+  DOMAIN_NAME: import.meta.env.DOMAIN_NAME,
   API_BASE_URL: import.meta.env.VITE_API_BASE_URL || "http:localhost:3333",
   CLOUDINARY_API_KEY: import.meta.env.VITE_CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET: import.meta.env.VITE_CLOUDINARY_API_SECRET,
@@ -6,4 +7,5 @@ export const config = {
   CLOUDINARY_PRESET: import.meta.env.VITE_CLOUDINARY_PRESET,
   VITE_STRIPE_PK: import.meta.env.VITE_STRIPE_PK,
   GOOGLE_AUTH_CLIENT_ID: import.meta.env.VITE_GOOGLE_AUTH_CLIENT_ID,
+  CLOUDFRONT_BASE_URL: import.meta.env.VITE_CLOUDFRONT_BASE_URL,
 };

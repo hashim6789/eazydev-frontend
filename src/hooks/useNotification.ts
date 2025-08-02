@@ -3,8 +3,10 @@ import io from "socket.io-client";
 import { Notification } from "../types";
 import { getAxiosErrorMessage } from "../utils";
 import { getNotifications } from "../services";
+import { config } from "../configs";
+import { NotificationMessages } from "../constants";
 
-const socket = io("https://www.muhammedhashim.online", {
+const socket = io(`http://${config.DOMAIN_NAME}`, {
   transports: ["websocket"],
   upgrade: false,
 });
@@ -25,7 +27,7 @@ export const useNotifications = (userId: string) => {
       } catch (err: unknown) {
         const message = getAxiosErrorMessage(
           err,
-          "Failed to fetch notifications"
+          NotificationMessages.ERROR.FETCH
         );
         setError(message);
       } finally {

@@ -116,3 +116,16 @@ export interface MentorDashboardData {
   error: string | null;
   loading: boolean;
 }
+
+export interface MentorRevenue {
+  totalEarnings: number;
+  currentMonthEarnings: number;
+  totalStudents: number;
+  monthlyEarnings: MonthlyEarning[];
+}
+
+export interface MonthlyEarning {
+  month: string;
+  year: number;
+  earnings: number;
+}

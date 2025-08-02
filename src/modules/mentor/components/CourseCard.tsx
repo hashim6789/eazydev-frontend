@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ChevronRight, Edit, MoreVertical, Trash2 } from "lucide-react";
-import { useThemeStyles } from "../../../utils/color-theme.util"; // Theme utility
-import { getCourseStatusColor } from "../../../utils"; // Helper for status colors
+import { useThemeStyles } from "../../../utils/color-theme.util";
+import { getCourseStatusColor } from "../../../utils";
 import { ManagementCourse } from "../../../types";
 
 interface CourseCardProps {
@@ -13,7 +13,7 @@ interface CourseCardProps {
 const CourseCard: React.FC<CourseCardProps> = ({ course, handleDelete }) => {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-  const styles = useThemeStyles(); // Fetch theme styles
+  const styles = useThemeStyles();
 
   return (
     <div
@@ -75,10 +75,6 @@ const CourseCard: React.FC<CourseCardProps> = ({ course, handleDelete }) => {
           </div>
         </div>
         <div className="flex items-center justify-between">
-          {/* <div className={`flex items-center ${styles.textSecondary}`}>
-            <Clock className="w-4 h-4 mr-2" />
-            <span>Duration Placeholder</span>{" "}
-          </div> */}
           <span
             className={`px-3 py-1 rounded-full text-sm ${getCourseStatusColor(
               course.status

@@ -26,7 +26,7 @@ const useFetch = <T>(url: string | null, options?: RequestInit) => {
         console.log("data:", jsonData);
         setData(jsonData);
       } catch (err: unknown) {
-        const message = getAxiosErrorMessage(err, "Something went wrong!");
+        const message = getAxiosErrorMessage(err);
         setError(message);
       } finally {
         setLoading(false);

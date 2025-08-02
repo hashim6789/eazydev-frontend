@@ -7,6 +7,7 @@ import {
 } from "../utils";
 import { SubRole } from "../types";
 import { resetPasswordService, validateResetTokenService } from "../services";
+import { AuthMessages } from "../constants";
 
 const useChangePassword = (userRole: SubRole) => {
   const [isValid, setValid] = useState<boolean>(false);
@@ -15,6 +16,8 @@ const useChangePassword = (userRole: SubRole) => {
 
   const navigate = useNavigate();
   const { token } = useParams<{ token: string }>();
+
+  const { ERROR, SUCCESS } = AuthMessages;
 
   // Validate token on mount
   useEffect(() => {
@@ -28,13 +31,10 @@ const useChangePassword = (userRole: SubRole) => {
         if (response.success) {
           setValid(true);
         }
-      } catch (err: unknown) {
+      } catch (error: unknown) {
         setValid(false);
+        const message = getAxiosErrorMessage(error, ERROR.RESET_LINK_GET);
 
-        const message = getAxiosErrorMessage(
-          err,
-          "Invalid or expired password reset link. Please try again."
-        );
         setErrorMessage(message);
       }
     };
@@ -49,11 +49,11 @@ const useChangePassword = (userRole: SubRole) => {
       const data = await resetPasswordService(password, userRole);
 
       if (data.success) {
-        showSuccessToast("Password reset successfully");
+        showSuccessToast(SUCCESS.PASSWORD_CHANGE);
         navigate(`/${userRole}/login`);
       }
     } catch (error: unknown) {
-      const message = getAxiosErrorMessage(error, "Failed to reset password");
+      const message = getAxiosErrorMessage(error, ERROR.PASSWORD_RESET);
       showErrorToast(message);
     } finally {
       setLoading(false);
