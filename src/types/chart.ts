@@ -46,6 +46,13 @@ export interface AdminAnalyzeResponseType {
   monthlyRevenueData: MonthlyRevenueData[];
 }
 
+export interface MentorAnalyzeResponseType {
+  courseStatusData: CourseStatusData[];
+  enrollmentData: EnrollmentRate[];
+  completionRateData: CompletionRate[];
+  revenueData: RevenueRate[];
+}
+
 export interface AdminDashboardData {
   learnerStatusChartData: {
     labels: string[];
@@ -60,6 +67,43 @@ export interface AdminDashboardData {
     datasets: { label: string; data: number[]; backgroundColor: string }[];
   };
   monthlyRevenueChartData: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      borderColor: string;
+      borderWidth: number;
+      fill: boolean;
+    }[];
+  };
+  error: string | null;
+  loading: boolean;
+}
+
+export interface MentorDashboardData {
+  courseStatusChartData: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      backgroundColor: string[];
+      borderWidth: number;
+    }[];
+  };
+  revenueChartData: {
+    labels: string[];
+    datasets: {
+      label: string;
+      data: number[];
+      backgroundColor: string[];
+      borderWidth: number;
+    }[];
+  };
+  completionRateChartData: {
+    labels: string[];
+    datasets: { label: string; data: number[]; backgroundColor: string }[];
+  };
+  enrollmentChartData: {
     labels: string[];
     datasets: {
       label: string;

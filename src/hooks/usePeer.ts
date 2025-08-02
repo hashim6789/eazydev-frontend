@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import Peer, { MediaConnection } from "peerjs";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../types";
-import { HttpStatusCode } from "../constants";
+import { joinMeeting } from "../services/meeting.service";
 
 export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
   const [peerId, setPeerId] = useState<string>("");
@@ -39,15 +39,9 @@ export const usePeerConnection = (meetId: string, api: any, role: UserRole) => {
         setPeerId(id);
 
         try {
-          const response = await api.post(`/meetings/${meetId}/join`, {
-            peerId: id,
-          });
-          if (
-            response.status === HttpStatusCode.OK &&
-            response.data.otherPeerId
-          ) {
-            console.log(response.data.otherPeerId);
-            setOtherPeerId(response.data.otherPeerId);
+          const data = await joinMeeting(meetId, peerId);
+          if (data && data.otherPeerId) {
+            setOtherPeerId(data.otherPeerId);
           }
         } catch (error) {
           console.error("Error joining meeting:", error);

@@ -1,11 +1,19 @@
 import Swal from "sweetalert2";
 import { useState, useCallback } from "react";
-import { api, config } from "../configs";
 import { Category, MentorCourse } from "../types";
-import { showErrorToast, showInfoToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "../utils";
 import { HttpStatusCode } from "../constants";
-
-const baseUrl = config.API_BASE_URL;
+import {
+  createCourse,
+  getCategories,
+  removeCourse,
+  updateCourse,
+} from "../services";
 
 const useCourseManagement = () => {
   const [categories, setCategories] = useState<Category[]>([]);
@@ -23,48 +31,38 @@ const useCourseManagement = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.get(`/categories`);
-      const result = response.data;
-      console.log(result);
-      setCategories(result.data);
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Failed to fetch categories");
+      const result = await getCategories();
+      setCategories(result.data); // result is already response.data
+    } catch (err: unknown) {
+      const message = getAxiosErrorMessage(err, "Failed to fetch categories");
+      setError(message);
     } finally {
       setLoading(false);
     }
-  }, [baseUrl, categories]);
+  }, [categories]);
 
   // Add a new course
   const addCourse = async (course: Partial<MentorCourse>): Promise<boolean> => {
     setLoading(true);
     setError(null);
     try {
-      if (!course.category || !course.category.id) {
+      if (!course.category?.id) {
         showErrorToast("Course category not exist!");
         return false;
       }
 
-      const lessonIds = course.lessons
-        ? course.lessons.map((course) => course.id)
-        : [];
-
-      const postData = {
-        ...course,
-        lessons: lessonIds,
-        category: course.category.id,
-      };
-      const response = await api.post(`/courses`, postData);
-
-      if (response && response.data) {
+      const result = await createCourse(course);
+      if (result?.course) {
         showSuccessToast("Course created successfully!");
-        handleSetCourse(response.data.course);
+        handleSetCourse(result.course);
         return true;
       }
 
       return false;
-    } catch (err: any) {
-      showErrorToast(err.response.data.message || "Failed to add course");
-      setError(err.response.data.message || "Failed to add course");
+    } catch (err: unknown) {
+      const message = getAxiosErrorMessage(err, "Failed to add course");
+      showErrorToast(message);
+      setError(message);
       return false;
     } finally {
       setLoading(false);
@@ -79,13 +77,14 @@ const useCourseManagement = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await api.put(`/courses/${courseId}`, updatedCourse);
+      const response = await updateCourse(courseId, updatedCourse);
       if (response && response.data) {
         showSuccessToast("Course updated successfully!");
       }
-    } catch (err: any) {
-      showErrorToast("Failed to update course");
-      setError(err.response?.data?.message || "Failed to update course");
+    } catch (err: unknown) {
+      const message = getAxiosErrorMessage(err, "Failed to update course");
+      showErrorToast(message);
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -107,7 +106,7 @@ const useCourseManagement = () => {
       });
 
       if (result.isConfirmed) {
-        const response = await api.delete(`/courses/${courseId}`);
+        const response = await removeCourse(courseId);
         if (response && response.status === HttpStatusCode.OK) {
           showSuccessToast("Course deleted successfully!");
           return true;
@@ -117,9 +116,10 @@ const useCourseManagement = () => {
         showInfoToast("Deletion canceled.");
       }
       return false;
-    } catch (err: any) {
-      showErrorToast("Failed to delete course");
-      setError(err.response?.data?.message || "Failed to delete course");
+    } catch (err: unknown) {
+      const message = getAxiosErrorMessage(err, "Failed to delete course");
+      showErrorToast(message);
+      setError(message);
       return false;
     } finally {
       setLoading(false);

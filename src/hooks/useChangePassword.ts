@@ -6,7 +6,7 @@ import {
   showSuccessToast,
 } from "../utils";
 import { SubRole } from "../types";
-import { resetPassword, validateResetToken } from "../services";
+import { resetPasswordService, validateResetTokenService } from "../services";
 
 const useChangePassword = (userRole: SubRole) => {
   const [isValid, setValid] = useState<boolean>(false);
@@ -20,7 +20,10 @@ const useChangePassword = (userRole: SubRole) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await validateResetToken(token as string, userRole);
+        const response = await validateResetTokenService(
+          token as string,
+          userRole
+        );
 
         if (response.success) {
           setValid(true);
@@ -43,7 +46,7 @@ const useChangePassword = (userRole: SubRole) => {
     try {
       setLoading(true);
 
-      const data = await resetPassword(password, userRole);
+      const data = await resetPasswordService(password, userRole);
 
       if (data.success) {
         showSuccessToast("Password reset successfully");

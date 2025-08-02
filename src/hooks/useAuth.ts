@@ -21,11 +21,11 @@ import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
 import { SubRole, UserRole } from "../types";
 import { AuthMessages } from "../constants";
 import {
-  login,
-  signup,
-  googleSignup,
-  forgotPassword,
-  logout,
+  forgotPasswordService,
+  googleSignupService,
+  loginService,
+  logoutService,
+  signupService,
 } from "../services";
 
 const useAuth = () => {
@@ -38,7 +38,7 @@ const useAuth = () => {
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
     dispatch(loginStart());
     try {
-      const user = await login(credentials, role);
+      const user = await loginService(credentials, role);
       dispatch(loginSuccess({ user }));
       navigate(role === "learner" ? "/" : `/${role}/dashboard`);
     } catch (error: unknown) {
@@ -50,7 +50,7 @@ const useAuth = () => {
   const handleSignup = async (credentials: SignupSchema, role: SubRole) => {
     dispatch(signupStart());
     try {
-      const user = await signup(credentials, role);
+      const user = await signupService(credentials, role);
       dispatch(signupSuccess({ user }));
       navigate(`/${role}/otp`);
     } catch (error: unknown) {
@@ -62,7 +62,7 @@ const useAuth = () => {
   const handleGoogleSignup = async (googleToken: string, role: SubRole) => {
     dispatch(googleSignupStart());
     try {
-      const user = await googleSignup(googleToken, role);
+      const user = await googleSignupService(googleToken, role);
       dispatch(googleSignupSuccess({ user }));
       navigate(role === "learner" ? "/" : `/${role}/dashboard`);
     } catch (error: unknown) {
@@ -81,7 +81,7 @@ const useAuth = () => {
   ) => {
     dispatch(forgotPasswordStart());
     try {
-      await forgotPassword(data, role);
+      await forgotPasswordService(data, role);
       dispatch(forgotPasswordSuccess());
     } catch (error: unknown) {
       const message = getAxiosErrorMessage(
@@ -94,7 +94,7 @@ const useAuth = () => {
 
   const handleLogout = async (role: UserRole, userId: string) => {
     try {
-      await logout(role, userId);
+      await logoutService(role, userId);
       dispatch(logoutAction());
     } catch (error: unknown) {
       const message = getAxiosErrorMessage(error, AuthMessages.LOGOUT_FAILED);

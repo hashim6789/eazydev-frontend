@@ -1,12 +1,16 @@
 import { useState } from "react";
-import axios from "axios";
 
 import { SubRole } from "../types";
-import { api } from "../configs";
-import { showErrorToast, showInfoToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showInfoToast,
+  showSuccessToast,
+} from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
 import { UserMessages } from "../constants/user.constant";
-import { HttpStatusCode, ResponseErrorMessages } from "../constants";
+import { ResponseErrorMessages } from "../constants";
+import { toggleUserBlockStatus } from "../services";
 
 interface UseBlockUnblockResponse {
   isLoading: boolean;
@@ -37,35 +41,27 @@ const useUserBlock = (): UseBlockUnblockResponse => {
       const isConfirmed = await showConfirmationBox(action, role, change);
 
       if (isConfirmed) {
-        const endpoint = `/users/${id}/block`;
+        const result = await toggleUserBlockStatus(id, change);
 
-        // API call to block/unblock
-        const response = await api.patch(endpoint, { change });
-        console.log(response.data, response.data);
-
-        if (response.status === HttpStatusCode.OK) {
-          if (response.data) {
-            showSuccessToast(UserMessages.USER_BLOCK_SUCCESS);
-          } else {
-            showSuccessToast(UserMessages.USER_UNBLOCK_SUCCESS);
-          }
-
-          return true;
+        if (result === "blocked") {
+          showSuccessToast(UserMessages.USER_BLOCK_SUCCESS);
+        } else if (result === "unblocked") {
+          showSuccessToast(UserMessages.USER_UNBLOCK_SUCCESS);
         }
+
+        return true;
       } else {
         showInfoToast(UserMessages.ACTION_CANCELLED);
+        return false;
       }
-      return false;
-    } catch (err: any) {
-      if (axios.isAxiosError(err)) {
-        const errorMessage =
-          err.response?.data?.message || ResponseErrorMessages.ERROR_OCCURRED;
-        setError(errorMessage);
-        showErrorToast(errorMessage);
-      } else {
-        setError(ResponseErrorMessages.UNEXPECTED_ERROR);
-        showErrorToast(ResponseErrorMessages.UNEXPECTED_ERROR);
-      }
+    } catch (err: unknown) {
+      const message = getAxiosErrorMessage(
+        err,
+        ResponseErrorMessages.ERROR_OCCURRED
+      );
+
+      setError(message);
+      showErrorToast(message);
       return false;
     } finally {
       setIsLoading(false);

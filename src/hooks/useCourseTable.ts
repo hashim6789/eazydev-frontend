@@ -2,9 +2,10 @@ import { useState, useEffect } from "react";
 import useCourseManagement from "./useCourseManagement";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
-import { api } from "../configs";
 import { FilterOption, PopulatedCourse, Sort } from "../types";
 import { fetchCategoriesAsFilterOptions } from "../services/category.service";
+import { getAxiosErrorMessage } from "../utils";
+import { fetchCourses } from "../services";
 
 interface UseCourseTableFunctionalityOptions {
   itemsPerPage: number;
@@ -36,8 +37,9 @@ export function useCourseTable({
         const options = await fetchCategoriesAsFilterOptions();
         setFilterOptions(options);
         setError(null); // Reset error on success
-      } catch (err) {
-        setError("Failed to fetch categories");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err, "Failed to fetch categories");
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -52,11 +54,16 @@ export function useCourseTable({
     const fetchData = async () => {
       setLoading(true);
       try {
-        const auth = isAuthenticated ? "" : "/no-auth";
-        const response = await api.get(
-          `${auth}/courses?category=${category}&range=${range}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}&sort=${sort}`
-        );
-        const result = response.data;
+        const data = await fetchCourses({
+          isAuthenticated,
+          category,
+          range,
+          search: searchQuery,
+          page: currentPage,
+          limit: itemsPerPage,
+          sort,
+        });
+        const result = data;
         setData(result.body);
         console.log(result);
         setTotalPages(result.last_page);
@@ -72,7 +79,15 @@ export function useCourseTable({
 
     const debounceTimeout = setTimeout(fetchData, 500); // Debounce effect
     return () => clearTimeout(debounceTimeout);
-  }, [searchQuery, currentPage, itemsPerPage, sort, category]);
+  }, [
+    searchQuery,
+    currentPage,
+    itemsPerPage,
+    sort,
+    category,
+    isAuthenticated,
+    range,
+  ]);
 
   const handlePageChange = (page: number) => setCurrentPage(page);
   const handleSearchChange = (query: string) => {

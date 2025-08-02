@@ -4,7 +4,7 @@ import { SubRole, User, UserRole } from "../types";
 import { HttpStatusCode } from "../constants";
 
 // Login
-export const login = async (
+export const loginService = async (
   credentials: LoginSchema,
   role: UserRole
 ): Promise<User> => {
@@ -16,7 +16,7 @@ export const login = async (
 };
 
 // Signup
-export const signup = async (
+export const signupService = async (
   credentials: SignupSchema,
   role: SubRole
 ): Promise<User> => {
@@ -28,7 +28,7 @@ export const signup = async (
 };
 
 // Google Signup
-export const googleSignup = async (
+export const googleSignupService = async (
   googleToken: string,
   role: SubRole
 ): Promise<User> => {
@@ -40,7 +40,7 @@ export const googleSignup = async (
 };
 
 // Forgot Password
-export const forgotPassword = async (
+export const forgotPasswordService = async (
   data: ForgotPasswordSchema,
   role: SubRole
 ): Promise<void> => {
@@ -54,14 +54,20 @@ export const forgotPassword = async (
 };
 
 // Logout
-export const logout = async (role: UserRole, userId: string): Promise<void> => {
+export const logoutService = async (
+  role: UserRole,
+  userId: string
+): Promise<void> => {
   const response = await api.post(`/auth/logout`, { role, userId });
   if (response.status !== HttpStatusCode.OK) {
     throw new Error("Logout failed");
   }
 };
 
-export const validateResetToken = async (token: string, role: SubRole) => {
+export const validateResetTokenService = async (
+  token: string,
+  role: SubRole
+) => {
   const response = await api.get<{ success: boolean }>(
     `/auth/${token}/reset-password?role=${role}`
   );
@@ -71,7 +77,7 @@ export const validateResetToken = async (token: string, role: SubRole) => {
   throw new Error("Token validation failed");
 };
 
-export const resetPassword = async (password: string, role: SubRole) => {
+export const resetPasswordService = async (password: string, role: SubRole) => {
   const response = await api.patch<{ success: boolean }>(
     `/auth/reset-password`,
     {
@@ -83,4 +89,27 @@ export const resetPassword = async (password: string, role: SubRole) => {
     return response.data;
   }
   throw new Error("Password Reset failed");
+};
+
+// Resend OTP
+export const resendOtpService = async (): Promise<boolean> => {
+  const response = await api.post(`/auth/otp-resend`);
+  return response.status === HttpStatusCode.Created;
+};
+
+// Verify OTP
+export const verifyOtpService = async (
+  otp: string,
+  userId: string
+): Promise<User> => {
+  const response = await api.post<User>(`/auth/otp-verify`, {
+    otp,
+    userId,
+  });
+
+  if (response.status === HttpStatusCode.OK) {
+    return response.data;
+  }
+
+  throw new Error("OTP verification failed");
 };

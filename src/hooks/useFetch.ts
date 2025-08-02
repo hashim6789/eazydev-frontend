@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../configs";
+import { getAxiosErrorMessage } from "../utils";
 
 const useFetch = <T>(url: string | null, options?: RequestInit) => {
   if (!url) {
@@ -24,8 +25,9 @@ const useFetch = <T>(url: string | null, options?: RequestInit) => {
         const jsonData = response.data;
         console.log("data:", jsonData);
         setData(jsonData);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong!");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err, "Something went wrong!");
+        setError(message);
       } finally {
         setLoading(false);
       }

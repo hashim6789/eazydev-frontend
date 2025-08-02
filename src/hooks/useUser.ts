@@ -2,9 +2,14 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../configs";
 import { SubRole, User, UserStatus } from "../types";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
 import { ResponseErrorMessages, UserMessages } from "../constants";
+import { fetchUsers } from "../services";
 
 interface UseTableFunctionalityOptions {
   itemsPerPage: number;
@@ -26,13 +31,16 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
       setLoading(true);
       try {
         setData([]);
-        const response = await api.get(
-          `/users?role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
-        );
-        const result = response.data;
+        const { users, totalPages } = await fetchUsers({
+          role,
+          status: filterStatus,
+          search: searchQuery,
+          page: currentPage,
+          limit: itemsPerPage,
+        });
 
-        setData(result.body);
-        setTotalPages(result.last_page);
+        setData(users);
+        setTotalPages(totalPages);
       } catch (error) {
         console.error(ResponseErrorMessages.ERROR_OCCURRED, error);
       } finally {
@@ -69,8 +77,9 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
         if (data.length === 1 && currentPage > 1) {
           handlePageChange(currentPage - 1);
         }
-      } catch (error: any) {
-        showErrorToast(error.response.data.error);
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(error, "Failed to fetch users");
+        showErrorToast(message);
       }
     }
   };

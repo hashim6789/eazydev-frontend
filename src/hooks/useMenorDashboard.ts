@@ -4,47 +4,11 @@ import {
   EnrollmentRate,
   CompletionRate,
   RevenueRate,
+  MentorDashboardData,
 } from "../types/chart";
-import { api } from "../configs";
 import { generateColor } from "../utils/color-theme.util";
-import { HttpStatusCode } from "../constants";
-
-interface MentorDashboardData {
-  courseStatusChartData: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  revenueChartData: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      backgroundColor: string[];
-      borderWidth: number;
-    }[];
-  };
-  completionRateChartData: {
-    labels: string[];
-    datasets: { label: string; data: number[]; backgroundColor: string }[];
-  };
-  enrollmentChartData: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      borderColor: string;
-      borderWidth: number;
-      fill: boolean;
-    }[];
-  };
-  error: string | null;
-  loading: boolean;
-}
+import { fetchMentorDashboardData } from "../services";
+import { getAxiosErrorMessage } from "../utils";
 
 const useMentorDashboardData = (): MentorDashboardData => {
   const [courseStatuses, setCourseStatuses] = useState<CourseStatusData[]>([]);
@@ -60,25 +24,19 @@ const useMentorDashboardData = (): MentorDashboardData => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.get<{
-          courseStatusData: CourseStatusData[];
-          enrollmentData: EnrollmentRate[];
-          completionRateData: CompletionRate[];
-          revenueData: RevenueRate[];
-        }>(`/analysis/mentors`);
+        const data = await fetchMentorDashboardData();
 
-        if (response.status === HttpStatusCode.OK) {
-          setCourseStatuses(response.data.courseStatusData);
-          setEnrollmentData(response.data.enrollmentData);
-          setCompletionRateData(response.data.completionRateData);
-          setRevenueData(response.data.revenueData);
-          setError(null);
-        } else {
-          setError("Failed to fetch mentor data.");
-        }
-      } catch (err) {
-        console.error("Error fetching mentor data:", err);
-        setError("Failed to fetch mentor data.");
+        setCourseStatuses(data.courseStatusData);
+        setEnrollmentData(data.enrollmentData);
+        setCompletionRateData(data.completionRateData);
+        setRevenueData(data.revenueData);
+        setError(null);
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(
+          err,
+          "Failed to fetch mentor data."
+        );
+        setError(message);
       } finally {
         setLoading(false);
       }
