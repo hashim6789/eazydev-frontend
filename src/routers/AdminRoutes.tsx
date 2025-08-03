@@ -9,7 +9,7 @@ import AdminCourseManagement from "../modules/admin/pages/course/AdminCourseMana
 import AdminCategoryManagement from "../modules/admin/pages/category/AdminCategoryManagement";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
 import Layout from "../modules/layouts/Layout";
-import loginImage from "../assets/img/wall_paer_02.jpeg";
+import loginImage from "../assets/img/login image 01.jpg";
 import AdminRevenueManagement from "../modules/admin/pages/revenue/AdminReveneManagement";
 
 export const AdminRoutes = (isAuthenticated: boolean, user: UserRole) => [

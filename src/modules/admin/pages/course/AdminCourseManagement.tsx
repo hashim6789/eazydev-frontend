@@ -3,9 +3,7 @@ import { Users } from "lucide-react";
 import { Breadcrumb, TitleSection } from "../../../shared/components";
 import CoursesTable from "../../tables/CourseTable";
 
-interface AdminUserProps {}
-
-const AdminCourseManagement: React.FC<AdminUserProps> = ({}) => {
+const AdminCourseManagement: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Breadcrumbs */}

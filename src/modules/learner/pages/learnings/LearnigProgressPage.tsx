@@ -20,7 +20,7 @@ const LearningProgressPage: React.FC = () => {
     loading: isLoading,
     error,
     handlePageChange,
-  } = useProgressList({ itemsPerPage: 4 });
+  } = useProgressList({ itemsPerPage: 2 });
   const navigate = useNavigate();
 
   // Loading State
@@ -165,7 +165,7 @@ const LearningProgressPage: React.FC = () => {
       </div>
 
       {/* Pagination */}
-      {totalPages > 1 && (
+      {
         <div className="flex justify-center mt-8">
           <nav className="flex items-center space-x-2">
             <button
@@ -207,7 +207,7 @@ const LearningProgressPage: React.FC = () => {
             </button>
           </nav>
         </div>
-      )}
+      }
 
       {/* Stats Summary */}
       <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-4">

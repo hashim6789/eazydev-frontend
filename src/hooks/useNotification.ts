@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import io from "socket.io-client";
-import { api } from "../configs";
 import { Notification } from "../types";
+import { getAxiosErrorMessage } from "../utils";
+import { getNotifications } from "../services";
+import { ENV } from "../configs";
+import { NotificationMessages } from "../constants";
 
-const socket = io("https://www.muhammedhashim.online", {
+const socket = io(`${ENV.DOMAIN_NAME}`, {
   transports: ["websocket"],
   upgrade: false,
 });
@@ -17,12 +20,16 @@ export const useNotifications = (userId: string) => {
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await api.get<Notification[]>(`/notify`);
-        if (response && response.data) {
-          setNotifications(response.data);
+        const data = await getNotifications();
+        if (data) {
+          setNotifications(data);
         }
-      } catch (err) {
-        setError("Failed to fetch notifications");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(
+          err,
+          NotificationMessages.ERROR.FETCH
+        );
+        setError(message);
       } finally {
         setLoading(false);
       }

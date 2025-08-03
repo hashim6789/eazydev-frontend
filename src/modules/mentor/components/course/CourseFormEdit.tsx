@@ -6,9 +6,7 @@ import { LessonsList } from "./LessonList";
 import { useMentorCourseManagement } from "../../../../hooks/userMentorCourseManagement";
 import CourseReview from "./CourseReview";
 
-interface CourseFormProps {}
-
-export const CourseFormA: React.FC<CourseFormProps> = ({}) => {
+export const CourseFormA: React.FC = () => {
   const methods = useForm();
   const {
     currentStep,

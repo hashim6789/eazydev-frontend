@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { PopulatedCourseDetails } from "../../../../types";
 import { ErrorState, LoadingState } from "../../../shared/Error";
 import { api } from "../../../../configs";
-import { IPurchase } from "../../../../types/purchase";
 import { showInfoToast } from "../../../../utils";
 
 const CourseDetails = () => {
@@ -31,17 +30,12 @@ const CourseDetails = () => {
       );
 
   const { data: purchaseData } = isAuthenticated
-    ? useFetch<IPurchase[]>("/purchases")
+    ? useFetch<boolean>(`/purchases/courses/${courseId}`)
     : { data: [] };
 
   useEffect(() => {
     if (purchaseData) {
-      const data: IPurchase[] = purchaseData;
-      const purchased = data.some(
-        (purchase) => purchase.course.id === courseId
-      );
-      setPurchased(purchased);
-      console.log("isPurchased", purchased);
+      setPurchased(true);
     }
   }, [purchaseData, courseId]);
 
@@ -54,19 +48,12 @@ const CourseDetails = () => {
 
   const handlePurchase = async () => {
     if (isAuthenticated) {
-      const response = await api.get("/purchases");
-      if (response && response.status === 200) {
-        const data: IPurchase[] = response.data;
-        const isPurchased = data.some(
-          (purchase) => purchase.course.id === courseId
-        );
-        console.log("isPurchased", isPurchased);
-        if (isPurchased) {
-          showInfoToast("you are already purchased this course.");
-          navigate("/learner/learnings");
-        } else {
-          navigate(`/learner/checkout/${courseId}`);
-        }
+      const { data: isPurchased } = await api.get<boolean>(
+        `/purchases/courses/${courseId}`
+      );
+      if (isPurchased) {
+        showInfoToast("you are already purchased this course.");
+        navigate("/learner/learnings");
       } else {
         navigate(`/learner/checkout/${courseId}`);
       }

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { api } from "../configs";
-import { showErrorToast } from "../utils";
-import { PaginatedData, ProgressLearning } from "../types";
+import { getAxiosErrorMessage, showErrorToast } from "../utils";
+import { ProgressLearning } from "../types";
+import { getProgressList } from "../services/progress.service";
+import { ProgressMessages } from "../constants";
 
 interface UseProgressListOptions {
   itemsPerPage: number;
@@ -18,23 +19,22 @@ const useProgressList = ({ itemsPerPage }: UseProgressListOptions) => {
     const fetchProgressList = async () => {
       setLoading(true);
       try {
-        const response = await api.get<PaginatedData<ProgressLearning>>(
-          `/progresses?page=${currentPage}&limit=${itemsPerPage}`
-        );
-        const result = response.data;
+        const data = await getProgressList(currentPage, itemsPerPage);
+        const result = data;
 
         if (result && result.body) {
-          console.log("Progress List:", result.body);
           setData(result.body);
           setTotalPages(result.last_page || 1);
         } else {
           setData([]);
-          console.warn("Unexpected response structure", result);
         }
-      } catch (error: any) {
-        console.error("Error fetching progress list:", error);
-        setError("Failed to fetch progress list.");
-        showErrorToast("Failed to fetch progress list.");
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          ProgressMessages.ERROR.FETCH
+        );
+        setError(message);
+        showErrorToast(message);
       } finally {
         setLoading(false);
       }

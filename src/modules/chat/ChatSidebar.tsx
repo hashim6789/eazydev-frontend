@@ -11,6 +11,7 @@ import {
 } from "../../store/slice/messageSlice";
 import { api } from "../../configs";
 import { ErrorState, LoadingState, NoContentState } from "../shared/Error";
+import { getAxiosErrorMessage } from "../../utils";
 
 interface ChatSidebarProps {
   socket: Socket;
@@ -43,8 +44,9 @@ const ChatSidebar = ({ socket }: ChatSidebarProps) => {
         dispatch(selectGroup(groupId));
         dispatch(fetchMessagesSuccess(response.data));
       }
-    } catch (error: any) {
-      dispatch(fetchMessagesFailure(error.response.data.message));
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, "Something went wrong!");
+      dispatch(fetchMessagesFailure(message));
       console.error(error);
     }
   };

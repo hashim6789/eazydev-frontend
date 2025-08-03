@@ -1,7 +1,5 @@
-interface FooterProps {}
-
 // Footer Component
-const LearnerFooter: React.FC<FooterProps> = () => {
+const LearnerFooter: React.FC = () => {
   return (
     <footer className="bg-blue-800 text-white py-8">
       <div className="container mx-auto px-4 text-center">

@@ -20,7 +20,6 @@ interface MessageState {
 }
 
 const initialState: MessageState = {
-  //   messages: [],
   messages: [],
   loading: false,
   error: null,

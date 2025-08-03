@@ -5,7 +5,7 @@ import axios from "axios";
 import { AppDispatch, RootState } from "../store";
 import { Category, Course, Lesson, Material } from "../types";
 import useFetch from "./useFetch";
-import { api, config } from "../configs";
+import { ENV } from "../configs";
 import {
   resetCourse,
   setCourseDetails,
@@ -18,7 +18,11 @@ import {
   updateMaterial,
   addMaterial,
 } from "../store/slice";
-import { showErrorToast, showSuccessToast } from "../utils";
+import {
+  getAxiosErrorMessage,
+  showErrorToast,
+  showSuccessToast,
+} from "../utils";
 import {
   CourseMessages,
   HttpStatusCode,
@@ -26,6 +30,16 @@ import {
   MaterialMessages,
 } from "../constants";
 import { getUserProperty } from "../utils/local-user.util";
+import {
+  addMaterialService,
+  createLessonService,
+  editLessonService,
+  removeLessonService,
+  removeMaterialService,
+  submitCourse,
+  updateCourseStatus,
+  updateMaterialService,
+} from "../services";
 
 export const useMentorCourseManagement = () => {
   // Redux and navigation hooks
@@ -61,10 +75,10 @@ export const useMentorCourseManagement = () => {
       const formData = new FormData();
       const fileBlob = await fetch(filePreview).then((r) => r.blob());
       formData.append("file", fileBlob, fileName);
-      formData.append("upload_preset", config.CLOUDINARY_PRESET);
+      formData.append("upload_preset", ENV.CLOUDINARY_PRESET);
 
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${ENV.CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
 
@@ -75,28 +89,24 @@ export const useMentorCourseManagement = () => {
         showSuccessToast(CourseMessages.SUCCESS.UPLOAD);
       }
       return secureUrl;
-    } catch (error: any) {
-      showErrorToast(
-        error.response.data.error || CourseMessages.SUCCESS.UPLOAD
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(
+        error,
+        CourseMessages.SUCCESS.UPLOAD
       );
+      showErrorToast(message);
     }
   };
 
   // Course Submission Handler
   const handleCourseSubmit = async (data: Partial<Course>) => {
     try {
-      const updatedData = {
-        title: data.title,
-        description: data.description,
-        mentorId: getUserProperty("id") as string,
-        categoryId: data.category?.id,
-        thumbnail: course.thumbnail,
-        price: data.price,
-      };
-
-      const response = isEditing
-        ? await api.put(`/courses/${course.id}`, updatedData)
-        : await api.post<string>("/courses", updatedData);
+      const response = await submitCourse(
+        data,
+        isEditing,
+        getUserProperty("id") as string,
+        course.id
+      );
 
       if (
         response.status ===
@@ -110,36 +120,38 @@ export const useMentorCourseManagement = () => {
         dispatch(setCourseDetails({ ...data, id: response.data }));
         dispatch(setCurrentStep(2));
       }
-    } catch (error: any) {
-      showErrorToast(
-        error.response.data.error || isEditing
-          ? CourseMessages.ERROR.UPDATE
-          : CourseMessages.ERROR.CREATE
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(
+        error,
+        isEditing ? CourseMessages.ERROR.UPDATE : CourseMessages.ERROR.CREATE
       );
+      showErrorToast(message);
     }
   };
 
   // Course Publishing Handler
   const handlePublishCourse = async () => {
     try {
-      await api.patch(`/courses/${course.id}`, { newStatus: "requested" });
+      await updateCourseStatus(course.id, "requested");
       navigate(`/mentor/courses/${course.id}`);
       dispatch(setCurrentStep(1));
       dispatch(resetCourse());
       showSuccessToast(CourseMessages.SUCCESS.TOGGLE);
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || CourseMessages.ERROR.TOGGLE);
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, CourseMessages.ERROR.TOGGLE);
+      showErrorToast(message);
     }
   };
   const handleDraftForRejectedCourse = async () => {
     try {
-      await api.patch(`/courses/${course.id}`, { newStatus: "draft" });
+      await updateCourseStatus(course.id, "draft");
       navigate(`/mentor/courses/${course.id}`);
       dispatch(setCurrentStep(1));
       dispatch(resetCourse());
       showSuccessToast(CourseMessages.SUCCESS.TOGGLE);
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || CourseMessages.ERROR.TOGGLE);
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, CourseMessages.ERROR.TOGGLE);
+      showErrorToast(message);
     }
   };
 
@@ -155,13 +167,12 @@ export const useMentorCourseManagement = () => {
   const handleLessonManagement = {
     add: async (lesson: Lesson, materialIds: string[]) => {
       try {
-        console.log(course.id);
-        const response = await api.post<string>("/lessons", {
-          ...lesson,
-          mentorId: getUserProperty("id") as string,
-          courseId: course.id,
-          materials: materialIds,
-        });
+        const response = await createLessonService(
+          lesson,
+          getUserProperty("id") as string,
+          course.id,
+          materialIds
+        );
 
         if (response.status === HttpStatusCode.Created && response.data) {
           dispatch(addLesson({ ...lesson, id: response.data }));
@@ -170,22 +181,25 @@ export const useMentorCourseManagement = () => {
           return response.data;
         }
         return null;
-      } catch (error: any) {
-        showErrorToast(
-          error.response.data.error || LessonMessages.ERROR.CREATE
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          LessonMessages.ERROR.CREATE
         );
+        showErrorToast(message);
+
         return null;
       }
     },
 
     update: async (index: number, lesson: Lesson, materialIds: string[]) => {
       try {
-        const response = await api.put<string>(`/lessons/${lesson.id}`, {
-          ...lesson,
-          mentorId: getUserProperty("id") as string,
-          courseId: course.id,
-          materials: materialIds,
-        });
+        const response = await editLessonService(
+          lesson,
+          getUserProperty("id") as string,
+          course.id,
+          materialIds
+        );
 
         if (response.status === HttpStatusCode.OK) {
           dispatch(updateLesson({ index, lesson }));
@@ -193,19 +207,20 @@ export const useMentorCourseManagement = () => {
           setEditingLessonIndex(null);
           setIsAddingLesson(false);
         }
-      } catch (error: any) {
-        showErrorToast(
-          error.response.data.error || LessonMessages.ERROR.UPDATE
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          LessonMessages.ERROR.UPDATE
         );
+        showErrorToast(message);
       }
     },
 
     remove: async (index: number) => {
       try {
         const lesson = course.lessons[index];
-        const response = await api.delete(
-          `/lessons/${lesson.id}/courses/${course.id}`
-        );
+
+        const response = await removeLessonService(lesson.id, course.id);
 
         if (response.status === HttpStatusCode.OK) {
           dispatch(removeLesson(index));
@@ -213,10 +228,12 @@ export const useMentorCourseManagement = () => {
           setIsAddingLesson(false);
           setEditingLessonIndex(null);
         }
-      } catch (error: any) {
-        showErrorToast(
-          error.response.data.error || LessonMessages.ERROR.REMOVE
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          MaterialMessages.ERROR.REMOVE
         );
+        showErrorToast(message);
       }
     },
   };
@@ -224,7 +241,7 @@ export const useMentorCourseManagement = () => {
   const handleMaterialManagement = {
     add: async (lessonIndex: number, material: Material) => {
       try {
-        const response = await api.post<string>("/materials", material);
+        const response = await addMaterialService(material);
 
         if (response.status === HttpStatusCode.Created) {
           dispatch(
@@ -238,10 +255,12 @@ export const useMentorCourseManagement = () => {
           return response.data;
         }
         return null;
-      } catch (error: any) {
-        showErrorToast(
-          error.response.data.error || MaterialMessages.ERROR.CREATE
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          MaterialMessages.ERROR.CREATE
         );
+        showErrorToast(message);
         return null;
       }
     },
@@ -252,11 +271,7 @@ export const useMentorCourseManagement = () => {
       material: Material
     ) => {
       try {
-        console.log("material", material);
-        const response = await api.put<string>(
-          `/materials/${material.id}`,
-          material
-        );
+        const response = await updateMaterialService(material);
 
         if (response.status === HttpStatusCode.OK) {
           dispatch(
@@ -271,10 +286,12 @@ export const useMentorCourseManagement = () => {
           return true;
         }
         return false;
-      } catch (error: any) {
-        showErrorToast(
-          error.response.data.error || MaterialMessages.ERROR.UPDATE
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          MaterialMessages.ERROR.UPDATE
         );
+        showErrorToast(message);
         return false;
       }
     },
@@ -282,17 +299,20 @@ export const useMentorCourseManagement = () => {
     remove: async (lessonIndex: number, materialIndex: number) => {
       try {
         const material = course.lessons[lessonIndex].materials[materialIndex];
-        const response = await api.delete(`/materials/${material.id}`);
+
+        const response = await removeMaterialService(material.id);
 
         if (response.status === HttpStatusCode.OK) {
           dispatch(removeMaterial({ lessonIndex, materialIndex }));
           setEditingMaterialIndex(null);
           showSuccessToast(MaterialMessages.SUCCESS.REMOVE);
         }
-      } catch (error: any) {
-        showErrorToast(
-          error.response.data.error || MaterialMessages.ERROR.REMOVE
+      } catch (error: unknown) {
+        const message = getAxiosErrorMessage(
+          error,
+          MaterialMessages.ERROR.REMOVE
         );
+        showErrorToast(message);
       }
     },
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { GoogleLogin } from "@react-oauth/google";
+import { CredentialResponse, GoogleLogin } from "@react-oauth/google";
 import { SubRole } from "../../../types";
 import useAuth from "../../../hooks/useAuth";
 import { showErrorToast } from "../../../utils";
@@ -11,11 +11,11 @@ interface GoogleLoginButtonProps {
 const GoogleLoginButton: React.FC<GoogleLoginButtonProps> = ({ user }) => {
   const { handleGoogleSignup, loading } = useAuth();
 
-  const handleSuccess = async (response: any) => {
+  const handleSuccess = async (response: CredentialResponse) => {
     try {
       const { credential } = response;
 
-      handleGoogleSignup(credential, user);
+      handleGoogleSignup(credential as string, user);
     } catch (error) {
       console.log("Google login failed:", error);
     }

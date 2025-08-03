@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { config } from "../configs";
+import { ENV } from "../configs";
+import { getAxiosErrorMessage } from "../utils";
 
 const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
   if (!url) {
@@ -16,7 +17,7 @@ const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
       setError(null);
 
       try {
-        const response = await axios.get<T>(`${config.API_BASE_URL + url}`);
+        const response = await axios.get<T>(`${ENV.API_BASE_URL + url}`);
 
         if (!response.data) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -25,15 +26,16 @@ const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
         const jsonData = response.data;
         console.log("data:", jsonData);
         setData(jsonData);
-      } catch (err: any) {
-        setError(err.message || "Something went wrong!");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err);
+        setError(message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [url, options]); // Dependencies for re-fetching when `url` or `options` change
+  }, [url, options]);
 
   return { data, loading, error };
 };

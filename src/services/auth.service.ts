@@ -1,110 +1,115 @@
-import { AxiosError } from "axios";
 import { api } from "../configs";
-import { showErrorToast } from "../utils";
+import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
+import { SubRole, User, UserRole } from "../types";
+import { HttpStatusCode } from "../constants";
 
-interface LoginData {
-  email: string;
-  password: string;
-}
+// Login
+export const loginService = async (
+  credentials: LoginSchema,
+  role: UserRole
+): Promise<User> => {
+  const response = await api.post(`/auth/login`, { ...credentials, role });
+  if (response.status === HttpStatusCode.OK) {
+    return response.data;
+  }
+  throw new Error("Login failed");
+};
 
-interface RegisterData extends LoginData {
-  name: string;
-}
+// Signup
+export const signupService = async (
+  credentials: SignupSchema,
+  role: SubRole
+): Promise<User> => {
+  const response = await api.post(`/auth/signup`, { ...credentials, role });
+  if (response.status === HttpStatusCode.Created) {
+    return response.data;
+  }
+  throw new Error("Signup failed");
+};
 
-interface OtpData {
-  email: string;
-  otp: string;
-}
+// Google Signup
+export const googleSignupService = async (
+  googleToken: string,
+  role: SubRole
+): Promise<User> => {
+  const response = await api.post(`/auth/google`, { googleToken, role });
+  if (response.status === HttpStatusCode.OK) {
+    return response.data.user;
+  }
+  throw new Error("Google signup failed");
+};
 
-interface forgetPasswordData {
-  email: string;
-}
+// Forgot Password
+export const forgotPasswordService = async (
+  data: ForgotPasswordSchema,
+  role: SubRole
+): Promise<void> => {
+  const response = await api.post(`/auth/forgot-password`, {
+    email: data.email,
+    role,
+  });
+  if (response.status !== HttpStatusCode.OK) {
+    throw new Error("Forgot password failed");
+  }
+};
 
-export const AuthService = {
-  loginService: async (
-    data: LoginData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/login",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      showErrorToast(
-        err.response?.data?.error || "Login failed. Please try again."
-      );
-      throw new Error(err.response?.data?.error || "Login failed.");
+// Logout
+export const logoutService = async (
+  role: UserRole,
+  userId: string
+): Promise<void> => {
+  const response = await api.post(`/auth/logout`, { role, userId });
+  if (response.status !== HttpStatusCode.OK) {
+    throw new Error("Logout failed");
+  }
+};
+
+export const validateResetTokenService = async (
+  token: string,
+  role: SubRole
+) => {
+  const response = await api.get<{ success: boolean }>(
+    `/auth/${token}/reset-password?role=${role}`
+  );
+  if (response.status === HttpStatusCode.OK && response.data.success) {
+    return response.data;
+  }
+  throw new Error("Token validation failed");
+};
+
+export const resetPasswordService = async (password: string, role: SubRole) => {
+  const response = await api.patch<{ success: boolean }>(
+    `/auth/reset-password`,
+    {
+      password,
+      role,
     }
-  },
+  );
+  if (response.status === HttpStatusCode.OK && response.data.success) {
+    return response.data;
+  }
+  throw new Error("Password Reset failed");
+};
 
-  registerService: async (
-    data: RegisterData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/register",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error || "Registration failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
+// Resend OTP
+export const resendOtpService = async (): Promise<boolean> => {
+  const response = await api.post(`/auth/otp-resend`);
+  return response.status === HttpStatusCode.Created;
+};
 
-  googleAuth: async (
-    data: Omit<RegisterData, "password">
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/google-auth",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error ||
-        "Google authentication failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
+// Verify OTP
+export const verifyOtpService = async (
+  otp: string,
+  userId: string
+): Promise<User> => {
+  const response = await api.post<User>(`/auth/otp-verify`, {
+    otp,
+    userId,
+  });
 
-  otpVerificationService: async (
-    data: OtpData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/otp",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error || "OTP validation failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
-  forgetPasswordService: async (
-    data: forgetPasswordData
-  ): Promise<{ status: number; message: string }> => {
-    try {
-      const response = await api.post<{ status: number; message: string }>(
-        "/api/auth/forgot-password",
-        data
-      );
-      return response.data;
-    } catch (error: unknown) {
-      const err = error as AxiosError<{ error: string }>;
-      const errorMessage =
-        err.response?.data?.error ||
-        "ForgetPassword Service failed. Please try again.";
-      throw new Error(errorMessage);
-    }
-  },
+  if (response.status === HttpStatusCode.OK) {
+    return response.data;
+  }
+
+  throw new Error("OTP verification failed");
 };

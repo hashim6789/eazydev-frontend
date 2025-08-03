@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { RootState } from "../store";
 import {
   loginStart,
@@ -15,144 +14,87 @@ import {
   forgotPasswordStart,
   forgotPasswordSuccess,
   forgotPasswordFailure,
-  logout,
+  logout as logoutAction,
 } from "../store/slice";
-import { showErrorToast } from "../utils";
+import { getAxiosErrorMessage, showErrorToast } from "../utils";
 import { ForgotPasswordSchema, LoginSchema, SignupSchema } from "../schemas";
-import { SubRole, User, UserRole } from "../types";
-import { api, config } from "../configs";
-import { AuthMessages, HttpStatusCode } from "../constants";
+import { SubRole, UserRole } from "../types";
+import { AuthMessages } from "../constants";
+import {
+  forgotPasswordService,
+  googleSignupService,
+  loginService,
+  logoutService,
+  signupService,
+} from "../services";
 
 const useAuth = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { isAuthenticated, user, loading, error } = useSelector(
     (state: RootState) => state.auth
   );
 
-  console.log("api", config.API_BASE_URL);
-  // for login
+  const { ERROR } = AuthMessages;
+
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
     dispatch(loginStart());
     try {
-      const response = await axios.post(
-        `${config.API_BASE_URL}/auth/login`,
-        {
-          ...credentials,
-          role,
-        },
-        { withCredentials: true }
-      );
-      if (response.status === HttpStatusCode.OK) {
-        const user = response.data as User;
-        dispatch(loginSuccess({ user }));
-        if (role === "learner") {
-          navigate("/");
-        } else {
-          navigate(`/${role}/dashboard`);
-        }
-      }
-    } catch (error: any) {
-      dispatch(
-        loginFailure(error.response.data.error || AuthMessages.LOGIN_FAILED)
-      );
-      console.error(AuthMessages.LOGIN_FAILED, error);
+      const user = await loginService(credentials, role);
+      dispatch(loginSuccess({ user }));
+      navigate(role === "learner" ? "/" : `/${role}/dashboard`);
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, ERROR.LOGIN);
+      dispatch(loginFailure(message));
     }
   };
 
-  // for signup
   const handleSignup = async (credentials: SignupSchema, role: SubRole) => {
     dispatch(signupStart());
     try {
-      const response = await axios.post<User>(
-        `${config.API_BASE_URL}/auth/signup`,
-        {
-          ...credentials,
-          role,
-        },
-        { withCredentials: true }
-      );
-
-      if (response.status === HttpStatusCode.Created) {
-        const user = response.data;
-        dispatch(signupSuccess({ user }));
-        console.log(`navigate to /${role}/otp`);
-        navigate(`/${role}/otp`);
-      }
-    } catch (error: any) {
-      dispatch(
-        signupFailure(error.response.data.error || AuthMessages.SIGNUP_FAILED)
-      );
-      console.error(AuthMessages.SIGNUP_FAILED, error);
+      const user = await signupService(credentials, role);
+      dispatch(signupSuccess({ user }));
+      navigate(`/${role}/otp`);
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, ERROR.SIGNUP);
+      dispatch(signupFailure(message));
     }
   };
 
-  // for google signup
   const handleGoogleSignup = async (googleToken: string, role: SubRole) => {
     dispatch(googleSignupStart());
     try {
-      const response = await axios.post(
-        `${config.API_BASE_URL}/auth/google`,
-        {
-          googleToken,
-          role,
-        },
-        { withCredentials: true }
-      );
-      const user = response.data.user as User;
+      const user = await googleSignupService(googleToken, role);
       dispatch(googleSignupSuccess({ user }));
-      if (role === "learner") {
-        navigate("/");
-      } else {
-        navigate(`/${role}/dashboard`);
-      }
-    } catch (error: any) {
-      dispatch(
-        googleSignupFailure(
-          error.response.data.error || AuthMessages.GOOGLE_SIGNUP_FAILED
-        )
-      );
-      console.error(AuthMessages.GOOGLE_SIGNUP_FAILED, error);
+      navigate(role === "learner" ? "/" : `/${role}/dashboard`);
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, ERROR.GOOGLE_SIGNUP);
+      dispatch(googleSignupFailure(message));
     }
   };
 
-  // for forgot password
   const handleForgotPassword = async (
     data: ForgotPasswordSchema,
     role: SubRole
   ) => {
     dispatch(forgotPasswordStart());
     try {
-      const response = await axios.post<{ success: boolean }>(
-        `${config.API_BASE_URL}/auth/forgot-password`,
-        {
-          email: data.email,
-          role,
-        }
-      );
-      if (response.status === HttpStatusCode.OK) {
-        dispatch(forgotPasswordSuccess());
-      }
-    } catch (error: any) {
-      dispatch(
-        forgotPasswordFailure(
-          error.response.data.error || AuthMessages.FORGOT_PASSWORD_FAILED
-        )
-      );
-      console.error(AuthMessages.FORGOT_PASSWORD_FAILED, error);
+      await forgotPasswordService(data, role);
+      dispatch(forgotPasswordSuccess());
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, ERROR.RESET_LINK_SEND);
+
+      dispatch(forgotPasswordFailure(message));
     }
   };
 
-  // for logout
   const handleLogout = async (role: UserRole, userId: string) => {
     try {
-      const response = await api.post("/auth/logout", { role, userId });
-      if (response.status === HttpStatusCode.OK) {
-        dispatch(logout());
-      }
-    } catch (error: any) {
-      showErrorToast(error.response.data.error || AuthMessages.LOGOUT_FAILED);
+      await logoutService(role, userId);
+      dispatch(logoutAction());
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, ERROR.LOGOUT);
+      showErrorToast(message);
     }
   };
 

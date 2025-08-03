@@ -16,9 +16,7 @@ import {
   categorySchema,
 } from "../../../schemas/category.schema";
 
-interface CategoryTableProps {}
-
-const CategoryTable: React.FC<CategoryTableProps> = ({}) => {
+const CategoryTable: React.FC = () => {
   const [editCategoryId, setEditCategoryId] = useState<string>("");
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
 

@@ -222,80 +222,7 @@ const LoginPage: React.FC<LoginPageProps> = ({
           )}
 
           {/* Login Form */}
-          {isLogin ? (
-            <form
-              onSubmit={handleLoginSubmit(submitLogin)}
-              className="space-y-6"
-            >
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail size={18} className="text-gray-400" />
-                  </div>
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className={`w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 ${
-                      styles.focusRing
-                    } focus:border-transparent ${
-                      loginErrors.email ? "border-red-500" : ""
-                    }`}
-                    {...registerLogin("email")}
-                  />
-                </div>
-                {loginErrors.email && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {loginErrors.email.message}
-                  </p>
-                )}
-              </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Password
-                  </label>
-                </div>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Enter your password"
-                    className={`w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 ${
-                      styles.focusRing
-                    } focus:border-transparent ${
-                      loginErrors.password ? "border-red-500" : ""
-                    }`}
-                    {...registerLogin("password")}
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                </div>
-                {loginErrors.password && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {loginErrors.password.message}
-                  </p>
-                )}
-              </div>
-
-              <button
-                type="submit"
-                className={`w-full py-3 ${styles.primary} ${styles.buttonText} rounded-lg font-medium ${styles.hover} transition-colors flex items-center justify-center`}
-                disabled={loading}
-              >
-                <LogIn size={18} className="mr-2" />
-                Login
-              </button>
-            </form>
-          ) : (
-            /* Signup Form */
+          {allowSignup && !isLogin ? (
             <form
               onSubmit={handleSignupSubmit(submitSignup)}
               className="space-y-6"
@@ -418,6 +345,79 @@ const LoginPage: React.FC<LoginPageProps> = ({
               >
                 <UserPlus size={18} className="mr-2" />
                 Sign Up
+              </button>
+            </form>
+          ) : (
+            /* Signup Form */
+            <form
+              onSubmit={handleLoginSubmit(submitLogin)}
+              className="space-y-6"
+            >
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Mail size={18} className="text-gray-400" />
+                  </div>
+                  <input
+                    type="email"
+                    placeholder="Enter your email"
+                    className={`w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 ${
+                      styles.focusRing
+                    } focus:border-transparent ${
+                      loginErrors.email ? "border-red-500" : ""
+                    }`}
+                    {...registerLogin("email")}
+                  />
+                </div>
+                {loginErrors.email && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {loginErrors.email.message}
+                  </p>
+                )}
+              </div>
+
+              <div>
+                <div className="flex justify-between items-center mb-2">
+                  <label className="block text-sm font-medium text-gray-700">
+                    Password
+                  </label>
+                </div>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter your password"
+                    className={`w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 ${
+                      styles.focusRing
+                    } focus:border-transparent ${
+                      loginErrors.password ? "border-red-500" : ""
+                    }`}
+                    {...registerLogin("password")}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                  >
+                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  </button>
+                </div>
+                {loginErrors.password && (
+                  <p className="mt-1 text-sm text-red-600">
+                    {loginErrors.password.message}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className={`w-full py-3 ${styles.primary} ${styles.buttonText} rounded-lg font-medium ${styles.hover} transition-colors flex items-center justify-center`}
+                disabled={loading}
+              >
+                <LogIn size={18} className="mr-2" />
+                Login
               </button>
             </form>
           )}

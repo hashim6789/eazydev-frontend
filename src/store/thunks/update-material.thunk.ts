@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../configs";
 import { Material } from "../../types/material";
+import { getAxiosErrorMessage } from "../../utils";
 
 type newMaterial = Partial<Material>;
 
@@ -11,10 +12,9 @@ export const updateMaterial = createAsyncThunk(
     try {
       const response = await api.put(`/api/materials/${data.id}`, data);
       return response.data;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "Something went wrong"
-      );
+    } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error);
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
