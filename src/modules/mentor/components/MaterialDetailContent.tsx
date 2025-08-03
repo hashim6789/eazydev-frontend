@@ -1,10 +1,10 @@
 import { Book, Clock } from "lucide-react";
 import { Material, MaterialType } from "../../../types/material";
 import { useThemeStyles } from "../../../utils/color-theme.util";
-import { config } from "../../../configs";
+import { ENV } from "../../../configs";
 
 const useSignedUrl = (fileKey: string, materialType: MaterialType): string => {
-  return `${config.CLOUDFRONT_BASE_URL}/uploads/${materialType}s/${fileKey}`;
+  return `${ENV.CLOUDFRONT_BASE_URL}/uploads/${materialType}s/${fileKey}`;
 };
 
 const ReadingContent: React.FC<{ material: Material }> = ({ material }) => {

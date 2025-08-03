@@ -10,11 +10,11 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../../../../hooks/useFetch";
 import { PopulatedCourse } from "../../../../types";
-import { api, config } from "../../../../configs";
+import { api, ENV } from "../../../../configs";
 import { getUserProperty } from "../../../../utils/local-user.util";
 import { getAxiosErrorMessage } from "../../../../utils";
 
-const stripePromise = loadStripe(config.VITE_STRIPE_PK);
+const stripePromise = loadStripe(ENV.VITE_STRIPE_PK);
 
 const CheckoutForm = () => {
   const stripe = useStripe();

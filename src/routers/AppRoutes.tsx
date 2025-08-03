@@ -13,7 +13,6 @@ const AppRoutes: React.FC = () => {
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   );
-  // const {} = useSelector((state: RootState) => state.theme);
 
   const routes = [
     ...AdminRoutes(isAuthenticated, user),

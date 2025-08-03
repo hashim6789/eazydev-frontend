@@ -3,7 +3,7 @@ import Peer, { MediaConnection } from "peerjs";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../types";
 import { joinMeeting } from "../services/meeting.service";
-import { config } from "../configs";
+import { ENV } from "../configs";
 import { getAxiosErrorMessage, showErrorToast } from "../utils";
 import { MeetingMessages } from "../constants";
 import { AxiosInstance } from "axios";
@@ -31,7 +31,7 @@ export const usePeerConnection = (
   useEffect(() => {
     const initializePeer = async () => {
       const peer = new Peer({
-        host: config.DOMAIN_NAME,
+        host: ENV.DOMAIN_NAME,
         port: 443,
         path: "/peerjs",
         secure: true,

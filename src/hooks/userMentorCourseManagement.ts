@@ -5,7 +5,7 @@ import axios from "axios";
 import { AppDispatch, RootState } from "../store";
 import { Category, Course, Lesson, Material } from "../types";
 import useFetch from "./useFetch";
-import { config } from "../configs";
+import { ENV } from "../configs";
 import {
   resetCourse,
   setCourseDetails,
@@ -75,10 +75,10 @@ export const useMentorCourseManagement = () => {
       const formData = new FormData();
       const fileBlob = await fetch(filePreview).then((r) => r.blob());
       formData.append("file", fileBlob, fileName);
-      formData.append("upload_preset", config.CLOUDINARY_PRESET);
+      formData.append("upload_preset", ENV.CLOUDINARY_PRESET);
 
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${ENV.CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
 

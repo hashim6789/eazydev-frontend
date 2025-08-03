@@ -1,4 +1,3 @@
-// toast.util.ts
 import { toast } from "react-hot-toast";
 
 export const showSuccessToast = (message: string) => {

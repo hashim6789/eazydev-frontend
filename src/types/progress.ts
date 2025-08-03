@@ -1,4 +1,3 @@
-// Define the Learning interface as provided
 export interface ProgressLearning {
   id: string;
   userId: string;

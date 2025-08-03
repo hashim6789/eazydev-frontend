@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Edit2 } from "lucide-react";
 import axios from "axios";
-import { api, config } from "../../../configs";
+import { api, ENV } from "../../../configs";
 import {
   getAxiosErrorMessage,
   showErrorToast,
@@ -60,11 +60,11 @@ const PersonalDetails: React.FC = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", config.CLOUDINARY_PRESET);
+    formData.append("upload_preset", ENV.CLOUDINARY_PRESET);
 
     try {
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${ENV.CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
 

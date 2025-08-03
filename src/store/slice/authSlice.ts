@@ -4,11 +4,7 @@ import { User, UserRole } from "../../types";
 import { showErrorToast, showSuccessToast } from "../../utils";
 import { AuthMessages } from "../../constants";
 
-// import { decodeToken } from "../../utils/decode-token.util";
 import { getUserProperty } from "../../utils/local-user.util";
-
-// const decode = decodeToken("accessToken");
-// console.log(decode, "decode");
 
 const isBlocked = (getUserProperty("isBlocked") ?? false) as boolean;
 const isVerified = (getUserProperty("isVerified") ?? "learner") as boolean;
@@ -25,14 +21,6 @@ const initialState: AuthState = {
   loading: false,
   error: null,
 };
-// const initialState: AuthState = {
-//   isAuthenticated: !!decode,
-//   isVerified,
-//   isBlocked,
-//   user: decode ? decode.role : "learner",
-//   loading: false,
-//   error: null,
-// };
 
 const authSlice = createSlice({
   name: "auth",

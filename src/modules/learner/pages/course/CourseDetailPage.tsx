@@ -12,7 +12,6 @@ import { useEffect, useState } from "react";
 import { PopulatedCourseDetails } from "../../../../types";
 import { ErrorState, LoadingState } from "../../../shared/Error";
 import { api } from "../../../../configs";
-import { IPurchase } from "../../../../types/purchase";
 import { showInfoToast } from "../../../../utils";
 
 const CourseDetails = () => {

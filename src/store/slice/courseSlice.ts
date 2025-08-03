@@ -137,7 +137,7 @@ export const {
   removeCourseDetails,
   addMaterial,
   updateMaterial,
-  removeMaterial, // New exports
+  removeMaterial,
 } = courseSlice.actions;
 
 export const courseReducers = courseSlice.reducer;

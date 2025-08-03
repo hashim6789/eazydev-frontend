@@ -4,14 +4,14 @@ import axios, {
   AxiosError,
   InternalAxiosRequestConfig,
 } from "axios";
-import { config } from ".";
+import { ENV } from ".";
 
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
 export const api: AxiosInstance = axios.create({
-  baseURL: `${config.API_BASE_URL}/api`,
+  baseURL: `${ENV.API_BASE_URL}/api`,
   headers: {
     "Content-Type": "application/json",
   },

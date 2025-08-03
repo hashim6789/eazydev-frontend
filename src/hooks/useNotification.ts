@@ -3,10 +3,10 @@ import io from "socket.io-client";
 import { Notification } from "../types";
 import { getAxiosErrorMessage } from "../utils";
 import { getNotifications } from "../services";
-import { config } from "../configs";
+import { ENV } from "../configs";
 import { NotificationMessages } from "../constants";
 
-const socket = io(`${config.DOMAIN_NAME}`, {
+const socket = io(`${ENV.DOMAIN_NAME}`, {
   transports: ["websocket"],
   upgrade: false,
 });

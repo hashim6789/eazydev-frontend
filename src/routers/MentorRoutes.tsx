@@ -5,8 +5,6 @@ import ProtectedRoute from "./ProtectedRoute";
 import OtpVerificationComponent from "../modules/auth/pages/Otp";
 import MentorDashboard from "../modules/mentor/pages/Dashboard";
 import CourseManagement from "../modules/mentor/pages/course/CourseManagement";
-// import MaterialManagement from "../modules/mentor/pages/material/MaterialManagement";
-// import LessonManagement from "../modules/mentor/pages/lesson/LessonManagement";
 import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
