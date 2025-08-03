@@ -37,9 +37,6 @@ export const CourseForm: React.FC = () => {
 
   const handlePublishCourse = async () => {
     try {
-      console.log("Publishing course:", course);
-      // API call to publish the course
-      // Example:
       await api.patch(`/api/courses/${course.id}`, {
         newStatus: "requested",
         mentorId: getUserProperty("id"),
@@ -48,9 +45,8 @@ export const CourseForm: React.FC = () => {
       dispatch(resetCourse());
       showSuccessToast("Course requested successfully.");
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, CourseMessages.ERROR.UPDATE_STATUS)
-      );
+      const message = getAxiosErrorMessage(error, CourseMessages.ERROR.TOGGLE);
+      showErrorToast(message);
     }
   };
 
@@ -74,11 +70,6 @@ export const CourseForm: React.FC = () => {
 
           {currentStep === 2 && (
             <LessonsList
-              // lessons={course.lessons}
-              // mentorId={course.mentorId}
-              // onAddLesson={handleAddLesson}
-              // onUpdateLesson={handleUpdateLesson}
-              // onRemoveLesson={handleRemoveLesson}
               onBack={() => dispatch(setCurrentStep(1))}
               onNext={() => dispatch(setCurrentStep(3))}
             />
@@ -134,14 +125,6 @@ export const CourseForm: React.FC = () => {
               </div>
 
               <div className="flex justify-between pt-4">
-                {/* <button
-                  type="button"
-                  onClick={() => dispatch(setCurrentStep(2))}
-                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700"
-                >
-                  Back to Lessons
-                </button> */}
-
                 <div className="space-x-3">
                   <button
                     type="button"

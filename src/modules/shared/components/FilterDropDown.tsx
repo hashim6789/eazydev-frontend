@@ -1,9 +1,9 @@
 import { FilterOption } from "../../../types";
 
 interface FilterDropdownProps {
-  selectedValue: string; // Current selected filter value
-  options: FilterOption[]; // Array of filter options (dynamic)
-  handleFilterChange: (value: any) => void; // Function to handle filter changes
+  selectedValue: string;
+  options: FilterOption[];
+  handleFilterChange: (value: any) => void;
 }
 
 export const FilterDropdown: React.FC<FilterDropdownProps> = ({

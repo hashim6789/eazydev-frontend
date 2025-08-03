@@ -8,24 +8,18 @@ import { numberToDateString } from "../../../../utils/date.util";
 
 interface CertificateProps {
   certificateData: CertificateData;
+  type: "preview" | "generate";
 }
 
-const Certificate: React.FC<CertificateProps> = ({ certificateData }) => {
+const Certificate: React.FC<CertificateProps> = ({ certificateData, type }) => {
   const [isGenerated, setIsGenerated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const certificateRef = useRef<HTMLDivElement>(null);
 
   const handlePrint = useReactToPrint({
-    // content: () => certificateRef.current, // Provide the certificate reference
-    documentTitle: `${certificateData.course.title} Certificate - ${name}`, // Set the document title
-    // onBeforeGetContent: () => {
-    //   return new Promise<void>((resolve) => {
-    //     setIsLoading(true); // Set loading state before printing
-    //     resolve();
-    //   });
-    // },
+    documentTitle: `${certificateData.course.title} Certificate - ${name}`,
     onAfterPrint: () => {
-      setIsLoading(false); // Reset loading state after printing
+      setIsLoading(false);
     },
   });
 
@@ -52,7 +46,7 @@ const Certificate: React.FC<CertificateProps> = ({ certificateData }) => {
 
   return (
     <div className="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
-      {!isGenerated ? (
+      {!isGenerated && type === "generate" ? (
         <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
           <div className="p-8">
             <div className="flex justify-center mb-6">
@@ -179,9 +173,8 @@ const Certificate: React.FC<CertificateProps> = ({ certificateData }) => {
                       <p className="text-gray-800 font-medium">
                         Certificate ID
                       </p>
-                      <p className="text-sm text-gray-600">{`CERT-${Math.random()
-                        .toString(36)
-                        .substring(2, 10)
+                      <p className="text-sm text-gray-600">{`CERT-${certificateData.id
+                        .slice(-8)
                         .toUpperCase()}`}</p>
                     </div>
                   </div>

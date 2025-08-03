@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { config } from "../configs";
+import { ENV } from "../configs";
 import { getAxiosErrorMessage } from "../utils";
-import { ResponseErrorMessages } from "../constants";
 
 const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
   const [data, setData] = useState<T | null>(null);
@@ -15,10 +14,7 @@ const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
       setError(null);
 
       try {
-        if (!url) {
-          return { data: null, loading: false, error: null };
-        }
-        const response = await axios.get<T>(`${config.API_BASE_URL + url}`);
+        const response = await axios.get<T>(`${ENV.API_BASE_URL + url}`);
 
         if (!response.data) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -27,17 +23,16 @@ const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
         const jsonData = response.data;
         console.log("data:", jsonData);
         setData(jsonData);
-      } catch (error: unknown) {
-        setError(
-          getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.WENT_WRONG)
-        );
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err);
+        setError(message);
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [url, options]); // Dependencies for re-fetching when `url` or `options` change
+  }, [url, options]);
 
   return { data, loading, error };
 };

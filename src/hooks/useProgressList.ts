@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { api } from "../configs";
 import { getAxiosErrorMessage, showErrorToast } from "../utils";
-import { PaginatedData, ProgressLearning } from "../types";
+import { ProgressLearning } from "../types";
+import { getProgressList } from "../services/progress.service";
 import { ProgressMessages } from "../constants";
 
 interface UseProgressListOptions {
@@ -19,10 +19,8 @@ const useProgressList = ({ itemsPerPage }: UseProgressListOptions) => {
     const fetchProgressList = async () => {
       setLoading(true);
       try {
-        const response = await api.get<PaginatedData<ProgressLearning>>(
-          `/progresses?page=${currentPage}&limit=${itemsPerPage}`
-        );
-        const result = response.data;
+        const data = await getProgressList(currentPage, itemsPerPage);
+        const result = data;
 
         if (result && result.body) {
           setData(result.body);
@@ -31,8 +29,12 @@ const useProgressList = ({ itemsPerPage }: UseProgressListOptions) => {
           setData([]);
         }
       } catch (error: unknown) {
-        setError(getAxiosErrorMessage(error, ProgressMessages.ERROR.FETCH));
-        showErrorToast(ProgressMessages.ERROR.FETCH);
+        const message = getAxiosErrorMessage(
+          error,
+          ProgressMessages.ERROR.FETCH
+        );
+        setError(message);
+        showErrorToast(message);
       } finally {
         setLoading(false);
       }

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Edit2 } from "lucide-react";
 import axios from "axios";
-import { api, config } from "../../../configs";
+import { api, ENV } from "../../../configs";
 import {
   getAxiosErrorMessage,
   showErrorToast,
@@ -41,10 +41,9 @@ const PersonalDetails: React.FC = () => {
         if (response.data.profilePicture) {
           setProfilePicture(response.data.profilePicture);
         }
-      } catch (error: unknown) {
-        setError(
-          getAxiosErrorMessage(error, UserMessages.ERROR.PERSONAL_DATA_FETCH)
-        );
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err, UserMessages.ERROR.FETCH);
+        setError(message);
       } finally {
         setLoading(false);
       }
@@ -61,11 +60,11 @@ const PersonalDetails: React.FC = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", config.CLOUDINARY_PRESET);
+    formData.append("upload_preset", ENV.CLOUDINARY_PRESET);
 
     try {
       const response = await axios.post(
-        `https://api.cloudinary.com/v1_1/${config.CLOUDINARY_CLOUD_NAME}/image/upload`,
+        `https://api.cloudinary.com/v1_1/${ENV.CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
 
@@ -76,10 +75,9 @@ const PersonalDetails: React.FC = () => {
         // Update profile image in backend
         await api.put("/users/profile-img", { profilePicture });
       }
-    } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, UserMessages.ERROR.UPLOAD_PROFILE_IMAGE)
-      );
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      showErrorToast(UserMessages.ERROR.UPLOAD_PROFILE_IMAGE);
     }
   };
 
@@ -96,13 +94,12 @@ const PersonalDetails: React.FC = () => {
     try {
       const response = await api.put("/users/personal", data);
       if (response.status === 200) {
-        showSuccessToast(UserMessages.SUCCESS.PERSONAL_DATA);
+        showSuccessToast(UserMessages.SUCCESS.PERSONAL_UPDATE);
         setIsEditable(false);
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, UserMessages.ERROR.PERSONAL_DATA)
-      );
+      const message = getAxiosErrorMessage(error, "Failed to upload image.");
+      showErrorToast(message);
     }
   };
 
@@ -208,19 +205,6 @@ const PersonalDetails: React.FC = () => {
               disabled
             />
           </div>
-
-          {/* Phone */}
-          {/* <div>
-            <label className={`block text-sm font-medium text-gray-700 mb-1`}>
-              Status
-            </label>
-            <input
-              type="tel"
-              // defaultValue={userDetails.isBlocked}
-              className="w-full p-2 rounded-md border border-gray-300 focus:ring-2 focus:ring-purple-500 outline-none bg-transparent"
-              disabled={!isEditable}
-            />
-          </div> */}
         </div>
 
         <div className="flex justify-end mt-6">

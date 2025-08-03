@@ -5,9 +5,7 @@ import { useCourseTable } from "../../../hooks/useCourseTable";
 import { getCourseStatusColor } from "../../../utils";
 import { CourseStatus } from "../../../types";
 
-interface CourseTableProps {}
-
-export const CourseTable: React.FC<CourseTableProps> = () => {
+export const CourseTable: React.FC = () => {
   const navigate = useNavigate();
   const styles = useThemeStyles(); // Get theme styles dynamically
   const {

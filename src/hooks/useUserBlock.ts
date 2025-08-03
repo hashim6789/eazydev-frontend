@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 import { SubRole } from "../types";
-import { api } from "../configs";
 import {
   getAxiosErrorMessage,
   showErrorToast,
@@ -10,7 +9,8 @@ import {
 } from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
 import { UserMessages } from "../constants/user.constant";
-import { HttpStatusCode, ResponseErrorMessages } from "../constants";
+import { ResponseMessages } from "../constants";
+import { toggleUserBlockStatus } from "../services";
 
 interface UseBlockUnblockResponse {
   isLoading: boolean;
@@ -41,33 +41,27 @@ const useUserBlock = (): UseBlockUnblockResponse => {
       const isConfirmed = await showConfirmationBox(action, role, change);
 
       if (isConfirmed) {
-        const endpoint = `/users/${id}/block`;
+        const result = await toggleUserBlockStatus(id, change);
 
-        // API call to block/unblock
-        const response = await api.patch(endpoint, { change });
-        console.log(response.data, response.data);
-
-        if (response.status === HttpStatusCode.OK) {
-          if (response.data) {
-            showSuccessToast(UserMessages.USER_BLOCK_SUCCESS);
-          } else {
-            showSuccessToast(UserMessages.USER_UNBLOCK_SUCCESS);
-          }
-
-          return true;
+        if (result === "blocked") {
+          showSuccessToast(UserMessages.SUCCESS.USER_BLOCK);
+        } else if (result === "unblocked") {
+          showSuccessToast(UserMessages.SUCCESS.USER_UNBLOCK);
         }
+
+        return true;
       } else {
-        showInfoToast(UserMessages.ACTION_CANCELLED);
+        showInfoToast(UserMessages.ERROR.ACTION_CANCELLED);
+        return false;
       }
-      return false;
-    } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.UNEXPECTED)
-      );
-      setError(
-        getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.UNEXPECTED)
+    } catch (err: unknown) {
+      const message = getAxiosErrorMessage(
+        err,
+        ResponseMessages.ERROR.ERROR_OCCURRED
       );
 
+      setError(message);
+      showErrorToast(message);
       return false;
     } finally {
       setIsLoading(false);

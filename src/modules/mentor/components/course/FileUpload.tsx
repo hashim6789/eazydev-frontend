@@ -1,4 +1,3 @@
-// src/components/UI/FileUpload.tsx - Reusable FileUpload component
 import React, { useState, useRef } from "react";
 import { CloudUploadIcon } from "lucide-react";
 

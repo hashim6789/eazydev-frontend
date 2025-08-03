@@ -1,4 +1,3 @@
-// src/components/CourseCreation/index.tsx - Main entry point for course creation
 import React from "react";
 import { CourseFormA } from "../../components/course";
 import { useDispatch } from "react-redux";

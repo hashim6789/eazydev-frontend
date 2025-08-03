@@ -2,13 +2,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ThemeState } from "../interfaces";
 import { ModeType, UserThemeType } from "../../types/User";
 
-// Define initial state with both theme mode and color theme
 const initialState: ThemeState = {
   mode: (localStorage.getItem("themeMode") as ModeType) || "light",
   color: (localStorage.getItem("colorTheme") as UserThemeType) || "purple",
 };
 
-// Create detailed theme slice with more actions
 const themeSlice = createSlice({
   name: "theme",
   initialState,
@@ -34,9 +32,7 @@ const themeSlice = createSlice({
   },
 });
 
-// Export actions
 export const { setThemeMode, toggleThemeMode, setColorTheme } =
   themeSlice.actions;
 
-// Export reducer
 export const themeReducers = themeSlice.reducer;

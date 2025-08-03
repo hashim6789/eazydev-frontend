@@ -6,9 +6,9 @@ interface SortOption {
 }
 
 interface SortDropdownProps {
-  sort: string; // Current sort value
-  options: SortOption[]; // Array of sort options
-  handleSortChange: (value: any) => void; // Function to handle sort changes
+  sort: string;
+  options: SortOption[];
+  handleSortChange: (value: any) => void;
 }
 
 export const SortDropdown: React.FC<SortDropdownProps> = ({

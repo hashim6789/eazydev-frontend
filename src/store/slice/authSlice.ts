@@ -4,11 +4,7 @@ import { User, UserRole } from "../../types";
 import { showErrorToast, showSuccessToast } from "../../utils";
 import { AuthMessages } from "../../constants";
 
-// import { decodeToken } from "../../utils/decode-token.util";
 import { getUserProperty } from "../../utils/local-user.util";
-
-// const decode = decodeToken("accessToken");
-// console.log(decode, "decode");
 
 const isBlocked = (getUserProperty("isBlocked") ?? false) as boolean;
 const isVerified = (getUserProperty("isVerified") ?? "learner") as boolean;
@@ -25,14 +21,6 @@ const initialState: AuthState = {
   loading: false,
   error: null,
 };
-// const initialState: AuthState = {
-//   isAuthenticated: !!decode,
-//   isVerified,
-//   isBlocked,
-//   user: decode ? decode.role : "learner",
-//   loading: false,
-//   error: null,
-// };
 
 const authSlice = createSlice({
   name: "auth",
@@ -60,7 +48,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.LOGIN);
     },
     loginFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -80,7 +68,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to delete tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.LOGOUT_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.LOGOUT);
     },
     signupStart(state) {
       state.loading = true;
@@ -100,7 +88,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.SIGNUP_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.SIGNUP);
     },
     signupFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -126,7 +114,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.VERIFY_OTP_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.VERIFY_OTP);
     },
     verifyOtpFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -153,7 +141,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.LOGIN_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.LOGIN);
     },
     googleSignupFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -170,7 +158,7 @@ const authSlice = createSlice({
     forgotPasswordSuccess(state) {
       state.loading = false;
       state.error = null;
-      showSuccessToast(AuthMessages.RESET_LINK_SEND_SUCCESS);
+      showSuccessToast(AuthMessages.SUCCESS.RESET_LINK_SEND);
     },
     forgotPasswordFailure(state, action: PayloadAction<string>) {
       state.loading = false;

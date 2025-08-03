@@ -4,10 +4,7 @@ import { UserRole } from "../types";
 import ProtectedRoute from "./ProtectedRoute";
 import OtpVerificationComponent from "../modules/auth/pages/Otp";
 import MentorDashboard from "../modules/mentor/pages/Dashboard";
-import ProfilePage from "../modules/mentor/pages/Profile";
 import CourseManagement from "../modules/mentor/pages/course/CourseManagement";
-import MaterialManagement from "../modules/mentor/pages/material/MaterialManagement";
-import LessonManagement from "../modules/mentor/pages/lesson/LessonManagement";
 import MaterialDetails from "../modules/mentor/pages/material/MaterialDetails";
 import CourseCreation from "../modules/mentor/pages/course/CourseCreate";
 import CourseDetailsPage from "../modules/shared/pages/CourseDetails";
@@ -17,9 +14,9 @@ import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import Layout from "../modules/layouts/Layout";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseEditing from "../modules/mentor/pages/course/CourseEdit";
-import loginImage from "../assets/img/wall_paper_03.jpg";
+import loginImage from "../assets/img/login image 02.jpg";
 import MentorRevenueManagement from "../modules/mentor/pages/revenue/MentorRevenueManagement";
-import MentorCalendlyIntegration from "../modules/mentor/pages/meetings/MentorCalendifyConnet";
+import ProfilePage from "../modules/shared/pages/Profile";
 
 export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -61,7 +58,7 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
                   },
                 ],
               },
-              { path: "meetings", element: <MentorCalendlyIntegration /> },
+              // { path: "meetings", element: <MentorCalendlyIntegration /> },
               // { path: "meetings", element: <MentorMeetingManagement /> },
               { path: "chats", element: <MainChatLayout /> },
 
@@ -70,11 +67,11 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
                 element: <MeetingRoom role="mentor" />,
               },
 
-              { path: "lessons", element: <LessonManagement /> },
+              // { path: "lessons", element: <LessonManagement /> },
               {
                 path: "materials",
                 children: [
-                  { path: "", element: <MaterialManagement /> },
+                  // { path: "", element: <MaterialManagement /> },
                   { path: ":materialId", element: <MaterialDetails /> },
                 ],
               },

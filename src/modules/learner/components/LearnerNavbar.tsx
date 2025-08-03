@@ -4,7 +4,6 @@ import useAuth from "../../../hooks/useAuth";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store";
 import { getUserProperty } from "../../../utils/local-user.util";
-// import NotificationPanel from "../../common/components/NotificationPanel";
 
 const CourseNavbar: React.FC = () => {
   const { handleLogout } = useAuth();

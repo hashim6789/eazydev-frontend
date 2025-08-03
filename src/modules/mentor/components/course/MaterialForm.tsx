@@ -83,9 +83,8 @@ export const MaterialForm: React.FC<MaterialFormProps> = ({
         setPreview(URL.createObjectURL(file));
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, MaterialMessages.ERROR.UPLOAD)
-      );
+      const message = getAxiosErrorMessage(error, "Failed to upload the file.");
+      showErrorToast(message);
     } finally {
       setUploading(false);
     }

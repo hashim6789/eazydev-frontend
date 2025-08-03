@@ -8,7 +8,8 @@ import {
   showSuccessToast,
 } from "../utils";
 import { showConfirmationBox } from "../utils/confirm-box.utils";
-import { ResponseErrorMessages, UserMessages } from "../constants";
+import { ResponseMessages, UserMessages } from "../constants";
+import { fetchUsers } from "../services";
 
 interface UseTableFunctionalityOptions {
   itemsPerPage: number;
@@ -30,15 +31,18 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
       setLoading(true);
       try {
         setData([]);
-        const response = await api.get(
-          `/users?role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
-        );
-        const result = response.data;
+        const { users, totalPages } = await fetchUsers({
+          role,
+          status: filterStatus,
+          search: searchQuery,
+          page: currentPage,
+          limit: itemsPerPage,
+        });
 
-        setData(result.body);
-        setTotalPages(result.last_page);
+        setData(users);
+        setTotalPages(totalPages);
       } catch (error) {
-        console.error(ResponseErrorMessages.ERROR.UNEXPECTED, error);
+        console.error(ResponseMessages.ERROR.ERROR_OCCURRED, error);
       } finally {
         setLoading(false);
       }
@@ -74,9 +78,8 @@ const useUser = ({ itemsPerPage, role }: UseTableFunctionalityOptions) => {
           handlePageChange(currentPage - 1);
         }
       } catch (error: unknown) {
-        showErrorToast(
-          getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.WENT_WRONG)
-        );
+        const message = getAxiosErrorMessage(error, UserMessages.ERROR.FETCH);
+        showErrorToast(message);
       }
     }
   };

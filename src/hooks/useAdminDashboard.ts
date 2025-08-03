@@ -1,44 +1,13 @@
 import { useEffect, useState } from "react";
 import {
+  AdminDashboardData,
   CoursePerformanceData,
   MonthlyRevenueData,
   UserStatusData,
 } from "../types/chart";
-import { api } from "../configs";
-
-interface AdminDashboardData {
-  learnerStatusChartData: {
-    labels: string[];
-    datasets: { label: string; data: number[]; backgroundColor: string[] }[];
-  };
-  mentorStatusChartData: {
-    labels: string[];
-    datasets: { label: string; data: number[]; backgroundColor: string[] }[];
-  };
-  coursePerformanceChartData: {
-    labels: string[];
-    datasets: { label: string; data: number[]; backgroundColor: string }[];
-  };
-  monthlyRevenueChartData: {
-    labels: string[];
-    datasets: {
-      label: string;
-      data: number[];
-      borderColor: string;
-      borderWidth: number;
-      fill: boolean;
-    }[];
-  };
-  error: string | null;
-  loading: boolean;
-}
-
-interface AdminAnalyzeResponseType {
-  mentorStatusData: UserStatusData[];
-  learnerStatusData: UserStatusData[];
-  coursePerformanceData: CoursePerformanceData[];
-  monthlyRevenueData: MonthlyRevenueData[];
-}
+import { fetchAdminDashboardData } from "../services";
+import { getAxiosErrorMessage } from "../utils";
+import { AnalyzeMessages } from "../constants";
 
 const useAdminDashboardData = (): AdminDashboardData => {
   const [mentorStatuses, setMentorStatuses] = useState<UserStatusData[]>([]);
@@ -57,27 +26,28 @@ const useAdminDashboardData = (): AdminDashboardData => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await api.get<AdminAnalyzeResponseType>(
-          `/analysis/admin`
-        );
+        const response = await fetchAdminDashboardData();
 
         const {
           mentorStatusData,
           learnerStatusData,
           coursePerformanceData,
           monthlyRevenueData,
-        } = response.data;
+        } = response;
 
-        console.log(response.data);
+        // console.log(response.data);
 
         setMentorStatuses(mentorStatusData);
         setLearnerStatuses(learnerStatusData);
         setCoursePerformanceData(coursePerformanceData);
         setMonthlyRevenueData(monthlyRevenueData);
         setError(null);
-      } catch (err) {
-        console.error("Error fetching admin data:", err);
-        setError("Failed to fetch admin data.");
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(
+          err,
+          AnalyzeMessages.ERROR.FETCH_ADMIN_DATA
+        );
+        setError(message);
       } finally {
         setLoading(false);
       }

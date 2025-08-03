@@ -50,11 +50,11 @@ export function useCategoryTable({
         setCategoryData([]);
         setCurrentPage(0);
         setTotalPages(0);
-
-        console.error(CategoryMessages.ERROR.FETCH, error);
-        showErrorToast(
-          getAxiosErrorMessage(error, CategoryMessages.ERROR.FETCH)
+        const message = getAxiosErrorMessage(
+          error,
+          CategoryMessages.ERROR.FETCH
         );
+        showErrorToast(message);
       } finally {
         setIsLoading(false);
       }
@@ -77,14 +77,7 @@ export function useCategoryTable({
     });
   }, [categoryData, filterStatus, searchQuery]);
 
-  // const paginatedData = useMemo(() => {
-  //   const startIndex = (currentPage - 1) * itemsPerPage;
-  //   return filteredData.slice(startIndex, startIndex + itemsPerPage);
-  // }, [filteredData, currentPage, itemsPerPage]);
-
-  useEffect(() => {
-    // setTotalPages(Math.ceil(filteredData.length / itemsPerPage));
-  }, [filteredData, itemsPerPage]);
+  useEffect(() => {}, [filteredData, itemsPerPage]);
 
   const handlePageChange = useCallback((page: number) => {
     setCurrentPage(page);
@@ -135,10 +128,11 @@ export function useCategoryTable({
         showSuccessToast(CategoryMessages.SUCCESS.TOGGLE);
       }
     } catch (error: unknown) {
-      console.error(CategoryMessages.ERROR.TOGGLE, error);
-      showErrorToast(
-        getAxiosErrorMessage(error, CategoryMessages.ERROR.TOGGLE)
+      const message = getAxiosErrorMessage(
+        error,
+        CategoryMessages.ERROR.TOGGLE
       );
+      showErrorToast(message);
     } finally {
       setIsLoading(false);
     }
@@ -177,9 +171,12 @@ export function useCategoryTable({
         showSuccessToast(CategoryMessages.SUCCESS.UPDATE);
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, CategoryMessages.ERROR.UPDATE)
+      const message = getAxiosErrorMessage(
+        error,
+        CategoryMessages.ERROR.UPDATE
       );
+
+      showErrorToast(message);
     }
   };
 
@@ -200,9 +197,12 @@ export function useCategoryTable({
         showSuccessToast(CategoryMessages.SUCCESS.CREATE);
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, CategoryMessages.ERROR.CREATE)
+      const message = getAxiosErrorMessage(
+        error,
+        CategoryMessages.ERROR.CREATE
       );
+
+      showErrorToast(message);
     }
   };
 

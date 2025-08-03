@@ -16,7 +16,7 @@ const MaterialCard: React.FC<MaterialCardProps> = ({
 }) => {
   const materialId = material.id;
   const [showMenu, setShowMenu] = useState<boolean>(false);
-  const styles = useThemeStyles(); // Fetch theme-based styles
+  const styles = useThemeStyles();
   const navigate = useNavigate();
 
   return (

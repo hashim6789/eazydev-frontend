@@ -5,7 +5,6 @@ import { UserBaseDetails } from "./User";
 export type CourseStatus =
   | "approved"
   | "rejected"
-  // | "completed"
   | "requested"
   | "published"
   | "draft";

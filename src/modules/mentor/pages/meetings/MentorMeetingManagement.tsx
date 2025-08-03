@@ -22,12 +22,13 @@ const MentorMeetingManagement: React.FC = () => {
     setLoading(true);
     try {
       const response = await api.get("/slots");
-      const transformedSlots = transformSlots(response.data); // Transforms slot data
+      const transformedSlots = transformSlots(response.data);
       setSlots(transformedSlots);
       setLoading(false);
     } catch (error: unknown) {
+      const message = getAxiosErrorMessage(error, SlotMessages.ERROR.FETCH);
       setLoading(false);
-      showErrorToast(getAxiosErrorMessage(error, SlotMessages.ERROR.FETCH));
+      showErrorToast(message);
       console.error(SlotMessages.ERROR.FETCH, error);
     }
   }, []);
@@ -51,7 +52,12 @@ const MentorMeetingManagement: React.FC = () => {
         fetchSlots();
       }
     } catch (error: unknown) {
+<<<<<<< HEAD
       showErrorToast(getAxiosErrorMessage(error, SlotMessages.ERROR.CREATE));
+=======
+      const message = getAxiosErrorMessage(error, SlotMessages.ERROR.CREATE);
+      showErrorToast(message);
+>>>>>>> refactor/branch
       console.error(SlotMessages.ERROR.CREATE, error);
     }
   };

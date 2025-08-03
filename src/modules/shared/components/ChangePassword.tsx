@@ -39,14 +39,12 @@ const ChangePassword: React.FC = () => {
     try {
       const response = await api.post("/users/verify-password", data);
       if (response.status === 200) {
-        showSuccessToast(AuthMessages.SUCCESS.VERIFY_OTP);
+        showSuccessToast(AuthMessages.SUCCESS.PASSWORD_VERIFIED);
         setIsVerified(true);
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, AuthMessages.ERROR.VERIFY_OTP)
-      );
-      console.error(error);
+      const message = getAxiosErrorMessage(error);
+      showErrorToast(message);
     }
   };
 
@@ -60,11 +58,11 @@ const ChangePassword: React.FC = () => {
         setValueChangePassword("confirmPassword", "");
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, AuthMessages.ERROR.PASSWORD_CHANGE)
+      const message = getAxiosErrorMessage(
+        error,
+        AuthMessages.ERROR.PASSWORD_CHANGE
       );
-
-      console.error(error);
+      showErrorToast(message);
     }
   };
 

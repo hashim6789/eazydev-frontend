@@ -24,10 +24,6 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, onDelete }) => {
               {lesson.description}
             </p>
             <div className="flex items-center space-x-4 text-sm text-gray-500">
-              {/* <div className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
-                  <span>{lesson.duration || 0} minutes</span>
-                </div> */}
               <div className="flex items-center">
                 <Book className="w-4 h-4 mr-1" />
                 <span>{lesson.materials.length} materials</span>
@@ -68,7 +64,6 @@ const LessonCard: React.FC<LessonCardProps> = ({ lesson, onDelete }) => {
       </div>
       <div className="px-6 py-4 bg-purple-50 rounded-b-lg">
         <button
-          // onClick={() => setSelectedLesson(lesson.id)}
           onClick={() => navigate(`/mentor/my-lessons/${lesson.id}`)}
           className="flex items-center text-purple-600 hover:text-purple-700 text-sm font-medium"
         >

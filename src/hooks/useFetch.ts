@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../configs";
 import { getAxiosErrorMessage } from "../utils";
-import { CourseMessages } from "../constants";
 
 const useFetch = <T>(url: string | null, options?: RequestInit) => {
   const [data, setData] = useState<T | null>(null);
@@ -24,8 +23,9 @@ const useFetch = <T>(url: string | null, options?: RequestInit) => {
 
         const jsonData = response.data;
         setData(jsonData);
-      } catch (error: unknown) {
-        setError(getAxiosErrorMessage(error, CourseMessages.ERROR.CREATE));
+      } catch (err: unknown) {
+        const message = getAxiosErrorMessage(err);
+        setError(message);
       } finally {
         setLoading(false);
       }

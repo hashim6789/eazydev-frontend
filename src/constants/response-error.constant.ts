@@ -1,6 +1,6 @@
-export const ResponseErrorMessages = {
+export const ResponseMessages = {
   ERROR: {
-    UNEXPECTED: "An unexpected error occurred!",
-    WENT_WRONG: "Something went wrong!",
+    UNEXPECTED_ERROR: "An unexpected error occurred!",
+    ERROR_OCCURRED: "An error occurred!",
   },
 };

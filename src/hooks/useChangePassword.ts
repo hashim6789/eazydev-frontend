@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { api } from "../configs";
 import {
   getAxiosErrorMessage,
   showErrorToast,
   showSuccessToast,
 } from "../utils";
 import { SubRole } from "../types";
-import { AuthMessages, HttpStatusCode } from "../constants";
+import { resetPasswordService, validateResetTokenService } from "../services";
+import { AuthMessages } from "../constants";
 
 const useChangePassword = (userRole: SubRole) => {
   const [isValid, setValid] = useState<boolean>(false);
@@ -15,23 +15,27 @@ const useChangePassword = (userRole: SubRole) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const navigate = useNavigate();
-  const { token } = useParams();
+  const { token } = useParams<{ token: string }>();
+
+  const { ERROR, SUCCESS } = AuthMessages;
 
   // Validate token on mount
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get<{ success: boolean }>(
-          `/auth/${token}/reset-password?role=${userRole}`
+        const response = await validateResetTokenService(
+          token as string,
+          userRole
         );
-        if (response.status === HttpStatusCode.OK && response.data.success) {
+
+        if (response.success) {
           setValid(true);
         }
       } catch (error: unknown) {
         setValid(false);
-        setErrorMessage(
-          getAxiosErrorMessage(error, AuthMessages.ERROR.RESET_LINK_EXPIRED)
-        );
+        const message = getAxiosErrorMessage(error, ERROR.RESET_LINK_GET);
+
+        setErrorMessage(message);
       }
     };
     fetchData();
@@ -41,22 +45,16 @@ const useChangePassword = (userRole: SubRole) => {
   const handleSubmit = async (password: string) => {
     try {
       setLoading(true);
-      const response = await api.patch<{ success: boolean }>(
-        `/auth/reset-password`,
-        {
-          password,
-          role: userRole,
-        }
-      );
 
-      if (response.status === HttpStatusCode.OK && response.data.success) {
-        showSuccessToast(AuthMessages.SUCCESS.RESET_PASSWORD);
+      const data = await resetPasswordService(password, userRole);
+
+      if (data.success) {
+        showSuccessToast(SUCCESS.PASSWORD_CHANGE);
         navigate(`/${userRole}/login`);
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, AuthMessages.ERROR.RESET_PASSWORD)
-      );
+      const message = getAxiosErrorMessage(error, ERROR.PASSWORD_RESET);
+      showErrorToast(message);
     } finally {
       setLoading(false);
     }

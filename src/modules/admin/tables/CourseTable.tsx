@@ -11,9 +11,7 @@ import { useCourseTable } from "../../../hooks/useCourseTable";
 import { courseSortOptions, defaultThumbnail } from "../../shared/values";
 import { getCourseStatusColor } from "../../../utils";
 
-interface CoursesTableProps {}
-
-const CoursesTable: React.FC<CoursesTableProps> = () => {
+const CoursesTable: React.FC = () => {
   const {
     currentPage,
     searchQuery,

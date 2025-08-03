@@ -10,12 +10,11 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import useFetch from "../../../../hooks/useFetch";
 import { PopulatedCourse } from "../../../../types";
-import { api, config } from "../../../../configs";
+import { api, ENV } from "../../../../configs";
 import { getUserProperty } from "../../../../utils/local-user.util";
 import { getAxiosErrorMessage } from "../../../../utils";
-import { ResponseErrorMessages } from "../../../../constants";
 
-const stripePromise = loadStripe(config.VITE_STRIPE_PK);
+const stripePromise = loadStripe(ENV.VITE_STRIPE_PK);
 
 const CheckoutForm = () => {
   const stripe = useStripe();
@@ -132,9 +131,8 @@ const CheckoutForm = () => {
         } // Add logic to save the purchase or navigate to a success page
       }
     } catch (error: unknown) {
-      setPaymentError(
-        getAxiosErrorMessage(error, ResponseErrorMessages.ERROR.UNEXPECTED)
-      );
+      const message = getAxiosErrorMessage(error);
+      setPaymentError(message);
     } finally {
       setProcessingPayment(false);
     }

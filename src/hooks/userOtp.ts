@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../store";
-import { api } from "../configs";
-import { User } from "../types";
 import {
   verifyOtpStart,
   verifyOtpSuccess,
@@ -15,7 +13,8 @@ import {
   showInfoToast,
   getAxiosErrorMessage,
 } from "../utils";
-import { AuthMessages, HttpStatusCode } from "../constants";
+import { AuthMessages } from "../constants";
+import { resendOtpService, verifyOtpService } from "../services";
 
 const useOtp = (onComplete?: (otp: string) => void) => {
   const [otp, setOtp] = useState<string[]>(new Array(6).fill(""));
@@ -90,14 +89,16 @@ const useOtp = (onComplete?: (otp: string) => void) => {
     inputRefs.current[0].focus();
 
     try {
-      const response = await api.post(`/auth/otp-resend`);
-      if (response.status === HttpStatusCode.Created) {
-        showSuccessToast(AuthMessages.SUCCESS.RESEND_OTP);
+      const success = await resendOtpService();
+      if (success) {
+        showSuccessToast(AuthMessages.ERROR.RESEND_OTP);
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, AuthMessages.ERROR.RESEND_OTP)
+      const message = getAxiosErrorMessage(
+        error,
+        AuthMessages.ERROR.RESEND_OTP
       );
+      showErrorToast(message);
     }
   };
 
@@ -134,30 +135,23 @@ const useOtp = (onComplete?: (otp: string) => void) => {
       console.log(otpString);
       dispatch(verifyOtpStart());
       try {
-        const response = await api.post<User>(`/auth/otp-verify`, {
-          otp: otpString,
-          userId,
-        });
-        if (response.status === HttpStatusCode.OK) {
-          const user = response.data as User;
-          console.log("user", user);
-          dispatch(verifyOtpSuccess({ user }));
+        const user = await verifyOtpService(otpString, userId);
+        dispatch(verifyOtpSuccess({ user }));
 
-          if (user.role === "learner") {
-            navigate("/");
-          } else {
-            navigate(`/${user.role}/dashboard`);
-          }
+        if (user.role === "learner") {
+          navigate("/");
+        } else {
+          navigate(`/${user.role}/dashboard`);
         }
       } catch (error: unknown) {
-        dispatch(
-          verifyOtpFailure(
-            getAxiosErrorMessage(error, AuthMessages.ERROR.VERIFY_OTP)
-          )
+        const message = getAxiosErrorMessage(
+          error,
+          AuthMessages.ERROR.VERIFY_OTP
         );
+        dispatch(verifyOtpFailure(message));
       }
     } else {
-      showInfoToast(AuthMessages.VALIDATION.ENTER_VALID_OTP);
+      showInfoToast(AuthMessages.ERROR.INVALID_OTP);
     }
   };
 

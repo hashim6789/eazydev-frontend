@@ -39,7 +39,11 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
         const response = await api.get<Course>(`/courses/${courseId}`);
         dispatch(setCourseDetails(response.data));
       } catch (error: unknown) {
-        showErrorToast(getAxiosErrorMessage(error, CourseMessages.ERROR.FETCH));
+        const message = getAxiosErrorMessage(
+          error,
+          "Failed to fetch course details"
+        );
+        showErrorToast(message);
       } finally {
         setIsLoading(false);
       }
@@ -68,9 +72,8 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
         );
       }
     } catch (error: unknown) {
-      showErrorToast(
-        getAxiosErrorMessage(error, CourseMessages.ERROR.UPDATE_STATUS)
-      );
+      const message = getAxiosErrorMessage(error, "Failed to update status");
+      showErrorToast(message);
     } finally {
       setIsModalOpen(false);
     }
