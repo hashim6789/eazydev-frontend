@@ -6,7 +6,7 @@ import { getNotifications } from "../services";
 import { config } from "../configs";
 import { NotificationMessages } from "../constants";
 
-const socket = io(`http://${config.DOMAIN_NAME}`, {
+const socket = io(`${config.DOMAIN_NAME}`, {
   transports: ["websocket"],
   upgrade: false,
 });

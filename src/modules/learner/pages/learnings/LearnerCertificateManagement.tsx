@@ -56,7 +56,7 @@ const CourseCertificateManagement: React.FC = () => {
               </p>
             </div>
           ) : certificateData ? (
-            <Certificate certificateData={certificateData} />
+            <Certificate certificateData={certificateData} type="generate" />
           ) : (
             <div className="flex justify-center items-center py-12">
               <p className="text-gray-600 font-medium">

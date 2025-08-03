@@ -1,7 +1,7 @@
 // services/userService.ts
 import { api } from "../configs";
 import { User } from "../types";
-import { ResponseErrorMessages } from "../constants";
+import { ResponseMessages } from "../constants";
 import { HttpStatusCode } from "axios";
 
 interface FetchUsersParams {
@@ -35,7 +35,7 @@ export const fetchUsers = async ({
       totalPages: result.last_page,
     };
   } catch (error) {
-    console.error(ResponseErrorMessages.ERROR_OCCURRED, error);
+    console.error(ResponseMessages.ERROR.ERROR_OCCURRED, error);
     throw error;
   }
 };

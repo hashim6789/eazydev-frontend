@@ -10,6 +10,7 @@ import {
   NoContentState,
 } from "../../../shared/Error";
 import { MaterialMessages, ProgressMessages } from "../../../../constants";
+import { getAxiosErrorMessage } from "../../../../utils";
 
 interface MaterialContentProps {
   // onNavigate: (direction: "prev" | "next") => void;
@@ -66,9 +67,12 @@ const MaterialContent: React.FC<MaterialContentProps> = ({
           updateMaterialProgress({ id: material.id, isCompleted: true })
         );
       }
-    } catch (err) {
-      console.error(ProgressMessages.PROGRESS_UPDATE_FAILED, err);
-      setError(ProgressMessages.PROGRESS_UPDATE_FAILED);
+    } catch (err: unknown) {
+      const message = getAxiosErrorMessage(
+        err,
+        ProgressMessages.ERROR.PROGRESS_UPDATE
+      );
+      setError(message);
     }
   };
 

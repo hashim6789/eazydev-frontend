@@ -9,7 +9,6 @@ import LearnerCoursesPage from "../modules/learner/pages/course/LearnerCoursesPa
 import CourseDetails from "../modules/learner/pages/course/CourseDetailPage";
 import WrappedCourseCheckout from "../modules/learner/pages/checkout/CourseCheckout";
 import PaymentSuccess from "../modules/learner/pages/payment/PaymentSuccess";
-import ProfilePage from "../modules/mentor/pages/Profile";
 import LearningProgressPage from "../modules/learner/pages/learnings/LearnigProgressPage";
 import CourseLearningLayout from "../modules/learner/pages/learnings/LearningCoursePage";
 import LearnerMeetingManagement from "../modules/learner/pages/meeting/MeetingManagement";
@@ -18,6 +17,8 @@ import MainChatLayout from "../modules/chat/LearnerChatManagement";
 import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseCertificateManagement from "../modules/learner/pages/learnings/LearnerCertificateManagement";
 import loginImage from "../assets/img/login image 03.jpg";
+import ProfilePage from "../modules/shared/pages/Profile";
+import CertificatePreview from "../modules/learner/components/learnings/CertificatePreview";
 
 export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {
@@ -28,7 +29,13 @@ export const LearnerRoutes = (isAuthenticated: boolean, user: UserRole) => [
       ) : (
         <Navigate to={`/${user}/login`} />
       ),
-    children: [{ path: "/", element: <LandingPage /> }],
+    children: [
+      { path: "/", element: <LandingPage /> },
+      {
+        path: "/certificates/:certificateId",
+        element: <CertificatePreview />,
+      },
+    ],
   },
 
   {

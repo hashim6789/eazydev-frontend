@@ -4,7 +4,6 @@ import { UserRole } from "../types";
 import ProtectedRoute from "./ProtectedRoute";
 import OtpVerificationComponent from "../modules/auth/pages/Otp";
 import MentorDashboard from "../modules/mentor/pages/Dashboard";
-import ProfilePage from "../modules/mentor/pages/Profile";
 import CourseManagement from "../modules/mentor/pages/course/CourseManagement";
 // import MaterialManagement from "../modules/mentor/pages/material/MaterialManagement";
 // import LessonManagement from "../modules/mentor/pages/lesson/LessonManagement";
@@ -19,6 +18,7 @@ import ChangePasswordPage from "../modules/auth/pages/ChangePassword";
 import CourseEditing from "../modules/mentor/pages/course/CourseEdit";
 import loginImage from "../assets/img/login image 02.jpg";
 import MentorRevenueManagement from "../modules/mentor/pages/revenue/MentorRevenueManagement";
+import ProfilePage from "../modules/shared/pages/Profile";
 
 export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
   {

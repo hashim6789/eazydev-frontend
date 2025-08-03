@@ -19,6 +19,7 @@ const AppRoutes: React.FC = () => {
     ...AdminRoutes(isAuthenticated, user),
     ...MentorRoutes(isAuthenticated, user),
     ...LearnerRoutes(isAuthenticated, user),
+
     {
       path: "/login",
       element: (

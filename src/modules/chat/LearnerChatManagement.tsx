@@ -15,18 +15,12 @@ import { AppDispatch } from "../../store";
 import { useDispatch } from "react-redux";
 import { io, Socket } from "socket.io-client";
 import ChatMessages from "./ChatMessages";
-import { api } from "../../configs";
+import { api, config } from "../../configs";
 import { getUserProperty } from "../../utils/local-user.util";
 import { GroupChatMessages, HttpStatusCode } from "../../constants";
 import { getAxiosErrorMessage } from "../../utils";
 
-// Connect to the Socket.io server
-// const socket = io(`${config.API_BASE_URL}/chats`, {
-//   transports: ["websocket"],
-//   upgrade: false,
-// });
-
-const socket = io("https://www.muhammedhashim.online/chats", {
+const socket = io(`${config.DOMAIN_NAME}/chats`, {
   path: "/socket.io/",
   transports: ["websocket"],
 });

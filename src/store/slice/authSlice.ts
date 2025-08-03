@@ -60,7 +60,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.ERROR.LOGIN);
+      showSuccessToast(AuthMessages.SUCCESS.LOGIN);
     },
     loginFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -80,7 +80,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to delete tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.ERROR.LOGOUT);
+      showSuccessToast(AuthMessages.SUCCESS.LOGOUT);
     },
     signupStart(state) {
       state.loading = true;
@@ -153,7 +153,7 @@ const authSlice = createSlice({
       } catch (error) {
         console.error("Failed to store tokens in localStorage:", error);
       }
-      showSuccessToast(AuthMessages.ERROR.LOGIN);
+      showSuccessToast(AuthMessages.SUCCESS.LOGIN);
     },
     googleSignupFailure(state, action: PayloadAction<string>) {
       state.loading = false;
@@ -170,7 +170,7 @@ const authSlice = createSlice({
     forgotPasswordSuccess(state) {
       state.loading = false;
       state.error = null;
-      showSuccessToast(AuthMessages.ERROR.RESET_LINK_SEND);
+      showSuccessToast(AuthMessages.SUCCESS.RESET_LINK_SEND);
     },
     forgotPasswordFailure(state, action: PayloadAction<string>) {
       state.loading = false;
