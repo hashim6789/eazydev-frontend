@@ -3,9 +3,6 @@ import { api } from "../configs";
 import { getAxiosErrorMessage } from "../utils";
 
 const useFetch = <T>(url: string | null, options?: RequestInit) => {
-  if (!url) {
-    return { data: null, loading: false, error: null };
-  }
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null); // Error message
@@ -15,6 +12,8 @@ const useFetch = <T>(url: string | null, options?: RequestInit) => {
       setLoading(true);
       setError(null);
 
+      if (!url) return;
+
       try {
         const response = await api.get(url);
 
@@ -23,7 +22,6 @@ const useFetch = <T>(url: string | null, options?: RequestInit) => {
         }
 
         const jsonData = response.data;
-        console.log("data:", jsonData);
         setData(jsonData);
       } catch (err: unknown) {
         const message = getAxiosErrorMessage(err);

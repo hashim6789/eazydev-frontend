@@ -1,8 +1,8 @@
 import userImage from "../../../assets/img/user_image.avif";
-import { SubRole } from "../../../types";
+import { SubRole, User } from "../../../types";
 
 interface TableRowProps {
-  user: any; // Replace `any` with your user type.
+  user: User;
   role: SubRole;
   handleView: (userId: string, role: SubRole) => void;
 }

@@ -58,6 +58,7 @@ export const MentorRoutes = (isAuthenticated: boolean, user: UserRole) => [
                   },
                 ],
               },
+              // { path: "meetings", element: <MentorCalendlyIntegration /> },
               { path: "meetings", element: <MentorMeetingManagement /> },
               { path: "chats", element: <MainChatLayout /> },
 

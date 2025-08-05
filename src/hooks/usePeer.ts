@@ -30,9 +30,12 @@ export const usePeerConnection = (
 
   useEffect(() => {
     const initializePeer = async () => {
+      console.log("peer", ENV.PEER_DOMAIN);
+
       const peer = new Peer({
-        host: ENV.DOMAIN_NAME,
-        port: 443,
+        host: "eazydev.muhammedhashim.online",
+        // host: ENV.PEER_DOMAIN,
+        port: ENV.NODE_ENV === "production" ? 443 : 80,
         path: "/peerjs",
         secure: true,
         config: {
@@ -47,7 +50,7 @@ export const usePeerConnection = (
         setPeerId(id);
 
         try {
-          const data = await joinMeeting(meetId, peerId);
+          const data = await joinMeeting(meetId, id);
           if (data && data.otherPeerId) {
             setOtherPeerId(data.otherPeerId);
           }

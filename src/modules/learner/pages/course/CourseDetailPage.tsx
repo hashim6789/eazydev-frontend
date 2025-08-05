@@ -3,7 +3,6 @@ import { Clock, Award, Monitor, Share2, Tag, BookOpen } from "lucide-react";
 import userImage from "../../../../assets/img/user_image.avif";
 import { useParams, useNavigate } from "react-router-dom";
 
-import useUnAuthorizedFetch from "../../../../hooks/useUnAuthorizedFetch";
 import BackComponent from "../../components/BackComponent";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../store";
@@ -11,27 +10,24 @@ import useFetch from "../../../../hooks/useFetch";
 import { useEffect, useState } from "react";
 import { PopulatedCourseDetails } from "../../../../types";
 import { ErrorState, LoadingState } from "../../../shared/Error";
-import { api } from "../../../../configs";
 import { showInfoToast } from "../../../../utils";
+import { api } from "../../../../configs";
 
 const CourseDetails = () => {
   const { courseId } = useParams();
   const [isPurchased, setPurchased] = useState<boolean>(false);
   const navigate = useNavigate();
   const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   const {
     data: course,
     error,
     loading,
-  } = isAuthenticated
-    ? useFetch<PopulatedCourseDetails>(`/courses/${courseId}`)
-    : useUnAuthorizedFetch<PopulatedCourseDetails>(
-        `/no-auth/courses/${courseId}`
-      );
+  } = useFetch<PopulatedCourseDetails>(`/courses/${courseId}`);
 
   const { data: purchaseData } = isAuthenticated
     ? useFetch<boolean>(`/purchases/courses/${courseId}`)
-    : { data: [] };
+    : { data: false };
 
   useEffect(() => {
     if (purchaseData) {

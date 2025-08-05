@@ -11,7 +11,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const api: AxiosInstance = axios.create({
-  baseURL: `${ENV.API_BASE_URL}/api`,
+  baseURL: `${ENV.API_BASE_URL}`,
   headers: {
     "Content-Type": "application/json",
   },
@@ -29,6 +29,7 @@ api.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
+    console.log("🚀 ~ originalRequest:", originalRequest);
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
@@ -60,6 +61,7 @@ api.interceptors.response.use(
           : "/login";
     }
 
+    // Ensure all other errors are passed back
     return Promise.reject(error);
   }
 );

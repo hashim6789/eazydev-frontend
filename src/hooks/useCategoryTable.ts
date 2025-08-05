@@ -42,7 +42,6 @@ export function useCategoryTable({
             : `/categories?&role=${role}&status=${filterStatus}&search=${searchQuery}&page=${currentPage}&limit=${itemsPerPage}`
         );
         const result = response.data;
-        console.log(result.last_page, "nihnjhun");
 
         setCategoryData(role === "admin" ? result.body : result);
 

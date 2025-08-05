@@ -4,9 +4,6 @@ import { ENV } from "../configs";
 import { getAxiosErrorMessage } from "../utils";
 
 const useUnAuthorizedFetch = <T>(url: string | null, options?: RequestInit) => {
-  if (!url) {
-    return { data: null, loading: false, error: null };
-  }
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null); // Error message

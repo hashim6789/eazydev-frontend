@@ -39,6 +39,7 @@ const useAuth = () => {
 
   const handleLogin = async (credentials: LoginSchema, role: UserRole) => {
     dispatch(loginStart());
+
     try {
       const user = await loginService(credentials, role);
       dispatch(loginSuccess({ user }));

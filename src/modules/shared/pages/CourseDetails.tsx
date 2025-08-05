@@ -15,6 +15,7 @@ import LessonView from "../../admin/components/course/LessonView";
 import { setCourseDetails, updateCourseStatus } from "../../../store/slice";
 import { getCourseStatusIcon } from "../../../utils/icon.util";
 import { useThemeStyles } from "../../../utils/color-theme.util";
+import { CourseMessages } from "../../../constants";
 interface CourseDetailsPageProps {
   role: UserRole;
 }
@@ -67,7 +68,7 @@ const CourseDetailsPage: React.FC<CourseDetailsPageProps> = ({ role }) => {
       if (response.status === 200) {
         dispatch(updateCourseStatus({ newStatus }));
         showSuccessToast(
-          response.data.message || "Status updated successfully"
+          response.data.message || CourseMessages.SUCCESS.UPDATE_STATUS
         );
       }
     } catch (error: unknown) {
