@@ -32,7 +32,8 @@ export const usePeerConnection = (
     const initializePeer = async () => {
       console.log("peer", ENV.PEER_DOMAIN);
       const peer = new Peer({
-        host: ENV.PEER_DOMAIN,
+        host: "https//eazydev.muhammedhashim.online",
+        // host: ENV.PEER_DOMAIN,
         port: ENV.NODE_ENV === "production" ? 443 : 80,
         path: "/peerjs",
         secure: true,
