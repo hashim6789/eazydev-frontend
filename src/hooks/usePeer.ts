@@ -50,7 +50,7 @@ export const usePeerConnection = (
         setPeerId(id);
 
         try {
-          const data = await joinMeeting(meetId, peerId);
+          const data = await joinMeeting(meetId, id);
           if (data && data.otherPeerId) {
             setOtherPeerId(data.otherPeerId);
           }
