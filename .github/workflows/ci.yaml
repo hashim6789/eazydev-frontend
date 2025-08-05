@@ -36,7 +36,7 @@ jobs:
             --build-arg VITE_STRIPE_PK=${{ vars.VITE_STRIPE_PK }} \
             --build-arg VITE_GOOGLE_AUTH_CLIENT_ID=${{ vars.VITE_GOOGLE_AUTH_CLIENT_ID }} \
             --build-arg VITE_DOMAIN_NAME=${{ vars.VITE_DOMAIN_NAME }} \
-            -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:latest .
+            -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:dev .
 
       # Step 5: Push Docker Image
       - name: Push Docker image
@@ -69,6 +69,7 @@ jobs:
             --build-arg VITE_CLOUDINARY_PRESET=${{ vars.VITE_CLOUDINARY_PRESET }} \
             --build-arg VITE_STRIPE_PK=${{ vars.VITE_STRIPE_PK }} \
             --build-arg VITE_GOOGLE_AUTH_CLIENT_ID=${{ vars.VITE_GOOGLE_AUTH_CLIENT_ID }} \
+            --build-arg VITE_DOMAIN_NAME=${{ vars.VITE_DOMAIN_NAME }} \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:dev .
 
       # Step 5: Push Docker Image
