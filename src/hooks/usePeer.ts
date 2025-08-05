@@ -31,8 +31,8 @@ export const usePeerConnection = (
   useEffect(() => {
     const initializePeer = async () => {
       const peer = new Peer({
-        host: ENV.DOMAIN_NAME,
-        port: 443,
+        host: ENV.PEER_DOMAIN,
+        port: ENV.NODE_ENV === "production" ? 443 : 80,
         path: "/peerjs",
         secure: true,
         config: {

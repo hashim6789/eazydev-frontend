@@ -36,6 +36,8 @@ jobs:
             --build-arg VITE_STRIPE_PK=${{ vars.VITE_STRIPE_PK }} \
             --build-arg VITE_GOOGLE_AUTH_CLIENT_ID=${{ vars.VITE_GOOGLE_AUTH_CLIENT_ID }} \
             --build-arg VITE_DOMAIN_NAME=${{ vars.VITE_DOMAIN_NAME }} \
+            --build-arg VITE_PEER_DOMAIN=${{ vars.VITE_PEER_DOMAIN }} \
+            --build-arg VITE_NODE_ENV=${{ vars.VITE_NODE_ENV }} \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:dev .
 
       # Step 5: Push Docker Image
@@ -70,6 +72,8 @@ jobs:
             --build-arg VITE_STRIPE_PK=${{ vars.VITE_STRIPE_PK }} \
             --build-arg VITE_GOOGLE_AUTH_CLIENT_ID=${{ vars.VITE_GOOGLE_AUTH_CLIENT_ID }} \
             --build-arg VITE_DOMAIN_NAME=${{ vars.VITE_DOMAIN_NAME }} \
+            --build-arg VITE_PEER_DOMAIN=${{ vars.VITE_PEER_DOMAIN }} \
+            --build-arg VITE_NODE_ENV=${{ vars.VITE_NODE_ENV }} \
             -t ${{ secrets.DOCKER_HUB_USERNAME }}/eazydev-frontend:dev .
 
       # Step 5: Push Docker Image
