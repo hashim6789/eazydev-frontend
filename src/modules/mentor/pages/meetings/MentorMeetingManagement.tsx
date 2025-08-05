@@ -52,12 +52,8 @@ const MentorMeetingManagement: React.FC = () => {
         fetchSlots();
       }
     } catch (error: unknown) {
-<<<<<<< HEAD
-      showErrorToast(getAxiosErrorMessage(error, SlotMessages.ERROR.CREATE));
-=======
       const message = getAxiosErrorMessage(error, SlotMessages.ERROR.CREATE);
       showErrorToast(message);
->>>>>>> refactor/branch
       console.error(SlotMessages.ERROR.CREATE, error);
     }
   };
